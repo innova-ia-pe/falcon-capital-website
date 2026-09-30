@@ -22,7 +22,7 @@ Si se usa la versión gratuita, lo marcado con ★ necesita un plugin o un short
 | Texto claro | `#EEF7F5` | texto sobre fondos oscuros |
 | Texto oscuro | `#052026` | texto sobre fondos claros |
 
-**Tipografía global:** Poppins 300/400/500/600. H1 52–64 px, H2 36–48 px, H3 22–24 px,
+**Tipografía global:** Manrope 400/500/600/700 (títulos en 600). H1 52–64 px, H2 36–48 px, H3 22–24 px,
 texto 16 px, antetítulo 11.5 px en mayúsculas con 0.18 em de espaciado.
 
 **Contenedores:** ancho 1280 px, relleno lateral 36 px (22 px en móvil),
