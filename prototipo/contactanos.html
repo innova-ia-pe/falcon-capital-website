@@ -21,13 +21,29 @@
     <img class="lg-d" src="img/logo-light.png" alt="Falcon Capital">
     <img class="lg-l" src="img/logo-dark.png" alt="Falcon Capital">
   </a>
-  <nav><a href="conocenos.html">Conócenos</a><a href="soluciones.html">Soluciones</a><a href="blog.html">Blog</a><a href="contactanos.html" class="on">Contáctanos</a><a href="simulador.html">Simulador</a></nav>
+  <nav aria-label="Principal">
+    <a href="conocenos.html">Conócenos</a>
+    <div class="nav-dd">
+      <button class="nav-dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Soluciones <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="nav-dd-menu">
+        <a href="factoring.html"><b>Factoring</b><small>Transforma tus facturas en liquidez</small></a>
+        <a href="confirming.html"><b>Confirming</b><small>Administra el pago a tus proveedores</small></a>
+        <a href="capital-de-trabajo.html"><b>Capital de Trabajo</b><small>Recursos para tus proyectos</small></a>
+      </div>
+    </div>
+    <a href="blog.html">Blog</a>
+    <a href="simulador.html">Simulador</a>
+    <div class="nav-acts">
+      <a class="btn btn-primary" href="registro.html">Crea tu cuenta</a>
+      <a class="btn btn-line" href="iniciar-sesion.html">Iniciar sesión</a>
+    </div>
+  </nav>
   <div class="acts">
-    <a class="btn btn-line btn-sm ext" href="mi-portal.html">Iniciar Sesión <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></a>
-    <a class="btn btn-primary btn-sm" href="evaluacion.html">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+    <a class="btn btn-primary btn-sm" href="registro.html">Crea tu cuenta</a>
+    <a class="btn btn-line btn-sm" href="iniciar-sesion.html">Iniciar sesión</a>
   </div>
   <button class="th" type="button" aria-label="Cambiar entre modo claro y oscuro"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.3A8.8 8.8 0 0 1 9.7 3.5a8.8 8.8 0 1 0 10.8 10.8z"/></svg></button>
-  <button class="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  <button class="burger" type="button" aria-label="Menú"><span></span><span></span><span></span></button>
 </div></header>
 <main>
 <section class="bg hero-slim" style="padding-bottom:64px">
@@ -75,7 +91,7 @@
         Autorizo el tratamiento de mis datos personales para ser contactado por Falcon Capital,
         según la Política de Privacidad.</label>
       <div class="form-foot full">
-        <button class="btn btn-primary btn-lg" type="submit">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+        <button class="btn btn-primary btn-lg" type="submit">Solicita información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
         <small>Protegido con antispam</small>
         <p class="form-msg form-note" hidden><b>Prototipo:</b> el formulario no envía datos. <a href="gracias.html" class="em">Ver la pantalla de confirmación</a>.</p>
       </div>
@@ -83,17 +99,29 @@
     </div>
   </div>
 </section>
-<section class="sec bg bg-teal">
+<section class="sec bg bg-flat">
   <div class="wrap">
-    <div class="bento">
-      <div class="tile tile-plain c7" style="display:flex;flex-direction:column;justify-content:center">
-        <span class="eyebrow">Solicita tu evaluación</span>
-        <h2 style="margin:16px 0 18px">Completa tu proceso de evaluación <span class="em">100% digital</span></h2>
-        <p class="lead">Regístrate en Falcon Capital y accede a un proceso de evaluación que optimiza tus procesos
-          y te permite obtener liquidez y financiamiento de manera ágil y flexible.</p>
-        <div class="acts" style="margin-top:28px"><a class="btn btn-primary btn-lg" href="evaluacion.html">Comenzar <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+    <div class="head center"><div><span class="eyebrow">Información de contacto</span>
+      <h2>Una respuesta ágil, cercana y especializada</h2></div></div>
+    <div class="info-grid">
+      <div class="info">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><path d="M12 2.6a9.4 9.4 0 0 0-8 14.3L2.6 21.4l4.6-1.3A9.4 9.4 0 1 0 12 2.6z"/><path d="M8.6 8c-.3 0-.7.1-.9.5-.3.5-.7 1.4 0 2.6.7 1.2 1.8 2.8 3.5 3.8 1.5.9 2.3.8 2.9.7.5-.2 1.1-.8 1.3-1.3"/></svg></div>
+        <h3>WhatsApp</h3>
+        <p>Atención directa con un ejecutivo comercial, de lunes a viernes.</p>
+        <a class="pill" href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2.6a9.4 9.4 0 0 0-8 14.3L2.6 21.4l4.6-1.3A9.4 9.4 0 1 0 12 2.6z"/><path d="M8.6 8c-.3 0-.7.1-.9.5-.3.5-.7 1.4 0 2.6.7 1.2 1.8 2.8 3.5 3.8 1.5.9 2.3.8 2.9.7.5-.2 1.1-.8 1.3-1.3"/></svg><span>955 447 475</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
       </div>
-      <div class="photo c5" style="min-height:300px"><img src="img/hero-evaluacion.jpg" alt=""></div>
+      <div class="info">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></div>
+        <h3>Correo</h3>
+        <p>Escríbenos con el detalle de tu consulta y te respondemos en el día.</p>
+        <a class="pill" href="mailto:info@falconcapital.pe"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg><span>info@falconcapital.pe</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <div class="info">
+        <div class="info-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.5V12l3.6 2.4"/></svg></div>
+        <h3>Horario de atención</h3>
+        <p>Estamos disponibles para atenderte de lunes a viernes.</p>
+        <span class="pill"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.5V12l3.6 2.4"/></svg><span>Lunes a viernes, de 9:00 a. m. a 6:00 p. m.</span></span>
+      </div>
     </div>
   </div>
 </section>
@@ -123,7 +151,7 @@
       <a href="blog.html">Blog</a>
       <a href="preguntas-frecuentes.html">Preguntas frecuentes</a>
       <a href="contactanos.html">Contáctanos</a>
-      <a class=" ext" href="mi-portal.html">Mi Portal Falcon <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></a>
+      <a href="iniciar-sesion.html">Iniciar sesión</a>
     </div>
     <div>
       <h4>Legal</h4>
@@ -139,10 +167,10 @@
 <div class="dock">
   <div class="bot-panel" hidden>
     <header><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg> ¿Cómo prefieres conversar?</header>
-    <a class="dock-opt" href="https://wa.me/51955447475">
+    <a class="dock-opt" href="https://wa.me/51955447475" target="_blank" rel="noopener">
       <i><svg viewBox="0 0 24 24"><path d="M12 2.6a9.4 9.4 0 0 0-8 14.3L2.6 21.4l4.6-1.3A9.4 9.4 0 1 0 12 2.6z"/><path d="M8.6 8c-.3 0-.7.1-.9.5-.3.5-.7 1.4 0 2.6.7 1.2 1.8 2.8 3.5 3.8 1.5.9 2.3.8 2.9.7.5-.2 1.1-.8 1.3-1.3"/></svg></i><span><b>WhatsApp</b><small>Atención directa con un ejecutivo</small></span></a>
-    <a class="dock-opt alt" href="contactanos.html">
-      <i><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></i><span><b>Déjanos tus datos</b><small>Un experto te contacta</small></span></a>
+    <a class="dock-opt alt" href="mailto:info@falconcapital.pe">
+      <i><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></i><span><b>Correo</b><small>info@falconcapital.pe</small></span></a>
     <p><b>Bot conversacional · pendiente.</b> Elemento transversal previsto en el sitemap: responderá
       las preguntas frecuentes y derivará a un ejecutivo. Falcon Capital debe validar el banco de
       preguntas antes de conectarlo.</p>

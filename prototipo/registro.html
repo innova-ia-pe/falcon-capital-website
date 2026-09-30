@@ -1,17 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crea tu cuenta · Falcon Capital</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/falcon.css">
+<meta name="description" content="Mi Portal Falcon: crea tu cuenta.">
+<script>try{var t=localStorage.getItem('fc-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/falcon.css">
 </head>
-<body class="access-page">
-<main class="access-form"><a class="logo" href="index.html"><img class="lg-l" style="display:block" src="img/logo-dark.png" alt="Falcon Capital"></a>
-<span class="eyebrow" style="color:#00616a">Mi Portal Falcon</span><h1>Crea tu <span class="em">cuenta</span></h1><p class="lead" style="color:#496266">Comienza a gestionar tus servicios de forma rápida y segura.</p>
-<form novalidate><div class="access-social"><button type="button">Continuar con Google</button><button type="button">Continuar con Outlook</button><button type="button">Continuar con Microsoft</button></div>
-<div class="f"><label>Correo electrónico</label><input type="email" required placeholder="tu@empresa.com"></div><div class="form-foot"><button class="btn btn-primary btn-lg" type="submit">Crear cuenta</button><p class="form-msg form-note" hidden><b>Prototipo:</b> el registro se conectará a Mi Portal Falcon cuando TI confirme el flujo.</p></div></form>
-<p class="access-links"><span>¿Ya tienes una cuenta?</span><a href="iniciar-sesion.html">Inicia sesión aquí</a></p>
+<body class="access">
+<div class="proto"><div class="wrap">
+  <span>Prototipo navegable · Falcon Capital · Innova IA</span>
+  <span><a href="index.html">Volver al sitio</a> &nbsp;·&nbsp; <a href="pantallas.html">Mapa de pantallas</a></span>
+</div></div>
+<main class="access-grid">
+  <section class="access-form">
+    <a class="access-logo" href="index.html"><img src="img/logo-dark.png" alt="Falcon Capital"></a>
+    <h1>Crea <span class="em">tu cuenta</span></h1>
+    <p class="access-sub">Comienza a gestionar tus servicios de forma rápida y segura.</p>
+    <form novalidate>
+      <div class="access-social">
+        <button type="button"><b class="sso g">G</b>Continuar con Google</button>
+        <button type="button"><b class="sso o">O</b>Continuar con Outlook</button>
+        <button type="button"><b class="sso m"><i></i><i></i><i></i><i></i></b>Continuar con Microsoft</button>
+      </div>
+      <p class="access-or"><span>o regístrate con tu correo</span></p>
+      <div class="f"><label>Correo electrónico</label><input type="email" required placeholder="tu@empresa.com"></div>
+      <button class="btn btn-primary btn-lg access-btn" type="submit">Crear cuenta</button>
+      <p class="form-msg form-note" hidden><b>Prototipo:</b> el registro se conectará a Mi Portal Falcon cuando TI confirme el flujo.</p>
+    </form>
+    <p class="access-links">¿Ya tienes una cuenta? <a href="iniciar-sesion.html">Inicia sesión aquí</a></p>
+    <div class="pending"><b>Pendiente de TI Falcon.</b> Confirmar si estas pantallas viven en la web o en el
+      portal externo, su URL y los proveedores de acceso admitidos.</div>
+  </section>
+  <aside class="access-panel">
+    <p class="access-tag">Soluciones financieras<br>que impulsan tu crecimiento</p>
+    <img src="img/acceso-ilustracion.jpg" alt="">
+    <h2>Todo en un solo lugar</h2>
+    <p>Crea tu cuenta y accede a los servicios, información y herramientas que impulsan tu negocio.</p>
+  </aside>
 </main>
-<aside class="access-panel"><div><img src="img/logo-light.png" alt=""><h2>Todo en un solo lugar</h2><p class="lead">Crea tu cuenta y accede a los servicios, información y herramientas que impulsan tu negocio.</p></div></aside>
-<script src="assets/falcon.js"></script></body></html>
+<script src="assets/falcon.js"></script>
+</body>
+</html>
