@@ -1218,3 +1218,13 @@ body.access{background:#f4f8f7;color:var(--on-light)}
 .fsim[data-step="3"] .fsim-steps{margin-top:22px}
 .fsim-lead:focus{outline:none}
 .fsim-back:focus-visible{outline:2px solid var(--s-acc);outline-offset:2px;border-radius:8px}
+
+/* título de altura fija: el nombre del producto nunca parte en dos líneas y la tarjeta no cambia de alto */
+.fsim-title{display:flex;flex-direction:column;gap:2px}
+.fsim-kicker{font-size:14px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--s-soft)}
+.fsim-prod{font-size:clamp(28px,2.4vw,34px);line-height:1.1;white-space:nowrap}
+.fsim-sub{min-height:1.5em}
+/* la tarjeta queda anclada arriba: al avanzar de paso solo crece hacia abajo */
+.hero2-slide--sim{align-items:flex-start}
+@media (max-width:560px){.fsim-prod{font-size:26px}}
+@media (max-width:560px){.fsim-sub{min-height:3em}}
