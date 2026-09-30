@@ -5,7 +5,7 @@
 :root{
   --pg:#eceff0; --sheet:#fff; --ink:#0d2229; --soft:#6a7e86; --edge:#ccd5d8;
   --fill:#dfe6e8; --fill-2:#eef2f3; --accent:#00a37a; --accent-bg:#e2fbf2;
-  --f:"Poppins",-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  --f:"Manrope",-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 }
 *{box-sizing:border-box}

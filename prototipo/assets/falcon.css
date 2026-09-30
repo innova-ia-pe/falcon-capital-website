@@ -34,7 +34,7 @@
   --gap:20px;
   --maxw:1280px;
   --pad:36px;
-  --f:"Poppins",-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  --f:"Manrope",-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
   --ease:cubic-bezier(.22,.7,.28,1);
   /* acento de TEXTO: cambia con el tema para mantener el contraste */
   --accent:#00e3a5;
@@ -888,10 +888,10 @@ body.access{background:#f4f8f7;color:var(--on-light)}
 .access-form .pending b{color:var(--teal)}
 .access-panel{position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;
   gap:14px;padding:56px clamp(28px,4vw,72px);background:linear-gradient(160deg,#0f3a36,#0a2c2b 60%,#082524);color:var(--on-g)}
-.access-tag{position:absolute;top:34px;right:40px;text-align:right;font-family:Georgia,serif;font-size:13px;color:var(--on-g-soft)}
+.access-tag{position:absolute;top:34px;right:40px;text-align:right;font-size:13px;font-weight:500;color:var(--on-g-soft)}
 .access-tag::after{content:"";display:block;width:40px;height:2px;background:#2fbf7a;margin:10px 0 0 auto}
 .access-panel img{width:min(560px,100%);border-radius:24px}
-.access-panel h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(26px,2.4vw,34px);color:#fff;margin-top:10px}
+.access-panel h2{font-weight:600;letter-spacing:-.02em;font-size:clamp(26px,2.4vw,34px);color:#fff;margin-top:10px}
 .access-panel p{max-width:44ch;color:var(--on-g-soft)}
 :root[data-theme="light"] body.access,body.access{color-scheme:light}
 
@@ -1228,3 +1228,10 @@ body.access{background:#f4f8f7;color:var(--on-light)}
 .hero2-slide--sim{align-items:flex-start}
 @media (max-width:560px){.fsim-prod{font-size:26px}}
 @media (max-width:560px){.fsim-sub{min-height:3em}}
+
+/* ------------------------------------------------ tipografía Manrope
+   Manrope dibuja más fino que Poppins a igual peso: los títulos suben a 600. */
+h1,h2,h3{font-weight:600}
+h1{letter-spacing:-.032em}
+.eyebrow{font-weight:600}
+.btn{font-weight:600}
