@@ -47,25 +47,33 @@
 </div></header>
 <main>
 <section class="hero2" aria-roledescription="carrusel" aria-label="Destacados">
-  <div class="hero2-slide is-on" aria-label="Simulador">
-    <img class="hero2-bg" src="img/hero-home.jpg" alt="" style="object-position:72% center">
+  <div class="hero2-slide hero2-slide--sim is-on" aria-label="Simulador">
+    <img class="hero2-bg" src="img/hero-home.jpg" alt="" >
     <div class="wrap hero2-in">
         <div class="fsim fsim-hero" data-step="1">
           <div class="fsim-head">
             <h2 class="fsim-title">Simulador de <span class="em fsim-prod">Factoring</span></h2>
             <p class="fsim-sub">Porque la rapidez no cuesta más, simula tu anticipo ahora.</p>
           </div>
-          <div class="fsim-tabs" role="group" aria-label="Producto">
+          <div class="fsim-tabs" role="group" aria-label="Producto" style="--i:0">
+            <span class="fsim-tabs-ind" aria-hidden="true"></span>
             <button type="button" data-p="factoring" aria-selected="true">Factoring</button>
             <button type="button" data-p="confirming" aria-selected="false">Confirming</button>
             <button type="button" data-p="capital" aria-selected="false">Capital de Trabajo</button>
           </div>
-          <ol class="fsim-steps"><li class="is-on"><b>1</b>Tu operación</li><li><b>2</b>Tus datos</li><li><b>3</b>Resultado</li></ol>
+          <ol class="fsim-steps" aria-label="Pasos"><li class="is-on"><b>01</b><span>Tu operación</span></li><li><b>02</b><span>Tus datos</span></li><li><b>03</b><span>Resultado</span></li></ol>
           <form class="fsim-form" novalidate>
             <div class="fsim-step" data-step="1">
               <label class="fsim-f"><span class="fsim-l fsim-monto-l">Monto de la factura</span>
                 <span class="fsim-money">
-                  <select name="moneda" aria-label="Moneda"><option value="PEN">S/</option><option value="USD">US$</option></select>
+                  <span class="fsim-cur">
+                    <input type="hidden" name="moneda" value="PEN">
+                    <button type="button" class="fsim-cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Moneda"><b>S/</b><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <span class="fsim-cur-menu" role="listbox">
+                      <button type="button" role="option" aria-selected="true" data-v="PEN" data-s="S/"><b>S/</b>Soles</button>
+                      <button type="button" role="option" aria-selected="false" data-v="USD" data-s="US$"><b>US$</b>Dólares</button>
+                    </span>
+                  </span>
                   <input name="monto" inputmode="numeric" placeholder="Ej. 100,000" required>
                 </span></label>
               <div class="fsim-f"><span class="fsim-l">Plazo en días</span><div class="fsim-seg"><label><input type="radio" name="plazo" value="30" checked><span>30 días</span></label><label><input type="radio" name="plazo" value="60"><span>60 días</span></label><label><input type="radio" name="plazo" value="90"><span>90 días</span></label></div></div>
@@ -87,7 +95,7 @@
               <p class="fsim-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Tu información está protegida y será utilizada solo para brindarte asesoría.</p>
             </div>
             <div class="fsim-step" data-step="3" hidden>
-              <p class="fsim-lead"><b>Resultado estimado</b> · <span class="r-resumen"></span></p>
+              <p class="fsim-lead" tabindex="-1"><b>Resultado estimado</b> · <span class="r-resumen"></span></p>
               <dl class="fsim-res">
                 <div class="fsim-res-main"><dt>Recibe hoy</dt><dd class="r-neto">S/ 0</dd></div>
                 <div><dt class="r-tasa-l">Tasa Factoring Efectiva Mensual</dt><dd class="r-tasa">0%</dd></div>
