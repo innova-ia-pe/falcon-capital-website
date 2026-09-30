@@ -94,7 +94,7 @@
   /* ------------------------------------------- aparición suave al hacer scroll */
   if ('IntersectionObserver' in window) {
     var sel = '.head, .card, .tile, .photo, .kpi, .req, .step, .steps li, .quote-body, .quote-img,' +
-              ' .cta-box, .screen, .form-card, .bento-sim-card, .hero-home-sim-cta, .hero-grid > *, .chips, .pending, .faq-i, .sim-out, .state';
+              ' .cta-box, .screen, .form-card, .hero-grid > *, .chips, .pending, .faq-i, .sim-out, .state';
     var items = [].slice.call(document.querySelectorAll(sel));
     items.forEach(function (el) { el.classList.add('reveal'); });
     var io = new IntersectionObserver(function (entries) {
@@ -113,232 +113,195 @@
     });
   }
 
-  /* --------------------------------------------------- simulador bento interactivo */
+  /* --------------------------------------------------- simulador (maqueta v2.0)
+     Sin tasas: Falcon Capital aún no entrega tasas, comisiones ni fórmula. El
+     resultado se queda en cero como en la maqueta y el envío solo valida los
+     datos y confirma el registro. Cuando lleguen las reglas, se completan en
+     PRODUCTOS[x].calcular(monto, dias) y nada más cambia. */
   function initBentoSimulator() {
+    var cards = document.querySelectorAll('.bento-sim-card');
+    if (!cards.length) return;
 
-    var simCards = document.querySelectorAll('.bento-sim-card');
-    if (!simCards.length) return;
-
-    var products = {
+    var PRODUCTOS = {
       factoring: {
-        title: 'SIMULADOR DE <span class="em">FACTORING</span>',
-        subtitle: 'Porque la rapidez no cuesta más, simula tu anticipo ahora.',
-        label: 'Simulador de Factoring',
-        montoLabel: 'Monto de la factura <span class="star">*</span>',
-        resSubtitle: 'Conoce cuánto puedes recibir por tu factura.',
-        rate: 0.0120, // 1.20% mensual
-        commissionRate: 0.0050 // 0.50%
+        titulo: 'SIMULADOR DE <span class="em">FACTORING</span>',
+        subtitulo: 'Porque la rapidez no cuesta más, simula tu anticipo ahora.',
+        etiqueta: 'Factoring',
+        monto: 'Monto de la factura',
+        tasa: 'Tasa Factoring Efectiva Mensual',
+        resultado: 'Conoce cuánto puedes recibir por tu factura.',
+        calcular: null
       },
       confirming: {
-        title: 'SIMULADOR DE <span class="em">CONFIRMING</span>',
-        subtitle: 'Administra los pagos a proveedores y optimiza tu capital de trabajo.',
-        label: 'Simulador de Confirming',
-        montoLabel: 'Monto de las facturas <span class="star">*</span>',
-        resSubtitle: 'Conoce la liquidez proyectada para tus proveedores.',
-        rate: 0.0115, // 1.15% mensual
-        commissionRate: 0.0040 // 0.40%
+        titulo: 'SIMULADOR DE <span class="em">CONFIRMING</span>',
+        subtitulo: 'Porque la rapidez no cuesta más.',
+        etiqueta: 'Confirming',
+        monto: 'Monto de las facturas',
+        tasa: 'Tasa Confirming Efectiva Mensual',
+        resultado: 'Conoce cuánto pueden recibir tus proveedores.',
+        calcular: null
       },
       capital: {
-        title: 'SIMULADOR DE <span class="em">CAPITAL DE TRABAJO</span>',
-        subtitle: 'Financiamiento estructurado para proyectos y crecimiento empresarial.',
-        label: 'Capital de Trabajo',
-        montoLabel: 'Monto a solicitar <span class="star">*</span>',
-        resSubtitle: 'Conoce las condiciones estimadas de tu línea de financiamiento.',
-        rate: 0.0140, // 1.40% mensual
-        commissionRate: 0.0075 // 0.75%
+        titulo: 'SIMULADOR DE <span class="em">CAPITAL DE TRABAJO</span>',
+        subtitulo: 'Porque la rapidez no cuesta más.',
+        etiqueta: 'Capital de Trabajo',
+        monto: 'Monto a solicitar',
+        tasa: 'Tasa Efectiva Mensual',
+        resultado: 'Conoce las condiciones de tu financiamiento.',
+        calcular: null
       }
     };
 
-    simCards.forEach(function (card) {
-      var currentProduct = 'factoring';
-      var currentDays = 30;
-      var currentCurrency = 'PEN';
+    function miles(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    function numero(v) { return parseFloat(String(v || '').replace(/[^0-9.]/g, '')) || 0; }
 
-      var titleEl = card.querySelector('.sim-title');
-      var subtitleEl = card.querySelector('.sim-subtitle');
-      var selectedLabelEl = card.querySelector('.sim-selected-label');
-      var selectorBtn = card.querySelector('.sim-selector-btn');
-      var dropdown = card.querySelector('.sim-dropdown');
-      var dropOpts = card.querySelectorAll('.sim-drop-opt');
+    cards.forEach(function (card) {
+      var prod = 'factoring', dias = 30, moneda = 'PEN';
+      var $ = function (s) { return card.querySelector(s); };
+      var $$ = function (s) { return card.querySelectorAll(s); };
+      var form = $('.sim-form'), monto = $('.sim-amount-input');
+      var selBtn = $('.sim-selector-btn'), drop = $('.sim-dropdown');
+      var curBtn = $('.sim-curr-btn'), curDrop = $('.sim-curr-dropdown');
 
-      var montoLabel = card.querySelector('.sim-monto-label');
-      var amountInput = card.querySelector('.sim-amount-input');
-      var currBtn = card.querySelector('.sim-curr-btn');
-      var currDropdown = card.querySelector('.sim-curr-dropdown');
-      var currOpts = card.querySelectorAll('.sim-curr-opt');
-      var currText = card.querySelector('.sim-curr-text');
-      var dayBtns = card.querySelectorAll('.sim-day-btn');
-
-      var resSubtitle = card.querySelector('.sim-res-subtitle');
-      var resRecibeHoy = card.querySelector('.res-recibe-hoy');
-      var resTasa = card.querySelector('.res-tasa');
-      var resComision = card.querySelector('.res-comision');
-      var form = card.querySelector('.sim-form');
-
-      function formatNumber(num) {
-        return Math.round(num).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+      function pintar() {
+        var p = PRODUCTOS[prod], sim = moneda === 'USD' ? 'US$' : 'S/';
+        var r = p.calcular ? p.calcular(numero(monto.value), dias, moneda) : null;
+        $('.res-recibe-hoy').textContent = sim + ' ' + (r ? miles(r.neto) : '0');
+        $('.res-tasa').textContent = r ? r.tasa.toFixed(2) + '%' : '0%';
+        $('.res-comision').textContent = sim + ' ' + (r ? miles(r.comision) : '0');
       }
 
-      function parseNumber(str) {
-        if (!str) return 0;
-        var clean = str.toString().replace(/[^0-9.]/g, '');
-        return parseFloat(clean) || 0;
+      function producto(tipo) {
+        var p = PRODUCTOS[tipo];
+        if (!p) return;
+        prod = tipo;
+        $('.sim-title').innerHTML = p.titulo;
+        $('.sim-subtitle').textContent = p.subtitulo;
+        $('.sim-selected-label').textContent = p.etiqueta;
+        $('.sim-monto-label').innerHTML = p.monto + ' <span class="star">*</span>';
+        $('.res-tasa-label').textContent = p.tasa;
+        $('.sim-res-subtitle').textContent = p.resultado;
+        $$('.sim-drop-opt').forEach(function (o) { o.classList.toggle('active', o.dataset.type === tipo); });
+        cerrar();
+        pintar();
       }
 
-      function calculate() {
-        var pData = products[currentProduct] || products.factoring;
-        var rawAmount = parseNumber(amountInput ? amountInput.value : '');
-        var currSym = currentCurrency === 'USD' ? 'US$' : 'S/';
-
-        if (rawAmount <= 0) {
-          if (resRecibeHoy) resRecibeHoy.textContent = currSym + ' 0';
-          if (resTasa) resTasa.textContent = (pData.rate * 100).toFixed(2) + '%';
-          if (resComision) resComision.textContent = currSym + ' 0';
-          return;
-        }
-
-        var interest = rawAmount * (pData.rate * (currentDays / 30));
-        var commission = Math.max(rawAmount * pData.commissionRate, currentCurrency === 'USD' ? 150 : 500);
-        var neto = Math.max(0, rawAmount - interest - commission);
-
-        if (resRecibeHoy) {
-          resRecibeHoy.textContent = currSym + ' ' + formatNumber(neto);
-        }
-        if (resTasa) {
-          resTasa.textContent = (pData.rate * 100).toFixed(2) + '%';
-        }
-        if (resComision) {
-          resComision.textContent = currSym + ' ' + formatNumber(commission);
-        }
+      function cerrar() {
+        drop.hidden = true; selBtn.setAttribute('aria-expanded', 'false');
+        curDrop.hidden = true; curBtn.setAttribute('aria-expanded', 'false');
       }
 
-      function setProduct(type) {
-        if (!products[type]) return;
-        currentProduct = type;
-        var p = products[type];
-
-        if (titleEl) titleEl.innerHTML = p.title;
-        if (subtitleEl) subtitleEl.textContent = p.subtitle;
-        if (selectedLabelEl) selectedLabelEl.textContent = p.label;
-        if (montoLabel) montoLabel.innerHTML = p.montoLabel;
-        if (resSubtitle) resSubtitle.textContent = p.resSubtitle;
-
-        dropOpts.forEach(function (opt) {
-          opt.classList.toggle('active', opt.dataset.type === type);
-        });
-
-        if (dropdown) dropdown.hidden = true;
-        if (selectorBtn) selectorBtn.setAttribute('aria-expanded', 'false');
-
-        calculate();
-      }
-
-      // Dropdown toggle
-      if (selectorBtn && dropdown) {
-        selectorBtn.addEventListener('click', function (e) {
+      selBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var abrir = drop.hidden; cerrar();
+        drop.hidden = !abrir; selBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      });
+      $$('.sim-drop-opt').forEach(function (o) {
+        o.addEventListener('click', function (e) { e.stopPropagation(); producto(o.dataset.type); });
+      });
+      curBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var abrir = curDrop.hidden; cerrar();
+        curDrop.hidden = !abrir; curBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      });
+      $$('.sim-curr-opt').forEach(function (o) {
+        o.addEventListener('click', function (e) {
           e.stopPropagation();
-          var isOpen = !dropdown.hidden;
-          dropdown.hidden = isOpen;
-          selectorBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-        });
-
-        dropOpts.forEach(function (opt) {
-          opt.addEventListener('click', function (e) {
-            e.stopPropagation();
-            setProduct(this.dataset.type);
-          });
-        });
-      }
-
-      // Currency dropdown toggle
-      if (currBtn && currDropdown) {
-        currBtn.addEventListener('click', function (e) {
-          e.stopPropagation();
-          var isOpen = !currDropdown.hidden;
-          currDropdown.hidden = isOpen;
-          currBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
-        });
-
-        currOpts.forEach(function (opt) {
-          opt.addEventListener('click', function (e) {
-            e.stopPropagation();
-            currentCurrency = this.dataset.currency;
-            if (currText) currText.textContent = currentCurrency === 'USD' ? 'US$' : 'S/';
-            currOpts.forEach(function (o) {
-              o.classList.toggle('active', o.dataset.currency === currentCurrency);
-            });
-            currDropdown.hidden = true;
-            currBtn.setAttribute('aria-expanded', 'false');
-            calculate();
-          });
-        });
-      }
-
-      // Days change
-      dayBtns.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          dayBtns.forEach(function (b) { b.classList.remove('active'); });
-          this.classList.add('active');
-          currentDays = parseInt(this.dataset.days, 10) || 30;
-          calculate();
+          moneda = o.dataset.currency;
+          $('.sim-curr-text').textContent = moneda === 'USD' ? 'US$' : 'S/';
+          $$('.sim-curr-opt').forEach(function (x) { x.classList.toggle('active', x === o); });
+          cerrar(); pintar();
         });
       });
-
-      // Amount input formatting & live calculate
-      if (amountInput) {
-        amountInput.addEventListener('input', function () {
-          var raw = parseNumber(this.value);
-          if (raw > 0) {
-            var formatted = formatNumber(raw);
-            this.value = formatted;
-          }
-          calculate();
+      $$('.sim-day-btn').forEach(function (b) {
+        b.addEventListener('click', function () {
+          $$('.sim-day-btn').forEach(function (x) { x.classList.remove('active'); });
+          b.classList.add('active');
+          dias = parseInt(b.dataset.days, 10) || 30;
+          pintar();
         });
-      }
+      });
+      monto.addEventListener('input', function () {
+        var n = numero(monto.value);
+        monto.value = n > 0 ? miles(n) : '';
+        pintar();
+      });
+      document.addEventListener('click', function (e) { if (!card.contains(e.target)) cerrar(); });
 
-      // Form submit
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          if (amountInput && !amountInput.value) {
-            amountInput.value = '100,000';
-          }
-          calculate();
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        [].forEach.call(form.querySelectorAll('input[required]'), function (i) { i.classList.add('touched'); });
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        pintar();
+        $('.sim-pending').hidden = true;
+        $('.sim-done').hidden = false;
+      });
 
-          var submitBtn = form.querySelector('.btn-sim-submit');
-          if (submitBtn) {
-            var origText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<span>¡SIMULACIÓN ACTUALIZADA!</span> <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>';
-            submitBtn.style.background = 'linear-gradient(100deg, #3cf0c0, #00e3a5)';
-            setTimeout(function () {
-              submitBtn.innerHTML = origText;
-              submitBtn.style.background = '';
-            }, 2400);
-          }
-        });
-      }
-
-      // Initial calculation
-      calculate();
+      pintar();
     });
+  }
 
-    // Close any dropdown when clicking outside
-    document.addEventListener('click', function (e) {
-      if (!e.target.closest('.sim-selector-wrap')) {
-        document.querySelectorAll('.sim-dropdown').forEach(function (dd) {
-          dd.hidden = true;
-        });
-        document.querySelectorAll('.sim-selector-btn').forEach(function (btn) {
-          btn.setAttribute('aria-expanded', 'false');
-        });
+  /* ------------------------------------------ carrusel de noticias (3 por vista) */
+  function initRails() {
+    document.querySelectorAll('.rail').forEach(function (rail) {
+      var nav = document.querySelector('.rail-nav[data-rail="' + rail.id + '"]');
+      var prev = nav && nav.querySelector('.rail-prev'), next = nav && nav.querySelector('.rail-next');
+      var dots = document.createElement('div');
+      dots.className = 'rail-dots';
+      rail.parentNode.insertBefore(dots, rail.nextSibling);
+
+      function paso() {
+        var c = rail.children[0];
+        return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap || 0) : rail.clientWidth;
       }
-      if (!e.target.closest('.sim-curr-select-wrap')) {
-        document.querySelectorAll('.sim-curr-dropdown').forEach(function (dd) {
-          dd.hidden = true;
-        });
-        document.querySelectorAll('.sim-curr-btn').forEach(function (btn) {
-          btn.setAttribute('aria-expanded', 'false');
-        });
+      function estado() {
+        var max = rail.scrollWidth - rail.clientWidth - 2;
+        if (prev) prev.disabled = rail.scrollLeft <= 2;
+        if (next) next.disabled = rail.scrollLeft >= max;
+        var vistas = Math.max(1, Math.round(rail.clientWidth / paso()));
+        var paginas = Math.max(1, Math.ceil(rail.children.length / vistas));
+        var actual = Math.min(paginas - 1, Math.round(rail.scrollLeft / (paso() * vistas)));
+        if (rail.scrollLeft >= max) actual = paginas - 1;
+        if (dots.children.length !== paginas) {
+          dots.innerHTML = new Array(paginas + 1).join('<i></i>');
+        }
+        [].forEach.call(dots.children, function (d, i) { d.classList.toggle('on', i === actual); });
+      }
+      if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -paso(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { rail.scrollBy({ left: paso(), behavior: 'smooth' }); });
+      rail.addEventListener('scroll', function () { window.requestAnimationFrame(estado); }, { passive: true });
+      rail.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { rail.scrollBy({ left: paso() }); e.preventDefault(); }
+        if (e.key === 'ArrowLeft') { rail.scrollBy({ left: -paso() }); e.preventDefault(); }
+      });
+      window.addEventListener('resize', estado);
+      estado();
+    });
+  }
+
+  /* --------------------------------- menú Soluciones, contraseña y adjuntos */
+  function initExtras() {
+    document.addEventListener('click', function (e) {
+      var dd = e.target.closest('.nav-dd-btn');
+      document.querySelectorAll('.nav-dd').forEach(function (n) {
+        if (!dd || n !== dd.parentNode) { n.classList.remove('open'); n.querySelector('.nav-dd-btn').setAttribute('aria-expanded', 'false'); }
+      });
+      if (dd) {
+        var box = dd.parentNode, abre = !box.classList.contains('open');
+        box.classList.toggle('open', abre);
+        dd.setAttribute('aria-expanded', abre ? 'true' : 'false');
+      }
+      var eye = e.target.closest('.pw-eye');
+      if (eye) {
+        var inp = eye.parentNode.querySelector('input');
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        eye.setAttribute('aria-label', inp.type === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña');
+      }
+    });
+    document.addEventListener('change', function (e) {
+      if (e.target.matches('.file input[type=file]')) {
+        var n = e.target.files && e.target.files[0];
+        e.target.parentNode.querySelector('.file-name').textContent = n ? n.name : 'Seleccionar archivo';
       }
     });
   }
@@ -425,6 +388,8 @@
   function initApp() {
     initBentoSimulator();
     initHeroSlider();
+    initRails();
+    initExtras();
   }
 
   if (document.readyState === 'loading') {
