@@ -60,8 +60,6 @@
       return;
     }
 
-    var d = e.target.closest('.hero-nav button');
-    if (d) { go([].indexOf.call(d.parentNode.children, d), true); }
   });
 
   function closeDock() {
@@ -85,7 +83,7 @@
 
   /* Los formularios normales de la web son maqueta */
   document.addEventListener('submit', function (e) {
-    if (e.target.classList.contains('sim-form')) return;
+    if (e.target.classList.contains('fsim-form')) return;
     e.preventDefault();
     var msg = e.target.querySelector('.form-msg');
     if (msg) { msg.hidden = false; }
@@ -114,131 +112,153 @@
   }
 
   /* --------------------------------------------------- simulador (maqueta v2.0)
-     Sin tasas: Falcon Capital aún no entrega tasas, comisiones ni fórmula. El
-     resultado se queda en cero como en la maqueta y el envío solo valida los
-     datos y confirma el registro. Cuando lleguen las reglas, se completan en
-     PRODUCTOS[x].calcular(monto, dias) y nada más cambia. */
-  function initBentoSimulator() {
-    var cards = document.querySelectorAll('.bento-sim-card');
-    if (!cards.length) return;
-
+     En tres pasos para que el banner no se sature: 1) producto, monto y plazo,
+     2) datos de contacto, 3) resultado. Los campos son los de la maqueta.
+     Falcon Capital aún no entrega tasas, comisiones ni fórmula: el resultado se
+     queda en cero, como en la maqueta. Cuando lleguen se completa
+     PRODUCTOS[x].calcular(monto, dias, moneda) → {neto, tasa, comision}. */
+  function initSimulador() {
     var PRODUCTOS = {
       factoring: {
-        titulo: 'SIMULADOR DE <span class="em">FACTORING</span>',
+        nombre: 'Factoring',
         subtitulo: 'Porque la rapidez no cuesta más, simula tu anticipo ahora.',
-        etiqueta: 'Factoring',
         monto: 'Monto de la factura',
         tasa: 'Tasa Factoring Efectiva Mensual',
-        resultado: 'Conoce cuánto puedes recibir por tu factura.',
         calcular: null
       },
       confirming: {
-        titulo: 'SIMULADOR DE <span class="em">CONFIRMING</span>',
+        nombre: 'Confirming',
         subtitulo: 'Porque la rapidez no cuesta más.',
-        etiqueta: 'Confirming',
         monto: 'Monto de las facturas',
         tasa: 'Tasa Confirming Efectiva Mensual',
-        resultado: 'Conoce cuánto pueden recibir tus proveedores.',
         calcular: null
       },
       capital: {
-        titulo: 'SIMULADOR DE <span class="em">CAPITAL DE TRABAJO</span>',
+        nombre: 'Capital de Trabajo',
         subtitulo: 'Porque la rapidez no cuesta más.',
-        etiqueta: 'Capital de Trabajo',
         monto: 'Monto a solicitar',
         tasa: 'Tasa Efectiva Mensual',
-        resultado: 'Conoce las condiciones de tu financiamiento.',
         calcular: null
       }
     };
-
     function miles(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
     function numero(v) { return parseFloat(String(v || '').replace(/[^0-9.]/g, '')) || 0; }
 
-    cards.forEach(function (card) {
-      var prod = 'factoring', dias = 30, moneda = 'PEN';
-      var $ = function (s) { return card.querySelector(s); };
-      var $$ = function (s) { return card.querySelectorAll(s); };
-      var form = $('.sim-form'), monto = $('.sim-amount-input');
-      var selBtn = $('.sim-selector-btn'), drop = $('.sim-dropdown');
-      var curBtn = $('.sim-curr-btn'), curDrop = $('.sim-curr-dropdown');
+    document.querySelectorAll('.fsim').forEach(function (c) {
+      var prod = 'factoring';
+      var form = c.querySelector('.fsim-form');
+      var pasos = [].slice.call(c.querySelectorAll('.fsim-step'));
+      var marcas = [].slice.call(c.querySelectorAll('.fsim-steps li'));
+      var monto = form.querySelector('[name=monto]');
+      var q = function (s) { return c.querySelector(s); };
+
+      function paso(n) {
+        pasos.forEach(function (p) { p.hidden = +p.dataset.step !== n; });
+        marcas.forEach(function (m, k) {
+          m.classList.toggle('is-on', k + 1 === n);
+          m.classList.toggle('is-done', k + 1 < n);
+        });
+        c.dataset.step = n;
+        var foco = pasos[n - 1].querySelector('input, button, a');
+        if (foco && n > 1) { foco.focus({ preventScroll: true }); }
+      }
+
+      function valido(ambito) {
+        var campos = [].slice.call(ambito.querySelectorAll('input[required]'));
+        campos.forEach(function (i) { i.classList.add('touched'); });
+        var malo = campos.filter(function (i) { return !i.checkValidity(); })[0];
+        if (malo) { malo.reportValidity(); return false; }
+        return true;
+      }
 
       function pintar() {
-        var p = PRODUCTOS[prod], sim = moneda === 'USD' ? 'US$' : 'S/';
+        var p = PRODUCTOS[prod];
+        var moneda = form.querySelector('[name=moneda]').value;
+        var dias = +(form.querySelector('[name=plazo]:checked') || {}).value || 30;
+        var sim = moneda === 'USD' ? 'US$' : 'S/';
         var r = p.calcular ? p.calcular(numero(monto.value), dias, moneda) : null;
-        $('.res-recibe-hoy').textContent = sim + ' ' + (r ? miles(r.neto) : '0');
-        $('.res-tasa').textContent = r ? r.tasa.toFixed(2) + '%' : '0%';
-        $('.res-comision').textContent = sim + ' ' + (r ? miles(r.comision) : '0');
+        q('.r-neto').textContent = sim + ' ' + (r ? miles(r.neto) : '0');
+        q('.r-tasa').textContent = r ? r.tasa.toFixed(2) + '%' : '0%';
+        q('.r-com').textContent = sim + ' ' + (r ? miles(r.comision) : '0');
+        q('.r-resumen').textContent = p.nombre + ' · ' + sim + ' ' + (monto.value || '0') + ' · ' + dias + ' días';
       }
 
-      function producto(tipo) {
-        var p = PRODUCTOS[tipo];
-        if (!p) return;
-        prod = tipo;
-        $('.sim-title').innerHTML = p.titulo;
-        $('.sim-subtitle').textContent = p.subtitulo;
-        $('.sim-selected-label').textContent = p.etiqueta;
-        $('.sim-monto-label').innerHTML = p.monto + ' <span class="star">*</span>';
-        $('.res-tasa-label').textContent = p.tasa;
-        $('.sim-res-subtitle').textContent = p.resultado;
-        $$('.sim-drop-opt').forEach(function (o) { o.classList.toggle('active', o.dataset.type === tipo); });
-        cerrar();
-        pintar();
-      }
-
-      function cerrar() {
-        drop.hidden = true; selBtn.setAttribute('aria-expanded', 'false');
-        curDrop.hidden = true; curBtn.setAttribute('aria-expanded', 'false');
-      }
-
-      selBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var abrir = drop.hidden; cerrar();
-        drop.hidden = !abrir; selBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-      });
-      $$('.sim-drop-opt').forEach(function (o) {
-        o.addEventListener('click', function (e) { e.stopPropagation(); producto(o.dataset.type); });
-      });
-      curBtn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var abrir = curDrop.hidden; cerrar();
-        curDrop.hidden = !abrir; curBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-      });
-      $$('.sim-curr-opt').forEach(function (o) {
-        o.addEventListener('click', function (e) {
-          e.stopPropagation();
-          moneda = o.dataset.currency;
-          $('.sim-curr-text').textContent = moneda === 'USD' ? 'US$' : 'S/';
-          $$('.sim-curr-opt').forEach(function (x) { x.classList.toggle('active', x === o); });
-          cerrar(); pintar();
-        });
-      });
-      $$('.sim-day-btn').forEach(function (b) {
-        b.addEventListener('click', function () {
-          $$('.sim-day-btn').forEach(function (x) { x.classList.remove('active'); });
-          b.classList.add('active');
-          dias = parseInt(b.dataset.days, 10) || 30;
-          pintar();
+      c.querySelectorAll('.fsim-tabs [data-p]').forEach(function (t) {
+        t.addEventListener('click', function () {
+          prod = t.dataset.p;
+          var p = PRODUCTOS[prod];
+          c.querySelectorAll('.fsim-tabs [data-p]').forEach(function (x) {
+            x.setAttribute('aria-selected', x === t ? 'true' : 'false');
+          });
+          q('.fsim-prod').textContent = p.nombre;
+          q('.fsim-sub').textContent = p.subtitulo;
+          q('.fsim-monto-l').textContent = p.monto;
+          q('.r-tasa-l').textContent = p.tasa;
+          if (+c.dataset.step === 3) { pintar(); }
         });
       });
       monto.addEventListener('input', function () {
         var n = numero(monto.value);
         monto.value = n > 0 ? miles(n) : '';
-        pintar();
       });
-      document.addEventListener('click', function (e) { if (!card.contains(e.target)) cerrar(); });
-
+      q('.fsim-next').addEventListener('click', function () {
+        if (valido(pasos[0])) { paso(2); }
+      });
+      q('.fsim-back').addEventListener('click', function () { paso(1); });
+      q('.fsim-reset').addEventListener('click', function () {
+        form.reset();
+        form.querySelectorAll('.touched').forEach(function (i) { i.classList.remove('touched'); });
+        paso(1);
+      });
       form.addEventListener('submit', function (e) {
         e.preventDefault();
-        [].forEach.call(form.querySelectorAll('input[required]'), function (i) { i.classList.add('touched'); });
-        if (!form.checkValidity()) { form.reportValidity(); return; }
+        if (+c.dataset.step === 1) { if (valido(pasos[0])) { paso(2); } return; }
+        if (!valido(pasos[1])) { return; }
         pintar();
-        $('.sim-pending').hidden = true;
-        $('.sim-done').hidden = false;
+        paso(3);
       });
-
-      pintar();
+      paso(1);
     });
+  }
+
+  /* --------------------------------------------- banner principal (4 diapositivas)
+     Rota cada 7 s y se detiene en cuanto la persona empieza a usar el simulador. */
+  function initHero() {
+    var h = document.querySelector('.hero2');
+    if (!h) return;
+    var slides = [].slice.call(h.querySelectorAll('.hero2-slide'));
+    var dots = [].slice.call(h.querySelectorAll('.hero2-dots button'));
+    var i = 0, t = null, quieto = false;
+    var calma = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function ir(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, k) {
+        var on = k === i;
+        s.classList.toggle('is-on', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+        s.inert = !on;
+      });
+      dots.forEach(function (d, k) {
+        d.classList.toggle('is-on', k === i);
+        d.setAttribute('aria-current', k === i ? 'true' : 'false');
+      });
+    }
+    function play() {
+      clearInterval(t);
+      if (!quieto && !calma) { t = setInterval(function () { ir(i + 1); }, 7000); }
+    }
+    function parar() { quieto = true; clearInterval(t); }
+
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { ir(k); parar(); }); });
+    var prev = h.querySelector('.hero2-prev'), next = h.querySelector('.hero2-next');
+    if (prev) prev.addEventListener('click', function () { ir(i - 1); parar(); });
+    if (next) next.addEventListener('click', function () { ir(i + 1); parar(); });
+    h.addEventListener('mouseenter', function () { clearInterval(t); });
+    h.addEventListener('mouseleave', play);
+    h.addEventListener('focusin', function (e) { if (e.target.closest('.fsim')) parar(); });
+    ir(0);
+    play();
   }
 
   /* ------------------------------------------ carrusel de noticias (3 por vista) */
@@ -306,88 +326,10 @@
     });
   }
 
-  /* --------------------------------------------------- hero slider interactivo */
-  function initHeroSlider() {
-    var slider = document.querySelector('.hero-slider');
-    if (!slider) return;
-
-    var slides = slider.querySelectorAll('.hero-slide');
-    var dots = slider.querySelectorAll('.hero-dot');
-    if (!slides.length) return;
-
-    var currentIndex = 0;
-    var timer = null;
-    var isPaused = false;
-    var delay = 7000;
-
-    function goToSlide(index) {
-      if (index < 0) index = slides.length - 1;
-      if (index >= slides.length) index = 0;
-      currentIndex = index;
-
-      slides.forEach(function (slide, idx) {
-        if (idx === currentIndex) {
-          slide.classList.add('active');
-          slide.setAttribute('aria-hidden', 'false');
-        } else {
-          slide.classList.remove('active');
-          slide.setAttribute('aria-hidden', 'true');
-        }
-      });
-
-      dots.forEach(function (dot, idx) {
-        if (idx === currentIndex) {
-          dot.classList.add('active');
-          dot.setAttribute('aria-selected', 'true');
-        } else {
-          dot.classList.remove('active');
-          dot.setAttribute('aria-selected', 'false');
-        }
-      });
-    }
-
-    function startTimer() {
-      stopTimer();
-      timer = setInterval(function () {
-        if (!isPaused) {
-          goToSlide(currentIndex + 1);
-        }
-      }, delay);
-    }
-
-    function stopTimer() {
-      if (timer) {
-        clearInterval(timer);
-        timer = null;
-      }
-    }
-
-    dots.forEach(function (dot) {
-      dot.addEventListener('click', function (e) {
-        e.preventDefault();
-        var idx = parseInt(dot.getAttribute('data-index'), 10);
-        if (!isNaN(idx)) {
-          goToSlide(idx);
-          startTimer();
-        }
-      });
-    });
-
-    // Pausar rotación si el usuario pasa el mouse por encima
-    slider.addEventListener('mouseenter', function () { isPaused = true; });
-    slider.addEventListener('mouseleave', function () { isPaused = false; });
-
-    // Pausar rotación si el usuario está interactuando con formularios o inputs
-    slider.addEventListener('focusin', function () { isPaused = true; });
-    slider.addEventListener('focusout', function () { isPaused = false; });
-
-    startTimer();
-  }
-
   // Initialize components
   function initApp() {
-    initBentoSimulator();
-    initHeroSlider();
+    initSimulador();
+    initHero();
     initRails();
     initExtras();
   }

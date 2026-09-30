@@ -1,4 +1,4 @@
-# Prototipo web · Falcon Capital (v2.2)
+# Prototipo web · Falcon Capital (v2.3)
 
 Prototipo HTML + CSS (sin framework, sin build) de la web de Falcon Capital,
 más el documento de wireframes de estructura. Se implementará en **WordPress +
@@ -28,7 +28,8 @@ los archivos originales.
 - Menú: Conócenos · Soluciones (desplegable con los tres productos) · Blog ·
   Simulador, con **Crea tu cuenta** e **Iniciar sesión**.
 - Primer banner del Home = **simulador** con selector Factoring / Confirming /
-  Capital de Trabajo. El resultado se queda en **cero**, como en la maqueta, hasta
+  Capital de Trabajo, en **tres pasos** (tu operación → tus datos → resultado) para
+  que el banner no se sature; son los mismos campos de la maqueta. El resultado se queda en **cero**, como en la maqueta, hasta
   que Falcon entregue tasas, comisiones y fórmula (no se muestran cifras supuestas).
 - Actualidad: carrusel de 3 por vista con las 10 noticias y **su foto real**
   (se suman Expocobre, Expo Industria, Master Class, Copa APEFAC y Factrack).
@@ -74,9 +75,10 @@ Paleta: `#004b54` · `#6fe6ad` · `#195b55` · `#00d4d2` · `#e4e4e4` · `#00112
 ### Modo claro y modo oscuro
 
 Comparten retícula y composición; cambian superficies y acento de texto. El
-conmutador está en la cabecera y recuerda la elección. Siguen en verde u oscuro en
-ambos temas: banner, cifras, tarjetas de contenido, marco normativo, cierre, pie
-y dock.
+conmutador está en la cabecera y recuerda la elección. El banner tiene versión
+propia en cada tema: en claro la foto se funde con el fondo claro y el simulador
+es una tarjeta blanca. Siguen en verde u oscuro en ambos temas: cifras, tarjetas
+de contenido, marco normativo, cierre, pie y dock.
 
 ## Pantallas
 

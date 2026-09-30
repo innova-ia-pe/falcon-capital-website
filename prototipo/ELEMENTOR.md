@@ -49,7 +49,7 @@ El **dock «Bot Falcon»** y el **aviso de cookies** van como plantillas emergen
 
 | Bloque del prototipo | Contenedor | Widgets |
 |---|---|---|
-| Banner con simulador + 3 banners de producto | Slides o Nested Carousel | 1ª diapositiva: widget HTML con el **shortcode del simulador** ★; las otras tres: Encabezado + Texto + Botón sobre imagen de fondo |
+| Banner con simulador + 3 banners de producto (`hero2`) | Nested Carousel | 1ª diapositiva: widget HTML con el **shortcode del simulador** ★; las otras tres: Encabezado + Texto + Botón sobre imagen de fondo |
 | Presentación / video | 2 columnas | Encabezado · Texto · Video (cuando llegue el archivo) |
 | Cifras y afiliaciones (`stats`) | 5 columnas, fondo degradado verde | 3 × Icon Box (número en el título) · 2 × Image Box (logo ON / APEFAC) |
 | Soluciones (`sol`) | 3 columnas iguales | 3 × Image Box con enlace, o Loop Grid de una CPT «Soluciones» |
@@ -82,7 +82,7 @@ preseleccionada del formulario.
 
 | Pieza | Propuesta |
 |---|---|
-| **Simulador** | Plugin pequeño o snippet que registre el shortcode `[falcon_simulador]` con el HTML y el JS del prototipo (`initBentoSimulator`). Las fórmulas van en `PRODUCTOS[x].calcular`. Mientras Falcon no entregue tasas, el resultado queda en cero. |
+| **Simulador** | Plugin pequeño o snippet que registre el shortcode `[falcon_simulador]` con el HTML y el JS del prototipo (`initSimulador`, tres pasos). Las fórmulas van en `PRODUCTOS[x].calcular`. Mientras Falcon no entregue tasas, el resultado queda en cero. |
 | **Conmutador claro/oscuro** | Widget HTML con el botón y el script de `falcon.js`; el tema se guarda en `localStorage`. Si no se quiere mantener, se publica solo el modo oscuro. |
 | **Libro de reclamaciones** | Formulario de Elementor de varios pasos o Gravity Forms / WPForms ★ (adjuntos, correo de constancia y registro obligatorio). |
 | **Crea tu cuenta / Iniciar sesión** | Dependen de dónde viva Mi Portal Falcon. Si es externo, estos botones son enlaces; si es interno, plugin de acceso social (Nextend Social Login) ★. |

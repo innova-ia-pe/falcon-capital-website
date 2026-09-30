@@ -46,108 +46,72 @@
   <button class="burger" type="button" aria-label="Menú"><span></span><span></span><span></span></button>
 </div></header>
 <main>
-<section class="sim-page">
-  <img class="sim-page-bg" src="img/hero-soluciones.jpg" alt="">
-  <div class="wrap">
-    <div class="bento-sim-card sim-page">
-          <div class="sim-header">
-            <div class="sim-title-group">
-              <h2 class="sim-title">SIMULADOR DE <span class="em">FACTORING</span></h2>
-              <p class="sim-subtitle">Porque la rapidez no cuesta más, simula tu anticipo ahora.</p>
-            </div>
-            <div class="sim-selector-wrap">
-              <button class="sim-selector-btn" type="button" aria-haspopup="true" aria-expanded="false">
-                <span class="sim-selected-label">Factoring</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-              </button>
-              <div class="sim-dropdown" hidden>
-                <button type="button" class="sim-drop-opt active" data-type="factoring"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg><span>Factoring</span></button>
-                <button type="button" class="sim-drop-opt" data-type="confirming"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 10h19M6.5 15h4"/></svg><span>Confirming</span></button>
-                <button type="button" class="sim-drop-opt" data-type="capital"><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg><span>Capital de Trabajo</span></button>
-              </div>
-            </div>
-          <ul class="sim-badges">
-            <li><i><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></i>Respuesta ágil</li>
-            <li><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i>Información segura</li>
-            <li><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i>Decisiones en tiempo real</li>
-          </ul>
+<section class="simp">
+  <div class="wrap simp-grid">
+    <div class="fsim fsim-page" data-step="1">
+          <div class="fsim-head">
+            <h1 class="fsim-title">Simulador de <span class="em fsim-prod">Factoring</span></h1>
+            <p class="fsim-sub">Porque la rapidez no cuesta más, simula tu anticipo ahora.</p>
           </div>
-          <div class="sim-bento-body">
-            <div class="sim-form-card">
-              <form class="sim-form" novalidate>
-                <div class="sim-section-head"><h3>Tus datos</h3><p>Completa la información para simular tu operación.</p></div>
-                <div class="sim-f-group">
-                  <div class="sim-f"><label>Nombre completo <span class="star">*</span></label><input type="text" name="nombre" placeholder="Ej. Juan Pérez García" required></div>
-                  <div class="sim-f-row">
-                    <div class="sim-f"><label>RUC <span class="star">*</span></label><input type="text" name="ruc" inputmode="numeric" maxlength="11" pattern="\d{11}" placeholder="Ej. 20123456789" required></div>
-                    <div class="sim-f"><label>Razón social <span class="star">*</span></label><input type="text" name="razon_social" placeholder="Ej. Empresa S.A.C." required></div>
-                  </div>
-                  <div class="sim-f-row">
-                    <div class="sim-f"><label>Correo de contacto <span class="star">*</span></label><input type="email" name="email" placeholder="Ej. nombre@empresa.com" required></div>
-                    <div class="sim-f"><label>Celular <span class="star">*</span></label>
-                      <div class="sim-phone-group"><div class="sim-phone-flag"><span class="flag-icon">🇵🇪</span><span>+51</span></div>
-                        <input type="tel" name="celular" inputmode="numeric" placeholder="912 345 678" maxlength="11" required></div></div>
-                  </div>
-                </div>
-                <div class="sim-section-head" style="margin-top:8px"><h3>Datos de la operación</h3></div>
-                <div class="sim-f-group">
-                  <div class="sim-f-row">
-                    <div class="sim-f">
-                      <label class="sim-monto-label">Monto de la factura <span class="star">*</span></label>
-                      <div class="sim-amount-group">
-                        <div class="sim-curr-select-wrap">
-                          <button type="button" class="sim-curr-btn" aria-haspopup="true" aria-expanded="false"><span class="sim-curr-text">S/</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
-                          <div class="sim-curr-dropdown" hidden>
-                            <button type="button" class="sim-curr-opt active" data-currency="PEN"><span class="sim-curr-tag">S/</span><span>Soles</span></button>
-                            <button type="button" class="sim-curr-opt" data-currency="USD"><span class="sim-curr-tag">US$</span><span>Dólares</span></button>
-                          </div>
-                        </div>
-                        <input type="text" class="sim-amount-input" name="monto" inputmode="numeric" placeholder="Ej. 100,000" required>
-                      </div>
-                    </div>
-                    <div class="sim-f">
-                      <label>Plazo en días <span class="star">*</span></label>
-                      <div class="sim-days-selector">
-                        <button type="button" class="sim-day-btn active" data-days="30">30</button>
-                        <button type="button" class="sim-day-btn" data-days="60">60</button>
-                        <button type="button" class="sim-day-btn" data-days="90">90</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <button type="submit" class="btn-sim-submit"><span>Simular ahora</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-                <div class="sim-security-note"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Tu información está protegida y será utilizada solo para brindarte asesoría.</span></div>
-              </form>
-            </div>
-            <div class="sim-results-card">
-              <div>
-                <div class="sim-res-header"><div><h3>Resultado estimado</h3><p class="sim-res-subtitle">Conoce cuánto puedes recibir por tu factura.</p></div></div>
-                <div class="sim-res-metrics">
-                  <div class="sim-metric-box"><div class="sim-metric-ico"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></svg></div><div class="sim-metric-content">
-                    <span class="sim-metric-label">Recibe hoy</span><div class="sim-metric-val res-recibe-hoy">S/ 0</div></div></div>
-                  <div class="sim-metric-box"><div class="sim-metric-ico"><span class="sim-ico-percent">%</span></div><div class="sim-metric-content">
-                    <span class="sim-metric-label res-tasa-label">Tasa Factoring Efectiva Mensual</span><div class="sim-metric-val res-tasa">0%</div></div></div>
-                  <div class="sim-metric-box"><div class="sim-metric-ico"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div class="sim-metric-content">
-                    <span class="sim-metric-label">Comisión de desembolso</span><div class="sim-metric-val res-comision">S/ 0</div></div></div>
-                </div>
-                <p class="sim-pending"><b>Pendiente de Falcon Capital:</b> tasas, comisiones y fórmula de cada producto.
-                  Hasta recibirlas, el simulador registra la solicitud y no muestra montos.</p>
-                <p class="sim-done" hidden><b>¡Listo!</b> Registramos tu simulación. Un ejecutivo de Falcon Capital
-                  se comunicará contigo con el resultado.</p>
-              </div>
-              <div class="sim-advance-box">
-                <div class="sim-advance-head">
-                  <div class="sim-advance-ico"><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg></div>
-                  <div class="sim-advance-text"><h4>¿Listo para avanzar?</h4>
-                    <p>Un operador de Falcon Capital se comunicará contigo a la brevedad para continuar con tu solicitud.</p></div>
-                </div>
-                <div class="sim-advance-foot">
-                  <span class="sim-advance-sub">¿Quieres agilizar el proceso?</span>
-                  <a href="registro.html" class="sim-advance-link"><span>Crea tu cuenta e inicia tu evaluación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-                </div>
-              </div>
-            </div>
+          <div class="fsim-tabs" role="group" aria-label="Producto">
+            <button type="button" data-p="factoring" aria-selected="true">Factoring</button>
+            <button type="button" data-p="confirming" aria-selected="false">Confirming</button>
+            <button type="button" data-p="capital" aria-selected="false">Capital de Trabajo</button>
           </div>
+          <ol class="fsim-steps"><li class="is-on"><b>1</b>Tu operación</li><li><b>2</b>Tus datos</li><li><b>3</b>Resultado</li></ol>
+          <form class="fsim-form" novalidate>
+            <div class="fsim-step" data-step="1">
+              <label class="fsim-f"><span class="fsim-l fsim-monto-l">Monto de la factura</span>
+                <span class="fsim-money">
+                  <select name="moneda" aria-label="Moneda"><option value="PEN">S/</option><option value="USD">US$</option></select>
+                  <input name="monto" inputmode="numeric" placeholder="Ej. 100,000" required>
+                </span></label>
+              <div class="fsim-f"><span class="fsim-l">Plazo en días</span><div class="fsim-seg"><label><input type="radio" name="plazo" value="30" checked><span>30 días</span></label><label><input type="radio" name="plazo" value="60"><span>60 días</span></label><label><input type="radio" name="plazo" value="90"><span>90 días</span></label></div></div>
+              <button type="button" class="btn btn-primary btn-lg fsim-next">Continuar <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+            </div>
+            <div class="fsim-step" data-step="2" hidden>
+              <p class="fsim-lead">Completa la información para simular tu operación.</p>
+              <div class="fsim-grid">
+                <label class="fsim-f full"><span class="fsim-l">Nombre completo</span><input name="nombre" placeholder="Ej. Juan Pérez García" required></label>
+                <label class="fsim-f"><span class="fsim-l">RUC</span><input name="ruc" inputmode="numeric" maxlength="11" pattern="\d{11}" placeholder="Ej. 20123456789" required></label>
+                <label class="fsim-f"><span class="fsim-l">Razón social</span><input name="razon_social" placeholder="Ej. Empresa S.A.C." required></label>
+                <label class="fsim-f"><span class="fsim-l">Correo de contacto</span><input type="email" name="email" placeholder="Ej. nombre@empresa.com" required></label>
+                <label class="fsim-f"><span class="fsim-l">Celular</span><span class="fsim-phone"><b>+51</b><input type="tel" name="celular" inputmode="numeric" placeholder="912 345 678" required></span></label>
+              </div>
+              <div class="fsim-acts">
+                <button type="button" class="fsim-back"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver</button>
+                <button type="submit" class="btn btn-primary btn-lg">Simular ahora <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+              </div>
+              <p class="fsim-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Tu información está protegida y será utilizada solo para brindarte asesoría.</p>
+            </div>
+            <div class="fsim-step" data-step="3" hidden>
+              <p class="fsim-lead"><b>Resultado estimado</b> · <span class="r-resumen"></span></p>
+              <dl class="fsim-res">
+                <div class="fsim-res-main"><dt>Recibe hoy</dt><dd class="r-neto">S/ 0</dd></div>
+                <div><dt class="r-tasa-l">Tasa Factoring Efectiva Mensual</dt><dd class="r-tasa">0%</dd></div>
+                <div><dt>Comisión de desembolso</dt><dd class="r-com">S/ 0</dd></div>
+              </dl>
+              <p class="fsim-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg> <span><b>Pendiente de Falcon Capital:</b> tasas, comisiones y fórmula de cada producto. Por eso el resultado aparece en cero.</span></p>
+              <div class="fsim-ok"><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg><p><b>¿Listo para avanzar?</b> Un operador de Falcon Capital se comunicará contigo a la brevedad para continuar con tu solicitud.</p></div>
+              <div class="fsim-acts">
+                <button type="button" class="fsim-back fsim-reset"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Nueva simulación</button>
+                <a class="btn btn-primary btn-lg" href="registro.html">Crea tu cuenta <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+              </div>
+            </div>
+          </form>
+          <p class="fsim-foot">¿Quieres agilizar el proceso? <a href="registro.html">Crea tu cuenta e inicia tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></p>
         </div>
+    <aside class="simp-side">
+      <span class="eyebrow">Evaluación</span>
+      <ul class="simp-list">
+        <li><i><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></i><b>Respuesta ágil</b></li>
+        <li><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><b>Información segura</b></li>
+        <li><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i><b>Decisiones en tiempo real</b></li>
+      </ul>
+      <div class="simp-ok"><b>¿Listo para avanzar?</b>
+        <p>Un operador de Falcon Capital se comunicará contigo a la brevedad para continuar con tu solicitud.</p>
+        <a href="registro.html">Crea tu cuenta e inicia tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+    </aside>
   </div>
 </section>
 <section class="sec bg bg-flat">
