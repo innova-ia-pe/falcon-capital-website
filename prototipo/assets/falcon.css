@@ -768,6 +768,25 @@ a:hover .post-more svg{transform:translateX(4px)}
 .trust2-list i svg{width:23px;height:23px;fill:none;stroke:var(--accent);stroke-width:1.6}
 .trust2-list b{display:block;font-weight:500;font-size:16.5px;margin-bottom:4px}
 .trust2-list p{font-size:14.5px;color:var(--on-dark-soft)}
+/* sellos SBS y CAVALI: logo + título breve. En oscuro los logos van en blanco monocromo */
+.seals{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.seal{margin:0;display:flex;flex-direction:column;align-items:center;gap:18px;padding:30px 22px 24px;border-radius:var(--r-lg);
+  background:linear-gradient(180deg,var(--tile-1),var(--tile-2));border:1px solid var(--hair);text-align:center;
+  transition:border-color .25s,transform .25s var(--ease)}
+.seal:hover{border-color:var(--hair-2);transform:translateY(-2px)}
+.seal-logo{height:76px;width:100%;display:grid;place-items:center}
+.seal-logo img{max-width:min(100%,190px);max-height:100%;object-fit:contain;filter:brightness(0) invert(1);opacity:.88}
+:root[data-theme="light"] .seal-logo img{filter:none;opacity:1}
+.seal figcaption{width:100%;padding-top:16px;border-top:1px solid var(--hair);font-size:15px;font-weight:600;letter-spacing:-.01em}
+.seal-law{grid-column:1 / -1;display:flex;align-items:center;justify-content:center;gap:10px;margin:4px 0 0;
+  font-size:14px;color:var(--on-dark-soft)}
+.seal-law svg{width:18px;height:18px;flex:none;fill:none;stroke:var(--accent);stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+@media (max-width:560px){
+  .seals{gap:12px}
+  .seal{padding:22px 14px 18px;gap:14px}
+  .seal-logo{height:56px}
+  .seal figcaption{font-size:13.5px;padding-top:12px}
+}
 
 /* ------------------------------------------------ información de contacto */
 .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap)}
@@ -970,7 +989,7 @@ body.access{background:#f4f8f7;color:var(--on-light)}
 /* ------------------------------------------------------------------ banner */
 .hero2{position:relative;display:grid;isolation:isolate;overflow:hidden;background:var(--deep)}
 .hero2-slide{grid-area:1 / 1;position:relative;display:flex;align-items:center;
-  min-height:clamp(600px,80vh,720px);padding:56px 0 104px;opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
+  padding:56px 0 104px;opacity:0;visibility:hidden;transition:opacity .45s var(--ease),visibility .45s}
 .hero2-slide.is-on{opacity:1;visibility:visible;z-index:1}
 .hero2-bg{position:absolute;inset:0;z-index:-2;width:100%;height:100%;object-fit:cover}
 .hero2-slide::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--hero-ov)}
@@ -1235,3 +1254,84 @@ h1,h2,h3{font-weight:600}
 h1{letter-spacing:-.032em}
 .eyebrow{font-weight:600}
 .btn{font-weight:600}
+
+/* ------------------------------------------------ banner compacto (escritorio)
+   El alto lo define la tarjeta del simulador ya compactada y nunca pasa del alto visible
+   (pantalla − header de 65px). La imagen de fondo es absoluta, así que sigue ese mismo alto. */
+@media (min-width:1041px){
+  .hero2-slide{min-height:0;max-height:none;padding:clamp(18px,3vh,28px) 0 clamp(72px,10vh,82px)}
+  .hero2-ctl{bottom:clamp(14px,2.4vh,22px)}
+  .hero2-ctl>button{width:38px;height:38px}
+  .fsim-hero{padding:20px 26px;border-radius:24px}
+  .fsim-hero .fsim-title{gap:0}
+  .fsim-hero .fsim-kicker{font-size:12.5px}
+  .fsim-hero .fsim-prod{font-size:clamp(26px,2.1vw,30px)}
+  .fsim-hero .fsim-sub{margin-top:2px;font-size:14px;min-height:0}
+  .fsim-hero .fsim-tabs{margin:14px 0 12px}
+  .fsim-hero .fsim-tabs button{padding:9px 6px}
+  .fsim-hero .fsim-steps{margin-bottom:12px}
+  .fsim-hero .fsim-steps li{padding-top:9px}
+  .fsim-hero .fsim-step{gap:12px}
+  .fsim-hero .fsim-l{margin-bottom:6px}
+  .fsim-hero input,.fsim-hero .fsim-cur-btn,.fsim-hero .fsim-seg span,.fsim-hero .fsim-phone b{height:44px}
+  .fsim-hero .fsim-grid{gap:10px}
+  .fsim-hero .btn-lg{padding-top:12px;padding-bottom:12px}
+  .fsim-hero .fsim-res div{padding:10px 14px}
+  .fsim-hero .fsim-res .fsim-res-main dd{font-size:28px}
+  .fsim-hero .fsim-foot{margin-top:12px;padding-top:10px}
+}
+/* pantallas muy bajas: un ajuste más para que la tarjeta entre sin scroll */
+@media (min-width:1041px) and (max-height:700px){
+  .fsim-hero .fsim-sub{display:none}
+  .fsim-hero .fsim-tabs{margin:10px 0}
+  .fsim-hero input,.fsim-hero .fsim-cur-btn,.fsim-hero .fsim-seg span,.fsim-hero .fsim-phone b{height:40px}
+  .fsim-hero .btn-lg{padding-top:10px;padding-bottom:10px}
+}
+
+/* ------------------------------------------------ hero de página interna (imagen + degradado)
+   Mismo lenguaje que las diapositivas del banner del home, pero estático: sin flechas ni puntos. */
+.phero{position:relative;display:grid;isolation:isolate;overflow:hidden;background:var(--deep)}
+.phero .hero2-slide{min-height:clamp(440px,64vh,600px);padding:clamp(48px,8vh,88px) 0}
+.phero .hero2-slide{background:var(--deep)}
+.phero .hero2-bg{left:auto;right:0;width:62%;object-position:60% center}
+.phero .hero2-slide::before{background:linear-gradient(90deg,var(--deep) 0%,var(--deep) 38%,rgba(0,20,26,0) 60%),
+  linear-gradient(180deg,rgba(0,20,26,.3),rgba(0,20,26,0) 30%,rgba(0,20,26,0) 70%,rgba(0,20,26,.4))}
+:root[data-theme="light"] .phero .hero2-slide::before{background:linear-gradient(90deg,var(--deep) 0%,var(--deep) 38%,rgba(245,249,248,0) 58%)}
+.phero .hero2-txt{max-width:560px}
+.hero2-txt h1{font-size:clamp(40px,4.6vw,64px);font-weight:600;letter-spacing:-.035em;line-height:1.04;color:var(--on-dark)}
+@media (max-width:1040px){
+  .phero .hero2-slide{min-height:0;padding:56px 0 64px}
+  .phero .hero2-bg{width:100%}
+  .phero .hero2-slide::before,:root[data-theme="light"] .phero .hero2-slide::before{background:var(--hero-ov-m)}
+}
+@media (max-width:560px){.hero2-txt h1{font-size:38px}}
+
+/* ------------------------------------------------ Somos Falcon Capital (conócenos)
+   Foto a la izquierda con silueta orgánica, texto a la derecha y el segundo párrafo resaltado. */
+.about2{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,6fr);gap:clamp(36px,6vw,96px);align-items:center}
+.about2-media{position:relative;margin:0;isolation:isolate}
+.about2-media::before{content:"";position:absolute;z-index:-1;inset:8% -7% -6% 12%;border-radius:inherit;
+  background:radial-gradient(60% 60% at 70% 70%,var(--accent-soft),transparent 75%)}
+/* foto del equipo en su proporción original (3:2): nadie queda recortado; las curvas no tocan a las personas */
+.about2-media img{display:block;width:100%;height:auto;aspect-ratio:3 / 2;object-fit:cover;
+  border-radius:22% 24px 24px 22% / 33% 24px 24px 33%;box-shadow:var(--shadow)}
+.about2-chip{position:absolute;right:-18px;bottom:-26px;display:flex;flex-direction:column;gap:2px;padding:14px 20px;
+  border-radius:18px;background:var(--hdr-bg);backdrop-filter:blur(14px) saturate(140%);border:1px solid var(--hair-2);
+  box-shadow:0 24px 50px -24px rgba(0,0,0,.55)}
+.about2-chip b{font-size:22px;font-weight:600;letter-spacing:-.02em;color:var(--accent);line-height:1.1}
+.about2-chip span{font-size:13px;color:var(--on-dark-soft)}
+.about2-txt{display:flex;flex-direction:column;gap:20px}
+.about2-txt>p{max-width:640px}
+.about2-side{display:flex;flex-direction:column;gap:clamp(22px,2.4vw,32px)}
+.about2-head h2{margin-top:12px;font-size:clamp(34px,3.6vw,52px);letter-spacing:-.03em;line-height:1.05}
+.about2-hl{margin:0;padding:4px 0 4px 22px;border-left:2px solid var(--accent);color:var(--accent);
+  font-size:clamp(16px,1.25vw,18px);line-height:1.65;font-weight:500}
+@media (max-width:1040px){
+  .about2{grid-template-columns:1fr}
+  .about2-media{max-width:640px}
+  .about2-chip{right:16px;bottom:-22px}
+}
+@media (max-width:560px){
+  .about2-media::before{inset:8% 0 -6% 12%}
+  .about2-chip{display:none}
+}
