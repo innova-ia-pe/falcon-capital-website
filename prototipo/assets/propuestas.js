@@ -57,22 +57,57 @@
   var ind = $('.pbar-ind', pbar);
   var frame = $('iframe.actual');
   var notesBtn = $('.pbar-more', pbar), notes = $('#pbar-notes');
+  var back = $('[data-back]', pbar), backTo = $('[data-back-to]', pbar), backPage = $('[data-back-page]', pbar);
+  /* Las demás páginas del prototipo se abren dentro de este mismo archivo, en el marco de la versión
+     actual, para que el selector A / B / Actual nunca se pierda. */
+  var NOMBRES = {
+    'index.html': 'Inicio', 'conocenos.html': 'Conócenos', 'factoring.html': 'Factoring', 'confirming.html': 'Confirming',
+    'capital-de-trabajo.html': 'Capital de Trabajo', 'simulador.html': 'Simulador', 'blog.html': 'Blog',
+    'articulo.html': 'Artículo del blog', 'registro.html': 'Crea tu cuenta', 'iniciar-sesion.html': 'Iniciar sesión',
+    'contactanos.html': 'Contáctanos', 'gracias.html': 'Confirmación de contacto',
+    'preguntas-frecuentes.html': 'Preguntas frecuentes', 'reglamento-de-factoring.html': 'Reglamento de Factoring',
+    'politica-de-privacidad.html': 'Política de privacidad', 'terminos-y-condiciones.html': 'Términos y condiciones',
+    'politica-de-cookies.html': 'Política de cookies', 'constancia-de-registro.html': 'Constancia de registro',
+    'reclamaciones.html': 'Libro de Reclamaciones', 'pantallas.html': 'Mapa de pantallas', 'wireframes.html': 'Wireframes'
+  };
+  var desde = 'a', memoria = {}, frameUrl = null, esperando = false;
 
   function actual() { return html.getAttribute('data-p'); }
   function rootOf(p) { return $('.P[data-prop="' + p + '"]'); }
+  function absoluta(u) { return new URL(u, location.href).href; }
+  function archivo(u) { return absoluta(u).split(/[?#]/)[0].split('/').pop() || 'index.html'; }
 
-  function placeInd() {
-    var t = $('[data-go="' + actual() + '"]', pbar);
+  function cargarFrame(url) {
+    frameUrl = absoluta(url);
+    esperando = true;
+    if (!frame.getAttribute('src')) { frame.setAttribute('src', url); return; }
+    /* replace: no deja entradas en el historial del navegador */
+    try { frame.contentWindow.location.replace(frameUrl); } catch (e) { frame.setAttribute('src', url); }
+  }
+  frame.addEventListener('load', function () {
+    if (esperando) esperando = false;
+    else frameUrl = null; /* la persona navegó dentro del marco */
+    if (actual() !== 'pagina') return;
+    try {
+      var f = frame.contentWindow.location.pathname.split('/').pop();
+      backPage.textContent = (NOMBRES[f] || 'Página interna') + ' · diseño actual';
+    } catch (e) { /* con file:// el marco no deja leer su dirección */ }
+  });
+
+  function placeInd(m) {
+    var t = $('[data-go="' + m + '"]', pbar);
     if (!t) return;
     ind.style.width = t.offsetWidth + 'px';
     ind.style.transform = 'translateX(' + t.offsetLeft + 'px)';
   }
+  function ubicarInd() { placeInd(actual() === 'pagina' ? desde : actual()); }
   function syncTabs() {
-    tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.go === actual() ? 'true' : 'false'); });
-    placeInd();
-    var enActual = actual() === 'actual';
-    if (enActual && !frame.getAttribute('src')) frame.setAttribute('src', frame.dataset.src);
-    frame.hidden = !enActual;
+    var m = actual(), pag = m === 'pagina';
+    tabs.forEach(function (t) { t.setAttribute('aria-selected', t.dataset.go === m ? 'true' : 'false'); });
+    ubicarInd();
+    ind.classList.toggle('is-dim', pag);
+    frame.hidden = !(m === 'actual' || pag);
+    back.hidden = !pag;
   }
   function seccionVisible() {
     var root = rootOf(actual());
@@ -84,32 +119,72 @@
     });
     return best;
   }
+  function transicion(fn, origen) {
+    if (doc.startViewTransition && !reduce) {
+      var b = origen ? origen.getBoundingClientRect() : null;
+      html.style.setProperty('--vx', b ? Math.round(b.left + b.width / 2) + 'px' : '50%');
+      html.style.setProperty('--vy', b ? Math.round(b.top + b.height / 2) + 'px' : '0px');
+      doc.startViewTransition(fn);
+    } else { fn(); }
+  }
+  function salir(m) {
+    if (m !== 'a' && m !== 'b') return;
+    memoria[m] = scrollY;
+    doc.dispatchEvent(new CustomEvent('fc:salir'));
+  }
   function ir(p, origen) {
-    if (p === actual()) return;
-    var sec = actual() !== 'actual' ? seccionVisible() : null;
-    function cambiar() {
+    var m = actual();
+    if (p === m) {
+      /* volver a pulsar «Versión actual» regresa a su Home */
+      if (p === 'actual' && frameUrl !== absoluta('index.html')) cargarFrame('index.html');
+      return;
+    }
+    var sec = m === 'a' || m === 'b' ? seccionVisible() : null;
+    /* desde la versión actual o una página interna, cada propuesta vuelve a donde se dejó */
+    var regreso = !sec && memoria[p] != null;
+    salir(m);
+    transicion(function () {
       html.setAttribute('data-p', p);
       try { localStorage.setItem('fc-prop', p); } catch (e) { /* sin almacenamiento */ }
       try { history.replaceState(null, '', location.pathname + '?p=' + p); } catch (e) { /* file:// */ }
+      if (p === 'actual' && frameUrl !== absoluta('index.html')) cargarFrame('index.html');
       syncTabs();
-      if (p === 'actual') return;
+      if (p === 'actual') { vista(); return; }
       var root = rootOf(p), y = 0;
-      if (sec) {
+      if (regreso) y = memoria[p];
+      else if (sec) {
         var t = $('[data-sec="' + sec.k + '"]', root);
         if (t) { var r = t.getBoundingClientRect(); y = scrollY + r.top + r.height * sec.f - innerHeight * 0.38; }
       }
       scrollTo(0, Math.max(0, y));
       revelarYa(root);
       vista();
-    }
-    if (doc.startViewTransition && !reduce) {
-      var b = origen ? origen.getBoundingClientRect() : null;
-      html.style.setProperty('--vx', b ? Math.round(b.left + b.width / 2) + 'px' : '50%');
-      html.style.setProperty('--vy', b ? Math.round(b.top + b.height / 2) + 'px' : '0px');
-      doc.startViewTransition(cambiar);
-    } else { cambiar(); }
+    }, origen);
+  }
+  function verPagina(url, nombre, origen) {
+    var m = actual();
+    if (m !== 'pagina') desde = m;
+    salir(m);
+    backTo.textContent = desde === 'actual' ? 'Volver a la versión actual' : 'Volver a la propuesta ' + desde.toUpperCase();
+    backPage.textContent = (nombre || NOMBRES[archivo(url)] || 'Página interna') + ' · diseño actual';
+    transicion(function () {
+      cargarFrame(url);
+      html.setAttribute('data-p', 'pagina');
+      syncTabs();
+      vista();
+    }, origen);
   }
   tabs.forEach(function (t) { t.addEventListener('click', function () { ir(t.dataset.go, t); }); });
+  back.addEventListener('click', function () { ir(desde, back); });
+  doc.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('.P a[href], .pbar-brand') : null;
+    if (!a || e.defaultPrevented) return;
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || a.target === '_blank') return;
+    var h = a.getAttribute('href') || '';
+    if (/^(#|[a-z][a-z0-9+.-]*:)/i.test(h) || !/\.html([?#]|$)/i.test(h)) return;
+    e.preventDefault();
+    verPagina(h, a.dataset.nombre || NOMBRES[archivo(h)], a);
+  });
   notesBtn.addEventListener('click', function () {
     var abrir = notes.hidden;
     notes.hidden = !abrir;
@@ -125,8 +200,8 @@
     var mapa = { '1': 'actual', '2': 'a', '3': 'b' };
     if (mapa[e.key]) ir(mapa[e.key], $('[data-go="' + mapa[e.key] + '"]', pbar));
   });
-  addEventListener('resize', placeInd);
-  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(placeInd);
+  addEventListener('resize', ubicarInd);
+  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(ubicarInd);
 
   /* --------------------------------------------------- aparición al bajar */
   function contar(el, ya) {
@@ -599,6 +674,11 @@
       if (reduce) palabras.forEach(function (w) { w.classList.add('on'); });
     }
 
+    doc.addEventListener('fc:salir', function () {
+      if (drawer && !drawer.hidden) cerrarDrawer();
+      cerrarMenu();
+    });
+
     /* --- héroe fuera de vista: «Simulador» resaltado y barra móvil */
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
@@ -787,6 +867,7 @@
   addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(efectos); } }, { passive: true });
   addEventListener('resize', function () { if (!pend) { pend = true; requestAnimationFrame(efectos); } });
 
+  if (actual() === 'actual') cargarFrame('index.html');
   syncTabs();
   vista();
 })();

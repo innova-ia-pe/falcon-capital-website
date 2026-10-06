@@ -13,6 +13,13 @@ comparar bloque por bloque. Atajos: teclas `1`, `2` y `3`. También se puede
 abrir directo con `propuestas.html?p=a`, `?p=b` o `?p=actual`. El botón
 «¿Qué cambia?» resume cada propuesta para la presentación.
 
+Los enlaces del menú, del pie y de los botones (Conócenos, Blog, Crea tu cuenta,
+Iniciar sesión, páginas legales…) abren esas páginas **aquí mismo**, con el
+selector arriba y un botón «Volver a la propuesta» que regresa al punto exacto
+donde se dejó. Esas páginas internas todavía tienen el diseño actual. Dentro de
+«Versión actual» se puede navegar libremente; volver a pulsar «Versión actual»
+regresa a su Home.
+
 ## Lo que pidió el cliente y cómo se responde
 
 - **«No copien y peguen el maquetado; la estructura está bien.»** Las dos
