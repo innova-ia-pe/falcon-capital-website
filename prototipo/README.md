@@ -4,10 +4,10 @@ Prototipo HTML + CSS (sin framework, sin build) de la web de Falcon Capital,
 más el documento de wireframes de estructura. Se implementará en **WordPress +
 Elementor**: ver [`ELEMENTOR.md`](ELEMENTOR.md) para el traslado bloque por bloque.
 
-**Propuestas de Home (maqueta v2.1):** [`propuestas.html`](propuestas.html) reúne en
-un solo archivo la versión actual y dos propuestas completas del Home, A «Claridad» y
-B «Impulso», con el simulador calculando con la fórmula del instructivo de Falcon.
-Detalle y traslado a Elementor en [`PROPUESTAS.md`](PROPUESTAS.md).
+**Propuestas A «Claridad» y B «Impulso» (maqueta v2.1):** [`propuestas/index.html`](propuestas/index.html).
+Nueve páginas en las dos propuestas, cada una con su par de la versión actual para
+comparar, y el simulador de Factoring con datos primero y la fórmula del instructivo
+de Falcon. Detalle y traslado a Elementor en [`PROPUESTAS.md`](PROPUESTAS.md).
 
 ## De dónde sale cada cosa
 

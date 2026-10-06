@@ -1,182 +1,139 @@
-# Propuestas de Home · A «Claridad» y B «Impulso»
+# Propuestas A «Claridad» y B «Impulso»
 
-Todo está en **`propuestas.html`**: un solo archivo con tres botones arriba.
+Abrir **`propuestas/index.html`**. La dirección anterior, `propuestas.html`, redirige ahí.
 
-| Botón | Qué muestra |
+Cada página del sitio tiene su versión en las dos propuestas y su par en la
+versión actual:
+
+| Página | Archivo |
 |---|---|
-| **Versión actual** | El Home de `demo` tal cual (`index.html`), con los cambios de Wilmer del 04/10 (banner compacto, sellos SBS y CAVALI, rediseño de Conócenos). Si Wilmer sube algo nuevo, este botón lo muestra apenas se actualice la rama. |
-| **A · Claridad** | Home completo, claro y editorial. |
-| **B · Impulso** | Home completo, oscuro y cinematográfico. |
+| Inicio | `propuestas/index.html` |
+| Conócenos | `propuestas/conocenos.html` |
+| Factoring · Confirming · Capital de Trabajo | `propuestas/factoring.html`, `confirming.html`, `capital-de-trabajo.html` |
+| Simulador | `propuestas/simulador.html` |
+| Blog y artículo | `propuestas/blog.html`, `articulo.html` |
+| Contáctanos | `propuestas/contactanos.html` |
 
-Al cambiar de propuesta, la página salta a **la misma sección** en la otra, para
-comparar bloque por bloque. Atajos: teclas `1`, `2` y `3`. También se puede
-abrir directo con `propuestas.html?p=a`, `?p=b` o `?p=actual`. El botón
-«¿Qué cambia?» resume cada propuesta para la presentación.
+**Barra superior**
+- **Versión actual / A / B** cambia la versión de la misma página y vuelve a la
+  misma sección. La página se recarga limpia, así que no se arrastran estados
+  rotos.
+- El menú de la izquierda salta a cualquier página manteniendo la versión elegida.
+- **¿Qué cambia?** resume cada propuesta.
+- Atajos: teclas `1`, `2` y `3`.
 
-Los enlaces del menú, del pie y de los botones (Conócenos, Blog, Crea tu cuenta,
-Iniciar sesión, páginas legales…) abren esas páginas **aquí mismo**, con el
-selector arriba y un botón «Volver a la propuesta» que regresa al punto exacto
-donde se dejó. Esas páginas internas todavía tienen el diseño actual. Dentro de
-«Versión actual» se puede navegar libremente; volver a pulsar «Versión actual»
-regresa a su Home.
+**Páginas sin rediseño.** Crea tu cuenta, Iniciar sesión, Libro de
+Reclamaciones y las legales se abren dentro de `propuestas/ver.html` con el
+diseño actual y un botón «Volver a la propuesta».
 
-## Lo que pidió el cliente y cómo se responde
+Los datos que la persona deja en el simulador se recuerdan al pasar de A a B y
+entre páginas; los formularios de contacto llegan precompletados.
 
-- **«No copien y peguen el maquetado; la estructura está bien.»** Las dos
-  propuestas mantienen el orden de secciones y los textos de la maqueta v2.1. El
-  diseño, la forma de mostrar la información y el simulador son nuevos.
-- **Más leads.** El simulador muestra cuánto recibe la empresa **antes** de
-  pedir datos. Los datos se piden después, en un formulario corto de cuatro
-  campos que ya lleva la simulación adjunta.
-- **El simulador no gustó.** Antes vivía dentro de un carrusel que rotaba,
-  pedía datos personales antes del resultado y el resultado quedaba en cero.
-  Ahora está fijo en el primer bloque, calcula al instante con la fórmula real
-  de Falcon y los tres banners de producto conviven con él.
-- **El fondo que se cortaba.** Ninguna sección termina con un degradado o un
-  dibujo cortado: los fondos se funden con la sección siguiente o cambian de
-  color de forma deliberada.
-- **Mejores transiciones, efectos y UI/UX, sin complicar y sin que parezca
-  hecho por IA.** Pocas animaciones y con propósito, fotografía real, tipografía
-  con jerarquía y nada de emojis, brillos de neón ni tarjetas genéricas con
-  íconos.
+## Qué pidió el cliente y cómo se resolvió
 
-## Lo que comparten las dos
+| Pedido (Aaron · minutas 004 y 005) | Resultado |
+|---|---|
+| Pedir los datos **antes** del simulador, de forma amigable | Simulador en tres pasos: **1 Tus datos** (nombre, RUC, celular y consentimiento) → **2 Simulación** al instante → **3 Evaluación** (solo falta el correo). Detalle abajo. |
+| Solo Factoring con simulador; Confirming y Capital de Trabajo informativos | En el banner, Factoring muestra el simulador. Confirming y Capital de Trabajo muestran una tarjeta informativa que lleva al formulario de contacto. En sus páginas no hay simulador. |
+| Comisión de 1 % en soles o dólares | Aplicada (`TARIFA.comision` en `assets/propuestas.js`). |
+| Tasas de interés | **No llegó la tabla:** el mensaje decía «usar esto:» sin adjunto. El simulador ya acepta TEM por monto y plazo (`TARIFA.tramos`); mientras tanto usa la TEM del ejemplo del instructivo (1.75 %). |
+| Logos SBS, CAVALI y APEFAC en PNG | `img/logo-sbs.png`, `img/logo-cavali.png` (del SVG oficial que subió Wilmer, renderizado en alta) y `img/logo-apefac.png` (del sitio oficial apefac.com, con fondo transparente). |
+| Confirming con más detalle en «¿Qué es?» | Nueva sección: las **tres partes** (tu empresa, Falcon Capital y tus proveedores), **lo que gana cada lado** y las **5 ventajas** del confirming, tomadas del artículo del blog del cliente. |
+| Cumplimiento y respaldo: sin las «cardsitas» de arriba y más protagonismo al marco normativo | Se eliminan las cinco etiquetas. A: expediente ordenado por tema, con la Ley N.° 29623 destacada y los sellos de la SBS y CAVALI. B: índice tipográfico grande sobre la foto del mazo. |
+| «No innovaste en nada» en las secciones internas | Rediseño de todas las secciones de producto (ver abajo). |
+| Se quedaba «bugeando» al pasar de una propuesta a otra | Cada página arranca solo la propuesta visible. El cambio de versión es una recarga limpia con un velo de transición: nada queda a medias. Se probaron 6 cambios seguidos sin fallos. |
+| Flujo de cada producto «con logotipos, imágenes en cada paso» (maqueta v2.1) | Cinco pasos por producto, con el logo de Falcon Capital en «Evaluamos» y el de CAVALI en «Registramos y validamos». A: recorrido horizontal que avanza al bajar. B: línea de tiempo que se dibuja al bajar. |
+| «¿Por qué elegir Falcon Capital?» con imágenes y el logo de Falcon (v2.1) | A: cuatro tarjetas con foto y el isotipo de Falcon. B: lista grande que cambia la foto mientras bajas. |
+| Julio Sebastiani: foto sin fondo, composición alargada y mensaje en globo (minuta 004) | Figura alargada sobre una cápsula y el mensaje dentro de un globo. En B el globo se ilumina palabra por palabra. |
+| Slider del Home: deslizar en el celular y flechas más claras (minuta 004, referencia BCP) | Flechas visibles y deslizamiento con el dedo en las dos propuestas. |
+| CTA «Simula tu crédito» + «Contáctanos» en todas las páginas | Homologado; Contáctanos lleva al formulario. |
+| Formulario «Contacta a un experto» en las tres páginas de producto (minuta 004) | Con los campos de la maqueta y la solución preseleccionada, más «Ten a la mano» (requisitos). |
+| Conócenos: foto del equipo al costado del texto (minuta 004) | Hecho en las dos propuestas. |
+| Home orientado a conversión (minuta 005) | Simulador y beneficios en el primer pantallazo; franja «Por qué Falcon Capital» bajo el banner; barra fija en celular con «Simula tu crédito» y WhatsApp. |
 
-**Estructura de la maqueta v2.1.** Banner con simulador y banners de producto,
-presentación con video, cifras y afiliaciones, soluciones, mensaje de la
-gerencia, actualidad, blog, testimonios, seguridad y respaldo, canales de
-atención, cierre y pie.
+## Cómo pedir los datos antes del simulador
 
-**Notas de la v2.1 aplicadas**
+Las dos propuestas usan la misma lógica, que es la **recomendación**: pedir
+**pocos datos, primero, y mostrar lo que se desbloquea**.
 
-- Simulador de Factoring, Confirming y Capital de Trabajo en el primer banner,
-  con llamada a usarlo.
-- Imagen de fondo de los banners más visible: el texto ya no tapa a las personas.
-- Cifras con los logos de ON Empresas y APEFAC al tamaño de los datos.
-- Julio Sebastiani sin fondo y más grande; «acompañar**los**».
-- Soluciones: «Tres soluciones para impulsar la liquidez de tu empresa», fondo
-  en verdes de la paleta, imagen a todo el contenedor, tarjetas del mismo tamaño
-  y sin «Solución #».
-- Actualidad: «Impulsando el futuro del factoring en el Perú», con fondo verde.
-- Blog: «Entiende tus finanzas. Impulsa tu negocio».
-- Seguridad y respaldo con la forma de la maqueta: título centrado, texto y
-  sellos de la SBS y CAVALI.
-- «Canales de atención», con Horario de atención en lugar de Canal web.
-- Pie: «Simulador» debajo de Capital de Trabajo; Preguntas frecuentes solo en
-  el pie; sin «Cómo funciona» ni «Todas las soluciones».
+1. **Tres datos y nada más.** Nombre, RUC y celular, más el consentimiento. Es
+   lo mínimo para que un ejecutivo llame. La razón social se obtiene del RUC
+   (consulta SUNAT, ya cotizada en la propuesta de Eduardo).
+2. **El resultado se ve, pero borroso** («S/ ••,•••.••»). La persona sabe qué
+   gana al completar sus datos.
+3. **El correo se pide al final**, solo si quiere la evaluación formal.
+4. **No se vuelve a pedir nada.** Si regresa o cambia de página, va directo a
+   simular («Hola, Ana · ¿No eres tú?»).
+5. **Errores claros y en español** (RUC de 11 dígitos que empieza con 10 o 20,
+   celular de 9 dígitos que empieza con 9).
 
-**Simulador con cálculo real.** Usa la fórmula del *Instructivo de cálculo —
-Factoring y Confirming* (Falcon Capital, v1, 25/09/2026), la misma del
-simulador interno `simulador_factoring.zip`:
+| | **A · Conversacional** | **B · Barra** |
+|---|---|---|
+| Paso 1 | Se escribe como una frase: «Hola, soy ___, de la empresa con RUC ___. Mi celular es ___.» | Barra tipo buscador con tres campos y el resultado bloqueado al lado. |
+| Paso 2 | «Tengo una factura de S/ ___ que vence en ___ días», con barra deslizante y detalle del cálculo. | La misma barra cambia a monto, plazo (30 · 60 · 90 · 120) y «Recibirías hoy». |
+| Paso 3 | La tarjeta pide el correo y confirma. | La barra se abre con el desglose y el formulario. |
+| Se siente | Cercano, como hablar con un asesor. | Rápido, como cotizar en línea. |
+
+**Recomendación: A.** La frase reduce la sensación de «formulario» y explica por
+qué se piden los datos. B conviene si se prefiere que todo quepa en el banner sin
+que nada cambie de tamaño.
+
+## Simulador: fórmula
+
+Fórmula del *Instructivo de cálculo — Factoring y Confirming* (Falcon Capital,
+v1, 25/09/2026), la misma del simulador interno:
 
 ```
 factor   = (1 + TEM)^(días / 30) − 1
 interés  = monto × factor
-comisión = monto × comisión %
+comisión = monto × 1 %
 IGV      = 18 % del interés y de la comisión (calculado antes de redondear)
-neto     = monto − interés − comisión − IGV − retención
+neto     = monto − interés − comisión − IGV        (sin retención, minuta 004)
 ```
 
-Reproduce el ejemplo del instructivo al céntimo (S/ 106,644.05 a 90 días →
-S/ 99,291.96). Los valores son los del ejemplo: **TEM 1.75 %, comisión
-0.50 %, retención 0 %**. Están en `assets/propuestas.js`, en la constante
-`TARIFA`. La pantalla aclara que el cálculo es referencial.
+Con la comisión del ejemplo (0.50 %) reproduce el caso del instructivo al
+céntimo (S/ 106,644.05 a 90 días → S/ 99,291.96).
 
-**Captación de leads**
+**Pendiente:** la TEM por monto y plazo. Se carga en `TARIFA.tramos`:
 
-| Mecanismo | A | B |
+```js
+tramos: [ { hasta: 50000,   tem: { 30: 2.1, 60: 2.0, 90: 1.9, 120: 1.9 } },
+          { hasta: Infinity, tem: { 30: 1.8, 60: 1.75, 90: 1.7, 120: 1.7 } } ]
+```
+
+Los valores de este ejemplo son ilustrativos: hay que reemplazarlos por la tabla
+de Falcon.
+
+## Diferencias entre A y B
+
+| | A · Claridad | B · Impulso |
 |---|---|---|
-| Resultado al instante, sin datos | frase editable y barra deslizante | barra tipo buscador |
-| Formulario corto con la simulación adjunta (nombre, RUC, celular, correo y consentimiento) | panel lateral | la barra se abre con el detalle y el formulario |
-| Confirmación con los siguientes pasos y salida a WhatsApp o Crea tu cuenta | sí | sí |
-| WhatsApp con el mensaje ya escrito («Simulé un factoring por S/ 100,000 a 30 días…»), sin datos personales en el enlace | sí | sí |
-| «Simulador» se vuelve botón en el menú cuando el banner sale de vista | sí | sí |
-| Barra fija en celular: «Simula tu adelanto» y WhatsApp | sí | sí |
-| Botón «Simular» en cada solución, que lleva al simulador con el producto ya elegido | sí | sí |
-| Estado «Abierto ahora / Cerrado · abrimos el lunes» con la hora de Lima | sí | sí |
-| Boletín en el pie («Guías para mejorar el flujo de caja») | sí | sí |
-
-**Accesibilidad y rendimiento.** Sin librerías externas (solo Manrope de Google
-Fonts). Imágenes diferidas, navegación con teclado en menús y selectores,
-textos alternativos y `prefers-reduced-motion`: si el sistema pide menos
-movimiento, se apagan rotaciones y animaciones.
-
-## Propuesta A · Claridad
-
-Fondo claro, tinta verde petróleo, acentos menta y mucho aire. Es la más
-cercana a una empresa financiera tradicional, pero con lectura editorial.
-
-- **Banner:** a la izquierda, pestañas 01 Factoring · 02 Confirming · 03 Capital
-  de Trabajo; al cambiar, cambian el titular, el texto y la foto de la derecha,
-  y el simulador se adapta al producto. Rotan solas cada 7 s, con una barra de
-  progreso, hasta que la persona toca el simulador.
-- **Simulador como frase:** «Tengo una factura de **S/ 100,000** que vence en
-  **30 días**», con monto y plazo editables en la misma frase, barra deslizante
-  y resultado grande con «Ver detalle» (interés, comisión e IGV).
-- Secciones numeradas (01 Quiénes somos, 02 Soluciones…), cifras separadas por
-  líneas finas, tarjetas de solución con la foto completa y el botón Simular,
-  cita de la gerencia junto a Julio sobre un disco menta.
-
-**Transiciones y efectos:** las fotos se descubren con una máscara, los
-titulares suben suavemente, las palabras clave se subrayan como con
-resaltador, las cifras cuentan hasta su valor, el cambio de producto funde
-fotos y textos sin saltos y el panel de solicitud entra desde la derecha.
-
-## Propuesta B · Impulso
-
-Oscuro, fotográfico y de alto contraste. Es la más «fintech» y la que más
-protagonismo da a las fotos, como pidió la nota de la v2.1.
-
-- **Banner:** la foto de cada producto ocupa el lado derecho a todo lo alto y se
-  funde con el fondo; el texto queda sobre el lado oscuro, así nunca tapa a las
-  personas. Las fotos rotan con un acercamiento lento.
-- **Simulador como buscador:** una barra al pie del banner con Solución, Monto,
-  Vence en (30 · 60 · 90 · 120) y «Recibirías hoy». Al pulsar «Quiero mi
-  adelanto» la barra se abre con el desglose, la proporción neto/descuento y el
-  formulario.
-- Soluciones en tarjetas grandes que se apilan al bajar, cada una con sus
-  beneficios y su botón de simular. Cita de la gerencia que se ilumina palabra
-  por palabra. Blog y testimonios en una sección clara para dar ritmo. Sellos
-  SBS, CAVALI y Ley N.° 29623 sobre placas claras.
-
-**Transiciones y efectos:** acercamiento lento de las fotos del banner, video
-institucional que crece al entrar, tarjetas apiladas que se oscurecen al quedar
-atrás, cita revelada al ritmo del scroll, foto del cierre con paralaje suave,
-cabecera que se oculta al bajar y vuelve al subir, y un grano fotográfico muy
-leve en el fondo.
+| Tono | Claro, editorial, mucho aire | Oscuro, fotográfico, alto contraste |
+| Banner del Home | Pestañas Factoring · Confirming · Capital con flechas; la foto se desliza | Foto a la derecha que rota, con indicador de progreso y deslizable |
+| Flujo del producto | Recorrido horizontal | Línea de tiempo vertical |
+| Marco normativo | Expediente por temas + sellos + foto del mazo | Índice tipográfico sobre el mazo + Ley N.° 29623 destacada |
+| Por qué elegirnos | Cuatro tarjetas con foto e isotipo | Lista grande que cambia la foto al bajar |
+| Soluciones del Home | Tarjetas a imagen completa | Tarjetas que se apilan al bajar |
 
 ## Traslado a Elementor
 
 | Pieza | Cómo se arma |
 |---|---|
-| Aparición al bajar (subir y aparecer) | Motion Effects → Entrance Animation «Fade In Up», duración lenta |
-| Foto que se descubre con máscara (A) | Clase `reveal-mask` y 10 líneas de CSS (`clip-path`) en CSS adicional |
+| Aparecer al bajar | Motion Effects → Entrance «Fade In Up» |
 | Cifras que cuentan | Widget Counter |
-| Banner con pestañas (A) | Nested Tabs; el simulador va en un widget HTML / shortcode `[falcon_simulador]` |
-| Banner con fotos que rotan (B) | Contenedor con fondo Slideshow y efecto Ken Burns (nativo de Elementor) |
-| Barra simuladora (B) | Widget HTML / shortcode con el JS de `propuestas.js` |
-| Tarjetas apiladas (B) | Cada contenedor con `position: sticky` en CSS personalizado; el oscurecido es opcional (snippet JS) |
-| Video que crece al entrar (B) | Motion Effects → Scrolling Effects → Scale |
-| Paralaje del cierre (B) | Motion Effects → Scrolling Effects → Vertical Scroll |
-| Cita palabra por palabra (B) | Snippet JS pequeño; sin él, aparece entera con Fade In |
-| Carrusel de actualidad | Loop Carousel de la CPT «Noticias» |
-| Panel de solicitud (A) | Popup de Elementor Pro, entrada lateral, con Formulario |
-| Formulario corto | Elementor Form; acción webhook al CRM (Faast) con los campos ocultos producto, moneda, monto, plazo y neto |
-| WhatsApp con mensaje | Enlace `https://wa.me/51955447475?text=…` |
-| Cabecera que se oculta (B) | Theme Builder → cabecera sticky con efecto al hacer scroll |
-| Abierto ahora / Cerrado | Snippet JS de 20 líneas |
-| Selector Actual / A / B | Solo para presentar; no se traslada |
+| Banner con pestañas (A) | Nested Tabs con un widget HTML para el simulador |
+| Banner con fotos que rotan (B) | Fondo Slideshow con efecto Ken Burns |
+| Simulador en tres pasos | Shortcode `[falcon_simulador]` con el HTML y el JS de esta carpeta; el envío va al CRM por webhook |
+| Flujo que avanza al bajar | Icon List + snippet JS pequeño (sin él, se ve estático y completo) |
+| Tarjetas apiladas (B) | `position: sticky` en CSS personalizado |
+| Por qué elegirnos (B) | Contenedor sticky + snippet JS; en celular, foto bajo cada ítem |
+| Formulario de contacto | Elementor Form con la solución preseleccionada por página |
+| Razón social desde el RUC | Integración SUNAT de la propuesta de Eduardo |
 
 ## Pendientes de Falcon Capital
 
-- **Tarifario final** (TEM, comisión y retención por producto y plazo) y
-  confirmar si Confirming y Capital de Trabajo usan la misma fórmula: hoy los
-  tres productos calculan con el ejemplo del instructivo.
-- Testimonios reales con autorización, video institucional y fotos originales.
-- **Foto del ejecutivo con chaleco Falcon** (`comercial.jpg`): trae la marca de
-  agua de un generador de imágenes con IA. Se usa un recorte provisional
-  (`comercial-recorte.jpg`); conviene reemplazarla por una foto real.
-- Destino del formulario (CRM) y texto legal de consentimiento según la Ley
-  N.° 29733.
-- Logos oficiales de la SBS y CAVALI en alta resolución (se usan los que subió
-  Wilmer).
+- **Tabla de TEM por monto y plazo** (el mensaje llegó sin adjunto).
+- Testimonios, video institucional y artículos completos del blog.
+- Foto real para «Contacta a un experto»: la actual (`comercial.jpg`) trae la
+  marca de agua de un generador de imágenes y se usa recortada.
+- Logos SBS y CAVALI en versión oficial de alta resolución, si los tienen.

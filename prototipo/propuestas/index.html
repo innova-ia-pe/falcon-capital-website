@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="es" data-p="a" data-pag="index">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inicio · Propuestas Falcon Capital</title>
+<meta name="description" content="Propuestas A y B del sitio de Falcon Capital, con la versión actual para comparar.">
+<script>(function(){var d=document.documentElement,p='a';d.className+=' js';try{if('scrollRestoration' in history)history.scrollRestoration='manual';var q=new URLSearchParams(location.search).get('p');p=q||localStorage.getItem('fc-prop')||'a';}catch(e){}if(!/^(a|b|actual)$/.test(p))p='a';d.setAttribute('data-p',p);try{localStorage.setItem('fc-prop',p)}catch(e){}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/prop-base.css">
+<link rel="stylesheet" href="../assets/prop-a.css">
+<link rel="stylesheet" href="../assets/prop-b.css">
+</head>
+<body>
+<div class="veil" aria-hidden="true"></div>
+<div class="pbar" data-pbar>
+  <div class="pbar-in">
+    <div class="pbar-left">
+      <span class="pbar-brand"><img src="../img/logo-light.png" alt="Falcon Capital" width="94" height="24"></span>
+      
+      <div class="pbar-pages">
+        <button type="button" class="pbar-pg-btn" aria-expanded="false" aria-haspopup="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg><span class="pbar-pg-l">Inicio</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+        <nav class="pbar-pg-menu" aria-label="Páginas de las propuestas"><a href="index.html" data-pg="index" aria-current="page">Inicio</a><a href="conocenos.html" data-pg="conocenos">Conócenos</a><a href="factoring.html" data-pg="factoring">Factoring</a><a href="confirming.html" data-pg="confirming">Confirming</a><a href="capital-de-trabajo.html" data-pg="capital-de-trabajo">Capital de Trabajo</a><a href="simulador.html" data-pg="simulador">Simulador</a><a href="blog.html" data-pg="blog">Blog</a><a href="articulo.html" data-pg="articulo">Artículo</a><a href="contactanos.html" data-pg="contactanos">Contáctanos</a></nav>
+      </div>
+    </div>
+    <div class="pbar-sw" role="tablist" aria-label="Versión">
+      <span class="pbar-ind" aria-hidden="true"></span>
+      <a role="tab" href="#" data-go="actual"><span class="pbar-full">Versión actual</span><span class="pbar-short">Actual</span></a>
+      <a role="tab" href="#" data-go="a"><b>A</b><span class="pbar-full">Claridad</span></a>
+      <a role="tab" href="#" data-go="b"><b>B</b><span class="pbar-full">Impulso</span></a>
+    </div>
+    <button class="pbar-more" type="button" aria-expanded="false" aria-controls="pbar-notes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg><span>¿Qué cambia?</span></button>
+  </div>
+  <div class="pbar-notes" id="pbar-notes" hidden>
+    <div class="pbar-notes-in">
+      <article>
+        <h3>Versión actual</h3>
+        <p>Lo que hoy está en <code>demo</code>, con los cambios de Wilmer. Cada página de la propuesta tiene su par en la
+          versión actual para comparar.</p>
+      </article>
+      <article>
+        <h3><b>A</b> Claridad</h3>
+        <p>Clara y editorial. El simulador conversa contigo: primero «Hola, soy…» con nombre, RUC y celular, y recién
+          después la simulación en una frase. El correo se pide solo al solicitar la evaluación.</p>
+        <ul><li>Flujo de cada producto como recorrido horizontal que avanza al bajar.</li>
+          <li>Marco normativo como expediente ordenado por temas, con los sellos de la SBS y CAVALI.</li></ul>
+      </article>
+      <article>
+        <h3><b>B</b> Impulso</h3>
+        <p>Oscura y fotográfica. El simulador es una barra en dos pasos: tus datos y luego la simulación, sin salir del
+          banner. Los banners se deslizan con el dedo en el celular.</p>
+        <ul><li>Flujo de cada producto en una línea de tiempo que se dibuja al bajar.</li>
+          <li>Marco normativo como índice tipográfico grande sobre la imagen del mazo.</li></ul>
+      </article>
+    </div>
+    <p class="pbar-notes-foot">Solo Factoring tiene simulador; Confirming y Capital de Trabajo son informativos y llevan al
+      formulario. Atajos: teclas 1, 2 y 3. Detalle en <code>PROPUESTAS.md</code>.</p>
+  </div>
+</div>
+<iframe class="actual" title="Versión actual" data-src="../index.html" hidden></iframe>
+<div class="P pa" data-prop="a" id="a-top">
+<header class="a-hdr">
+  <div class="a-wrap a-hdr-in">
+    <a class="a-logo" href="index.html?p=a" aria-label="Falcon Capital, inicio"><img src="../img/logo-dark.png" alt="Falcon Capital" width="170" height="44"></a>
+    <nav class="a-nav" aria-label="Principal">
+      <a href="conocenos.html?p=a">Conócenos</a>
+      <div class="a-dd">
+        <button type="button" class="a-dd-btn" aria-expanded="false">Soluciones <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="a-dd-menu"><a href="factoring.html?p=a"><img src="../img/sol-factoring.jpg" alt="" loading="lazy"><span><b>Factoring</b><small>Liquidez en menos de 48 horas</small></span></a><a href="confirming.html?p=a"><img src="../img/sol-confirming.jpg" alt="" loading="lazy"><span><b>Confirming</b><small>Tus proveedores cobran antes</small></span></a><a href="capital-de-trabajo.html?p=a"><img src="../img/sol-capital.jpg" alt="" loading="lazy"><span><b>Capital de Trabajo</b><small>Recursos a la medida de tu empresa</small></span></a><a class="a-dd-sim" href="simulador.html?p=a">Simula tu factoring <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+      </div>
+      <a href="blog.html?p=a">Blog</a>
+      <a class="a-nav-sim" href="simulador.html?p=a">Simulador</a>
+    </nav>
+    <div class="a-hdr-acts">
+      <a class="a-in" href="ver.html?p=a&amp;u=iniciar-sesion">Iniciar sesión</a>
+      <a class="a-btn a-btn-ink" href="ver.html?p=a&amp;u=registro">Crea tu cuenta</a>
+    </div>
+    <button class="a-burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-menu><span></span><span></span></button>
+  </div>
+</header>
+<div class="a-mmenu" data-mmenu hidden>
+  <nav aria-label="Menú móvil">
+    <a href="conocenos.html?p=a">Conócenos</a>
+    <a href="factoring.html?p=a">Factoring</a>
+    <a href="confirming.html?p=a">Confirming</a>
+    <a href="capital-de-trabajo.html?p=a">Capital de Trabajo</a>
+    <a href="blog.html?p=a">Blog</a>
+    <a href="simulador.html?p=a">Simulador</a>
+    <a href="contactanos.html?p=a">Contáctanos</a>
+  </nav>
+  <div class="a-mmenu-acts">
+    <a class="a-btn a-btn-ink a-btn-lg" href="ver.html?p=a&amp;u=registro">Crea tu cuenta</a>
+    <a class="a-btn a-btn-line a-btn-lg" href="ver.html?p=a&amp;u=iniciar-sesion">Iniciar sesión</a>
+  </div>
+</div>
+<main>
+<section class="a-hero" id="a-simulador" data-sec="hero" data-hero>
+  <div class="a-wrap a-hero-grid">
+    <div class="a-hero-main">
+      <div class="a-tabs-row">
+        <div class="a-tabs" role="tablist" aria-label="Soluciones"><button type="button" role="tab" data-prod="factoring" aria-selected="true"><i>01</i>Factoring<span class="a-tab-bar"></span></button><button type="button" role="tab" data-prod="confirming" aria-selected="false"><i>02</i>Confirming<span class="a-tab-bar"></span></button><button type="button" role="tab" data-prod="capital" aria-selected="false"><i>03</i>Capital de Trabajo<span class="a-tab-bar"></span></button></div>
+        <div class="a-arrows"><button type="button" data-prev aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg></button><button type="button" data-next aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div>
+      </div>
+      <div class="a-copy a-stack" data-r="up"><div class="a-v is-on" data-prod="factoring"><h1 class="a-h1">Convierte tus facturas en <em>liquidez inmediata</em></h1><p class="a-hero-sub">Transforma tus facturas en oportunidades y fortalece el flujo de tu negocio sin complicaciones.</p></div><div class="a-v" data-prod="confirming" aria-hidden="true"><p class="a-h1">Ordena tus pagos y <em>potencia tu relación</em> con proveedores</p><p class="a-hero-sub">Administra tus pagos de forma eficiente y permite que tus proveedores cobren antes del vencimiento.</p></div><div class="a-v" data-prod="capital" aria-hidden="true"><p class="a-h1">Crece sin <em>comprometer</em> tu operación</p><p class="a-hero-sub">Obtén los recursos que necesitas para ejecutar tus proyectos y mantener tu negocio en movimiento.</p></div></div>
+      <div class="a-cards a-stack" data-r="up"><div class="a-v is-on" data-prod="factoring"><div class="a-sim a-sim-hero" data-sim data-step="datos">
+        <div class="a-sim-top">
+          <ol class="a-steps" aria-label="Pasos"><li data-s="datos"><i>1</i>Tus datos</li><li data-s="simula"><i>2</i>Simulación</li><li data-s="evalua"><i>3</i>Evaluación</li></ol>
+          <span class="a-sim-live"><i></i>Sin costo ni compromiso</span>
+        </div>
+        <form class="a-step a-gate" data-gate novalidate>
+          <p class="a-sim-q">Hola, soy <span class="a-inp"><input name="nombre" placeholder="tu nombre y apellido" autocomplete="name" required data-auto aria-label="Nombre y apellido"></span>, de la empresa con RUC <span class="a-inp"><input name="ruc" inputmode="numeric" maxlength="11" placeholder="20123456789" required data-digits data-auto aria-label="RUC de tu empresa"></span>. Mi celular es <span class="a-inp"><b>+51</b><input name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="11" placeholder="912 345 678" required data-phone data-auto aria-label="Celular"></span>.</p>
+          <p class="a-gate-err" role="alert" hidden></p>
+          <label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=a&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label>
+          <div class="a-sim-acts">
+            <button type="submit" class="a-btn a-btn-em a-btn-lg"><span>Ver mi simulación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+            <span class="a-gate-why"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Solo 3 datos. Los usamos para tu simulación y para contactarte si lo pides.</span>
+          </div>
+          <div class="a-preview" aria-hidden="true">
+            <span>Recibirías hoy</span><b>S/ ••,•••.••</b>
+            <i></i><i></i><i></i>
+          </div>
+        </form>
+        <div class="a-step a-calc" data-calc hidden>
+          <p class="a-hola"><span data-hola>Hola</span> <button type="button" data-cambiar>¿No eres tú? Cambiar datos</button></p>
+          <p class="a-sim-q">Tengo una factura de
+            <span class="a-amt"><button type="button" class="a-cur" data-cur aria-label="Cambiar moneda, ahora soles">S/</button><input data-amt data-auto inputmode="numeric" autocomplete="off" value="100,000" aria-label="Monto de la factura"></span>
+            que vence en
+            <span class="a-days" data-days>
+              <button type="button" class="a-days-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Plazo"><b data-days-val>30</b>&nbsp;días<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+              <span class="a-days-menu" role="listbox" aria-label="Plazo en días"><button type="button" role="option" data-d="30" aria-selected="true">30 días</button><button type="button" role="option" data-d="60" aria-selected="false">60 días</button><button type="button" role="option" data-d="90" aria-selected="false">90 días</button><button type="button" role="option" data-d="120" aria-selected="false">120 días</button></span>
+            </span></p>
+          <input class="a-range" type="range" data-range min="5000" max="1000000" step="1000" value="100000" aria-label="Ajusta el monto">
+          <div class="a-res">
+            <div>
+              <span class="a-res-l">Recibirías hoy</span>
+              <output class="a-res-v" data-o="neto">S/ 96,755.00</output>
+              <span class="a-res-s"><b data-o="pct">96.8 %</b> de tu factura · descuento total <b data-o="costo">S/ 3,245.00</b></span>
+            </div>
+            <button type="button" class="a-res-more" data-detail-btn aria-expanded="false">Ver detalle <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+          </div>
+          <div class="a-det" data-detail><div><dl class="brk">
+            <div><dt>Monto de la factura</dt><dd data-o="monto">S/ 100,000.00</dd></div>
+            <div><dt>Interés <small data-o="tem-l">TEM 1.75 %</small></dt><dd data-o="interes">− S/ 1,750.00</dd></div>
+            <div><dt>Comisión <small>1 %</small></dt><dd data-o="comision">− S/ 1,000.00</dd></div>
+            <div><dt>IGV <small>18 % de interés y comisión</small></dt><dd data-o="igv">− S/ 495.00</dd></div>
+            <div class="brk-t"><dt>Recibirías hoy</dt><dd data-o="neto">S/ 96,755.00</dd></div>
+          </dl></div></div>
+          <div class="a-sim-acts">
+            <button type="button" class="a-btn a-btn-em a-btn-lg" data-pedir><span>Solicitar mi evaluación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+            <a class="a-sim-wa" data-wa href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg> Prefiero WhatsApp</a>
+          </div>
+          <p class="a-sim-note">Cálculo referencial con la fórmula del instructivo de Falcon Capital. La TEM se define según el monto y el plazo de tu operación; la comisión es de 1 % en soles o dólares, más IGV.</p>
+        </div>
+        <form class="a-step a-eval lead-form" data-eval novalidate hidden>
+          <p class="a-sim-q">Perfecto, <span data-nombre1>Ana</span>. ¿A qué correo te enviamos tu propuesta formal?</p>
+          <div class="a-eval-sum"><span><small>Factura</small><b data-s="monto">S/ 100,000.00</b></span><span><small>Plazo</small><b data-s="dias">30 días</b></span><span><small>Recibirías hoy</small><b data-s="neto">S/ 96,755.00</b></span></div>
+          <label class="lf"><span>Correo</span><input name="email" type="email" placeholder="nombre@empresa.com" autocomplete="email" required><em class="lf-err">Revisa tu correo.</em></label>
+          <p class="a-hint"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg> La razón social se completa sola con tu RUC (consulta SUNAT).</p>
+          <div class="a-sim-acts">
+            <button type="submit" class="lf-send a-btn-lg"><span>Enviar solicitud</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+            <button type="button" class="a-back" data-volver><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a la simulación</button>
+          </div>
+        </form>
+        <div class="lead-ok" hidden tabindex="-1">
+          <span class="lead-ok-ico"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span>
+          <h3>¡Listo, <span data-ok-name>gracias</span>!</h3>
+          <p>Recibimos tu solicitud de <b data-ok-prod>Factoring</b>. Un ejecutivo de Falcon Capital te contactará en horario de atención.</p>
+          <ol class="lead-steps">
+            <li><b>Revisamos tu solicitud</b> y los datos de tu empresa.</li>
+            <li><b>Te contactamos</b> por llamada o WhatsApp.</li>
+            <li><b>Recibes tu propuesta formal</b> con la tasa final.</li>
+          </ol>
+          <div class="lead-ok-acts">
+            <a class="lead-wa" data-wa href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg> Continuar por WhatsApp</a>
+            <a class="lead-acc" href="ver.html?p=a&amp;u=registro">Crea tu cuenta <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <p class="lead-proto">Prototipo: en el sitio publicado este formulario se conecta al CRM de Falcon Capital.</p>
+        </div>
+      </div></div><div class="a-v" data-prod="confirming" aria-hidden="true"><div class="a-info">
+          <span class="a-info-k">Confirming</span>
+          <p class="a-info-p">Gestiona el pago a tus proveedores y permíteles adelantar el cobro antes del vencimiento, sin afectar tu liquidez.</p>
+          <ul><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Tus proveedores cobran antes del vencimiento</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Mantienes tus plazos de pago</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Sin usar tu caja</li></ul>
+          <div class="a-sim-acts">
+            <a class="a-btn a-btn-em a-btn-lg" href="confirming.html?p=a#a-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+            <a class="a-arrow" href="confirming.html?p=a">Conoce Confirming <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <p class="a-sim-note">Confirming es una solución a la medida: un ejecutivo evalúa tu caso y te propone las condiciones.</p>
+        </div></div><div class="a-v" data-prod="capital" aria-hidden="true"><div class="a-info">
+          <span class="a-info-k">Capital de Trabajo</span>
+          <p class="a-info-p">Financiamiento estructurado para proyectos estratégicos, ajustado a garantías, plazos y capacidad de pago.</p>
+          <ul><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Financiamiento a la medida</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Condiciones personalizadas</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Ajustado a garantías y plazos</li></ul>
+          <div class="a-sim-acts">
+            <a class="a-btn a-btn-em a-btn-lg" href="capital-de-trabajo.html?p=a#a-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+            <a class="a-arrow" href="capital-de-trabajo.html?p=a">Conoce Capital de Trabajo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <p class="a-sim-note">Capital de Trabajo es una solución a la medida: un ejecutivo evalúa tu caso y te propone las condiciones.</p>
+        </div></div></div>
+    </div>
+    <figure class="a-hero-media" data-r="mask" data-swipe>
+      <div class="a-hero-imgs"><img class="is-on" data-prod="factoring" src="../img/hero-factoring.jpg" alt="" style="object-position:56% 50%" loading="lazy"><img class="" data-prod="confirming" src="../img/hero-confirming.jpg" alt="" style="object-position:38% 50%" loading="lazy"><img class="" data-prod="capital" src="../img/hero-capital.jpg" alt="" style="object-position:50% 50%" loading="lazy"></div>
+      <figcaption>
+        <span class="a-cap a-stack"><span class="a-v is-on" data-prod="factoring"><i></i>Liquidez en menos de 48 horas</span><span class="a-v" data-prod="confirming" aria-hidden="true"><i></i>Tus proveedores cobran antes</span><span class="a-v" data-prod="capital" aria-hidden="true"><i></i>Recursos a la medida de tu empresa</span></span>
+        <span class="a-more a-stack"><a class="a-v is-on" data-prod="factoring" href="factoring.html?p=a">Conoce Factoring <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="a-v" data-prod="confirming" href="confirming.html?p=a" aria-hidden="true">Conoce Confirming <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="a-v" data-prod="capital" href="capital-de-trabajo.html?p=a" aria-hidden="true">Conoce Capital de Trabajo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></span>
+      </figcaption>
+      <span class="a-swipe-hint"><svg viewBox="0 0 24 24"><path d="M9 11V6.5a1.5 1.5 0 0 1 3 0V11"/><path d="M12 10.5a1.5 1.5 0 0 1 3 0V12"/><path d="M15 11.5a1.5 1.5 0 0 1 3 0V15a6 6 0 0 1-6 6h-1a6 6 0 0 1-5-2.7l-2.2-3.4a1.5 1.5 0 0 1 2.4-1.8L9 15"/></svg> Desliza</span>
+    </figure>
+  </div>
+  <div class="a-wrap"><ul class="a-trust"><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Registrados ante la SBS</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Participantes en CAVALI</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Miembros de APEFAC</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Grupo económico ON Empresas</li></ul></div>
+</section>
+<section class="a-ben" data-sec="beneficios">
+  <div class="a-wrap"><div class="a-ben-in">
+    <p class="a-ben-k"><img class="mk" src="../img/isotipo-falcon.png" alt="" width="40" height="40"> Por qué Falcon Capital</p>
+    <ul><li data-r="up"><span class="a-ben-i"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></span><b>Respaldo financiero</b><span>Solidez para seguir creciendo.</span></li><li data-r="up"><span class="a-ben-i"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><b>Desembolsos rápidos</b><span>La liquidez que tu negocio necesita.</span></li><li data-r="up"><span class="a-ben-i"><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg></span><b>Asesoría personalizada</b><span>Te acompañamos en cada paso.</span></li><li data-r="up"><span class="a-ben-i"><svg viewBox="0 0 24 24"><path d="M12 3v18M7 21h10M4 7h16M6 7l-3 7a3 3 0 0 0 6 0zM18 7l-3 7a3 3 0 0 0 6 0z"/></svg></span><b>Experiencia y respaldo legal</b><span>Operaciones seguras y transparentes.</span></li></ul>
+  </div></div>
+</section>
+<section class="a-sec a-intro" id="a-presentacion" data-sec="presentacion">
+  <div class="a-wrap">
+    <div class="a-intro-head"><p class="a-idx"><span>01</span>Quiénes somos</p><h2 data-r="up">Accede a la <em>liquidez</em> que impulsa el crecimiento de tu empresa</h2></div>
+    <div class="a-intro-grid">
+      <div class="a-intro-txt">
+        <p class="a-lead" data-r="up">En Falcon Capital brindamos una alternativa de financiamiento diseñada para impulsar el crecimiento empresarial.</p>
+        <p data-r="up">Somos una empresa de soluciones financieras perteneciente al grupo económico <b>ON Empresas</b>, que ofrece una propuesta moderna, ágil y transparente para brindar liquidez inmediata a las empresas peruanas.</p>
+        <a class="a-arrow" href="conocenos.html?p=a" data-r="up">Conoce Falcon Capital <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <button class="a-video" type="button" data-video data-r="mask" aria-label="Reproducir el video institucional">
+        <img src="../img/home-about.jpg" alt="" loading="lazy">
+        <span class="a-play"><svg class="g" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4L18.6 12z"/></svg></span>
+        <span class="a-video-cap">Video institucional</span>
+      </button>
+    </div>
+  </div>
+  <div class="a-wrap" data-sec="datos"><ul class="a-stats"><li data-r="up"><b><small>+ S/</small><span data-count="300">300</span><small>M</small></b><span>en desembolsos de facturas</span></li><li data-r="up"><b><small>+</small><span data-count="150">150</span></b><span>mypes atendidas en todo el país</span></li><li data-r="up"><b><small>+</small><span data-count="3">3</span><small>años</small></b><span>de operaciones en el mercado peruano</span></li>
+      <li class="a-stats-logo" data-r="up"><img class="lg-on" src="../img/on-empresas-dark.png" alt="ON Empresas" loading="lazy"><span>Pertenecemos al grupo económico ON Empresas</span></li>
+      <li class="a-stats-logo" data-r="up"><img class="lg-apefac" src="../img/logo-apefac.png" alt="APEFAC" loading="lazy"><span>Miembros de la Asociación Peruana de Factoring</span></li>
+    </ul></div>
+</section>
+<section class="a-sec a-sol" id="a-soluciones" data-sec="soluciones">
+  <div class="a-wrap">
+    <div class="a-head a-head-row">
+      <div><p class="a-idx"><span>02</span>Soluciones</p><h2 data-r="up">Tres soluciones para impulsar la liquidez de tu empresa</h2></div>
+      <p class="a-head-p" data-r="up">Factoring se simula en línea. Confirming y Capital de Trabajo se diseñan a la medida con un ejecutivo.</p>
+    </div>
+    <div class="a-sol-grid">
+      <article class="a-card" data-r="up">
+        <img src="../img/sol-factoring.jpg" alt="" loading="lazy">
+        <div class="a-card-body">
+          <h3>Factoring</h3>
+          <p>Cede tus facturas por cobrar y obtén liquidez en menos de 48 horas, sin recurrir a préstamos bancarios.</p>
+          <div class="a-card-acts"><a class="a-chip" href="simulador.html?p=a">Simular</a><a href="factoring.html?p=a">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </article>
+      <article class="a-card" data-r="up">
+        <img src="../img/sol-confirming.jpg" alt="" loading="lazy">
+        <div class="a-card-body">
+          <h3>Confirming</h3>
+          <p>Gestiona el pago a tus proveedores y permíteles adelantar el cobro antes del vencimiento, sin afectar tu liquidez.</p>
+          <div class="a-card-acts"><a class="a-chip a-chip-line" href="confirming.html?p=a#a-contacto">Solicitar evaluación</a><a href="confirming.html?p=a">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </article>
+      <article class="a-card" data-r="up">
+        <img src="../img/sol-capital.jpg" alt="" loading="lazy">
+        <div class="a-card-body">
+          <h3>Capital de Trabajo</h3>
+          <p>Financiamiento estructurado para proyectos estratégicos, ajustado a garantías, plazos y capacidad de pago.</p>
+          <div class="a-card-acts"><a class="a-chip a-chip-line" href="capital-de-trabajo.html?p=a#a-contacto">Solicitar evaluación</a><a href="capital-de-trabajo.html?p=a">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="a-sec a-ceo" data-sec="gerencia">
+  <div class="a-wrap a-ceo-grid">
+    <figure class="a-ceo-photo" data-r="up">
+      <span class="a-ceo-pill" aria-hidden="true"></span>
+      <img src="../img/julio-sin-fondo.png" alt="Julio Sebastiani, Gerente General de Falcon Capital" loading="lazy">
+    </figure>
+    <div class="a-ceo-q">
+      <p class="a-idx"><span>03</span>Mensaje de la gerencia</p>
+      <blockquote class="a-bubble" data-r="up"><p>Hoy las empresas necesitan más que financiamiento: requieren aliados que comprendan su ritmo, su mercado y su visión. En Falcon Capital unimos tecnología, experiencia financiera y compromiso humano para acompañarlos en su crecimiento, fortaleciendo su liquidez, su eficiencia y la relación con sus clientes.</p></blockquote>
+      <footer data-r="up"><b>Julio Sebastiani</b><span>Gerente General de Falcon Capital</span></footer>
+    </div>
+  </div>
+</section>
+<section class="a-sec a-act" id="a-actualidad" data-sec="actualidad">
+  <div class="a-wrap">
+    <div class="a-head a-head-row">
+      <div><p class="a-idx"><span>04</span>Falcon Capital en la actualidad</p><h2 data-r="up">Impulsando el futuro del factoring en el Perú</h2></div>
+      <div class="a-rail-nav"><button type="button" data-rail-prev aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg></button><button type="button" data-rail-next aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div>
+    </div>
+  </div>
+  <div class="a-rail" data-rail tabindex="0" aria-label="Noticias de Falcon Capital">
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-1.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">APEFAC</span><small>Asociación importante como compañía</small><h3>Ahora formamos parte del APEFAC</h3><p>Desde el 2025 somos parte de la Asociación Peruana de Empresas de Factoring (APEFAC), fortaleciendo nuestros procesos internos para brindar un servicio más seguro, ágil y eficiente a nuestros clientes.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-2.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Expopyme</span><small>Evento financiero de gran alcance</small><h3>Presentes en la XXVI Expopyme 2025</h3><p>Bruno Cárdenas, Coordinador de Gestión de Riesgos de Falcon Capital, con su ponencia “Gestión de Riesgos en la Era Digital: Fraude, cumplimiento y modelos predictivos”, destacó el valor de la analítica y la inteligencia artificial en la toma de decisiones financieras.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-3.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Congreso</span><small>Celebramos 10 años de Factoring en el Perú</small><h3>Participamos en el 5° Congreso Nacional de Factoring</h3><p>Nuestra participación reafirma el compromiso de seguir promoviendo soluciones financieras ágiles, transparentes y confiables, que fortalezcan la liquidez y el crecimiento sostenible de las empresas peruanas.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-4.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Rueda de negocio</span><small>Asociación estratégica</small><h3>Participamos en la rueda de negocios del Club Terrazas</h3><p>Fuimos parte de este espacio que conecta a empresas y líderes, fortaleciendo relaciones y generando nuevas oportunidades de crecimiento.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-5.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Seminario</span><small>Espacios clave del sector</small><h3>Conectando ideas en el Factoring Road Show Lima 2026</h3><p>Participamos de este importante seminario que reúne a expertos del Perú y la región, donde profundizamos en las tendencias del confirming y el financiamiento, fortaleciendo nuestro conocimiento en el sector.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-expocobre.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Expocobre</span><small>Oportunidades en sectores estratégicos</small><h3>Estamos presentes en el Expocobre 2026</h3><p>Participamos en uno de los principales encuentros del sector minero, conectando con empresas y ofreciendo soluciones financieras ágiles que impulsan su crecimiento y liquidez.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-expoindustria.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Expo Industria</span><small>Conectados con el crecimiento industrial</small><h3>Falcon Capital presente en el Expo Industria 2026</h3><p>Acompañamos a las industrias con soluciones financieras ágiles para mantener su producción, optimizar su liquidez y potenciar su crecimiento.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-masterclass.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Master class</span><small>Estrategias para generar mejores resultados</small><h3>Participamos en el Master Class “Tus palabras venden”</h3><p>Esta capacitación nos permitió fortalecer nuestras habilidades para estructurar mensajes que generan decisiones, influir de manera efectiva y negociar sin perder valor, logrando cierres más sólidos y estratégicos.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-copa-apefac.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Copa APEFAC</span><small>Juntos, dentro y fuera de la cancha</small><h3>¡Debutamos con triunfo en la Copa APEFAC 2026!</h3><p>Nuestro equipo inició el campeonato de fútbol con una gran victoria, demostrando compromiso, unión y trabajo en equipo dentro y fuera de la cancha.</p></div>
+      </article>
+      <article class="a-news">
+        <div class="a-news-img"><img src="../img/act-factrack.jpg" alt="" loading="lazy"></div>
+        <div class="a-news-body"><span class="a-tag">Aniversario</span><small>10 años conectando oportunidades</small><h3>Impulsando juntos el futuro del factoring en el Perú</h3><p>Falcon Capital, representado por nuestro Gerente General, Julio Sebastiani, participó en la celebración por los 10 años de Factrack, un encuentro que reunió a referentes del sector para compartir perspectivas sobre la evolución y futuro del factoring en el Perú.</p></div>
+      </article>
+  </div>
+  <div class="a-wrap"><div class="a-rail-bar"><i data-rail-bar></i></div></div>
+</section>
+<section class="a-sec a-blog" id="a-blog" data-sec="blog">
+  <div class="a-wrap">
+    <div class="a-head a-head-row">
+      <div><p class="a-idx"><span>05</span>Blog</p><h2 data-r="up">Entiende tus finanzas. Impulsa tu negocio</h2></div>
+      <a class="a-btn a-btn-line" href="blog.html?p=a">Ver el blog <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="a-blog-grid">
+      <a class="a-post" href="articulo.html?p=a" data-r="up" data-cat="Factoring">
+        <div class="a-post-img"><img src="../img/blog-1.jpg" alt="" loading="lazy"></div>
+        <div class="a-post-body"><span class="a-tag">Factoring</span><h3>Cómo mejorar la liquidez de tu empresa sin afectar su estructura financiera</h3><p>Mantener una estructura financiera saludable en tu empresa es vital para la continuidad de la misma. Descubre en este blog cómo hacerlo de manera eficiente.</p><span class="a-arrow">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+      <a class="a-post" href="articulo.html?p=a" data-r="up" data-cat="Factoring">
+        <div class="a-post-img"><img src="../img/blog-2.jpg" alt="" loading="lazy"></div>
+        <div class="a-post-body"><span class="a-tag">Factoring</span><h3>5 señales de que tu empresa necesita mejorar su flujo de caja</h3><p>Descubre las principales señales de alerta que te indican cuando tu empresa necesita mejorar su flujo de caja.</p><span class="a-arrow">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+      <a class="a-post" href="articulo.html?p=a" data-r="up" data-cat="Confirming">
+        <div class="a-post-img"><img src="../img/blog-5.jpg" alt="" loading="lazy"></div>
+        <div class="a-post-body"><span class="a-tag">Confirming</span><h3>Confirming: la solución para optimizar el pago a tus proveedores</h3><p>Obtener liquidez rápidamente es crucial en el mundo empresarial, aquí es donde el confirming se presenta como una alternativa.</p><span class="a-arrow">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="a-sec a-testis" data-sec="testimonios">
+  <div class="a-wrap">
+    <div class="a-head a-head-row">
+      <div><p class="a-idx"><span>06</span>Testimonios</p><h2 data-r="up">Empresas que ya crecen con nosotros</h2></div>
+      <span class="a-pend">Formato de ejemplo · Falcon Capital debe entregar los testimonios</span>
+    </div>
+    <div class="a-testi-grid"><figure class="a-testi" data-r="up">
+        <span class="a-testi-q">“</span>
+        <blockquote>Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.</blockquote>
+        <figcaption><span class="a-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure><figure class="a-testi" data-r="up">
+        <span class="a-testi-q">“</span>
+        <blockquote>Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.</blockquote>
+        <figcaption><span class="a-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure><figure class="a-testi" data-r="up">
+        <span class="a-testi-q">“</span>
+        <blockquote>Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.</blockquote>
+        <figcaption><span class="a-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure></div>
+  </div>
+</section>
+<section class="a-sec a-seg" id="a-seguridad" data-sec="seguridad">
+  <div class="a-seg-rings" aria-hidden="true"></div>
+  <div class="a-wrap a-seg-in">
+    <p class="a-idx"><span>07</span>Seguridad y respaldo</p>
+    <h2 data-r="up">Operamos con <em>respaldo</em> y <em>seguridad financiera</em> en Perú</h2>
+    <p data-r="up">En Falcon Capital garantizamos operaciones seguras y confiables, cumpliendo con todas las normativas financieras vigentes aplicables al factoring y descuento de facturas. Somos participantes oficiales en Cavali y estamos debidamente registrados ante la Superintendencia de Banca, Seguros y AFP (SBS), lo que respalda la transparencia y solidez de nuestras operaciones.</p>
+    <div class="a-seals" data-r="up">
+      <figure><span><img src="../img/logo-sbs.png" alt="Superintendencia de Banca, Seguros y AFP" loading="lazy"></span><figcaption>Registrados ante la SBS</figcaption></figure>
+      <figure><span><img src="../img/logo-cavali.png" alt="CAVALI" loading="lazy"></span><figcaption>Participantes en CAVALI</figcaption></figure>
+      <figure><span><img src="../img/logo-apefac.png" alt="APEFAC" loading="lazy"></span><figcaption>Miembros de APEFAC</figcaption></figure>
+    </div>
+    <a class="a-arrow" href="ver.html?p=a&amp;u=constancia-de-registro" data-r="up">Ver constancia de registro <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+<section class="a-sec a-can" id="a-canales" data-sec="canales">
+  <div class="a-wrap">
+    <div class="a-head a-head-c"><p class="a-idx"><span>08</span>Canales de atención</p><h2 data-r="up">Una respuesta ágil, cercana y especializada</h2></div>
+    <div class="a-can-grid"><a class="a-ch" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-r="up">
+        <span class="a-ch-i"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg></span><h3>WhatsApp</h3><p>Atención directa con un ejecutivo comercial, de lunes a viernes.</p><span class="a-ch-v">955 447 475 <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a><a class="a-ch" href="mailto:info@falconcapital.pe" data-r="up">
+        <span class="a-ch-i"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></span><h3>Correo</h3><p>Escríbenos con el detalle de tu consulta y te respondemos en el día.</p><span class="a-ch-v">info@falconcapital.pe <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a><div class="a-ch" data-r="up">
+        <span class="a-ch-i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.5V12l3.6 2.4"/></svg></span><h3>Horario de atención</h3><p>Lunes a viernes, de 9:00&nbsp;a.&nbsp;m. a 6:00&nbsp;p.&nbsp;m.</p><span class="a-ch-v a-open" data-open><i></i><span>Horario de Lima</span></span>
+      </div></div>
+  </div>
+</section>
+<section class="a-sec a-cta" data-sec="cta">
+  <div class="a-wrap">
+    <div class="a-cta-box" data-r="up">
+      <div class="a-cta-txt">
+        <h2>¿Preparado para obtener la liquidez que tu empresa necesita?</h2>
+        <p>Descubre cómo las soluciones financieras de Falcon Capital pueden impulsar la liquidez y el crecimiento de tu empresa, de forma ágil, segura y sin afectar tu flujo de caja.</p>
+        <div class="a-cta-acts">
+          <a class="a-btn a-btn-em a-btn-lg" href="simulador.html?p=a">Simula tu crédito <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+          <a class="a-btn a-btn-ghost a-btn-lg" href="contactanos.html?p=a">Contáctanos</a>
+        </div>
+      </div>
+      <img src="../img/comercial-recorte.jpg" alt="" loading="lazy">
+    </div>
+  </div>
+</section>
+</main>
+<footer class="a-ft" data-sec="footer">
+  <div class="a-wrap">
+    <div class="a-ft-news">
+      <div><b>Guías para mejorar el flujo de caja de tu empresa</b><span>Un correo al mes con artículos del blog y novedades de Falcon Capital.</span></div>
+      <form class="nl" novalidate data-nl>
+        <input type="email" required placeholder="Tu correo de trabajo" aria-label="Correo">
+        <button type="submit">Suscribirme</button>
+        <p class="nl-ok" hidden>¡Gracias! Te escribiremos pronto.</p>
+      </form>
+    </div>
+    <div class="a-ft-cols">
+      <div class="a-ft-brand">
+        <img src="../img/logo-light.png" alt="Falcon Capital" width="170" height="44" loading="lazy">
+        <p><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Av. José Gálvez Barrenechea 535, Urb. Corpac, San Isidro · Lima</p>
+        <div class="a-social"><a href="https://www.facebook.com/falconcapital.p" target="_blank" rel="noopener" aria-label="Facebook"><svg class="g" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.5-1.5h1.7V4.9c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7.6v3h2.7v8z"/></svg></a><a href="https://www.linkedin.com/company/falcon-capital-pe/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="g" viewBox="0 0 24 24"><path d="M6.9 8.8H3.8V20h3.1zM5.3 3.5A1.8 1.8 0 1 0 5.3 7a1.8 1.8 0 0 0 0-3.5M20.2 20h-3.1v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H10V8.8h3v1.5h.1c.4-.8 1.4-1.7 3-1.7 3.2 0 3.8 2.1 3.8 4.9z"/></svg></a><a href="https://www.instagram.com/falcon.capital_" target="_blank" rel="noopener" aria-label="Instagram"><svg class="g" viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 3.4A6.4 6.4 0 1 0 18.4 12 6.4 6.4 0 0 0 12 5.6zm0 10.5A4.1 4.1 0 1 1 16.1 12 4.1 4.1 0 0 1 12 16.1zm6.6-10.8a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5z"/></svg></a></div>
+      </div>
+      <div><h4>Soluciones</h4><a href="factoring.html?p=a">Factoring</a><a href="confirming.html?p=a">Confirming</a><a href="capital-de-trabajo.html?p=a">Capital de Trabajo</a><a href="simulador.html?p=a">Simulador</a></div>
+      <div><h4>Contacta con nosotros</h4><a href="mailto:info@falconcapital.pe">Correo electrónico</a><a href="https://wa.me/51955447475" target="_blank" rel="noopener">WhatsApp</a><a href="contactanos.html?p=a">Contáctanos</a><a href="ver.html?p=a&amp;u=preguntas-frecuentes">Preguntas frecuentes</a></div>
+      <div><h4>Falcon Capital</h4><a href="conocenos.html?p=a">¿Quiénes somos?</a><a href="ver.html?p=a&amp;u=reglamento-de-factoring">Reglamento de Factoring</a><a href="ver.html?p=a&amp;u=politica-de-privacidad">Política de privacidad</a><a href="ver.html?p=a&amp;u=constancia-de-registro">Constancia de registro (SBS)</a></div>
+    </div>
+    <div class="a-ft-btm">
+      <span>© 2026 Falcon Capital · Registrados ante la SBS · Participantes en CAVALI · Miembros de APEFAC</span>
+      <a class="a-ft-book" href="ver.html?p=a&amp;u=reclamaciones"><svg viewBox="0 0 24 24"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8.5h6"/></svg> Libro de Reclamaciones</a>
+    </div>
+  </div>
+</footer>
+<a class="a-fab" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-wa><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg><span>Contacta un experto</span></a>
+<div class="a-mbar" data-mbar>
+  <a class="a-btn a-btn-em" href="simulador.html?p=a">Simula tu crédito</a>
+  <a class="a-mbar-wa" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-wa aria-label="WhatsApp"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg></a>
+</div>
+</div>
+<div class="P pb" data-prop="b" id="b-top">
+<header class="b-hdr" data-bhdr>
+  <div class="b-wrap b-hdr-in">
+    <a class="b-logo" href="index.html?p=b" aria-label="Falcon Capital, inicio"><img src="../img/logo-light.png" alt="Falcon Capital" width="160" height="41"></a>
+    <nav class="b-nav" aria-label="Principal">
+      <a href="conocenos.html?p=b">Conócenos</a>
+      <div class="b-dd">
+        <button type="button" class="b-dd-btn" aria-expanded="false">Soluciones <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="b-dd-menu">
+          <a href="factoring.html?p=b"><i>01</i><span><b>Factoring</b><small>Convierte tus facturas en liquidez</small></span></a>
+          <a href="confirming.html?p=b"><i>02</i><span><b>Confirming</b><small>Administra el pago a tus proveedores</small></span></a>
+          <a href="capital-de-trabajo.html?p=b"><i>03</i><span><b>Capital de Trabajo</b><small>Recursos para tus proyectos</small></span></a>
+        </div>
+      </div>
+      <a href="blog.html?p=b">Blog</a>
+      <a class="b-nav-sim" href="simulador.html?p=b">Simulador</a>
+    </nav>
+    <div class="b-hdr-acts">
+      <a class="b-btn b-btn-ghost" href="ver.html?p=b&amp;u=iniciar-sesion">Iniciar sesión</a>
+      <a class="b-btn b-btn-em" href="ver.html?p=b&amp;u=registro">Crea tu cuenta</a>
+    </div>
+    <button class="b-burger" type="button" aria-label="Abrir menú" aria-expanded="false" data-menu><span></span><span></span></button>
+  </div>
+</header>
+<div class="b-mmenu" data-mmenu hidden>
+  <nav aria-label="Menú móvil">
+    <a href="conocenos.html?p=b"><i>01</i>Conócenos</a>
+    <a href="factoring.html?p=b"><i>02</i>Factoring</a>
+    <a href="confirming.html?p=b"><i>03</i>Confirming</a>
+    <a href="capital-de-trabajo.html?p=b"><i>04</i>Capital de Trabajo</a>
+    <a href="blog.html?p=b"><i>05</i>Blog</a>
+    <a href="simulador.html?p=b"><i>06</i>Simulador</a>
+    <a href="contactanos.html?p=b"><i>07</i>Contáctanos</a>
+  </nav>
+  <div class="b-mmenu-acts">
+    <a class="b-btn b-btn-em b-btn-lg" href="ver.html?p=b&amp;u=registro">Crea tu cuenta</a>
+    <a class="b-btn b-btn-ghost b-btn-lg" href="ver.html?p=b&amp;u=iniciar-sesion">Iniciar sesión</a>
+  </div>
+</div>
+<main>
+<section class="b-hero" id="b-simulador" data-sec="hero" data-hero>
+  <div class="b-hero-bg" aria-hidden="true"><img class="is-on" data-prod="factoring" src="../img/hero-factoring.jpg" alt="" style="object-position:58% 40%" loading="lazy"><img class="" data-prod="confirming" src="../img/hero-confirming.jpg" alt="" style="object-position:0% 45%" loading="lazy"><img class="" data-prod="capital" src="../img/hero-capital.jpg" alt="" style="object-position:46% 30%" loading="lazy"></div>
+  <div class="b-hero-shade" aria-hidden="true"></div>
+  <div class="b-wrap b-hero-in">
+    <div class="b-copies" data-swipe><div class="b-copy is-on" data-prod="factoring">
+        <span class="b-kick">01<i></i>Factoring</span>
+        <h1 class="b-h1">Convierte tus facturas en <em>liquidez inmediata</em></h1>
+        <p>Transforma tus facturas en oportunidades y fortalece el flujo de tu negocio sin complicaciones.</p>
+        <div class="b-copy-acts"><a class="b-more" href="#b-simulador" data-focus-sim>Simula tu crédito <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-more b-more-alt" href="factoring.html?p=b">Más información</a></div>
+      </div><div class="b-copy" data-prod="confirming" aria-hidden="true">
+        <span class="b-kick">02<i></i>Confirming</span>
+        <p class="b-h1">Ordena tus pagos y <em>potencia tu relación</em> con proveedores</p>
+        <p>Administra tus pagos de forma eficiente y permite que tus proveedores cobren antes del vencimiento.</p>
+        <div class="b-copy-acts"><a class="b-more" href="confirming.html?p=b#b-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-more b-more-alt" href="confirming.html?p=b">Más información</a></div>
+      </div><div class="b-copy" data-prod="capital" aria-hidden="true">
+        <span class="b-kick">03<i></i>Capital de Trabajo</span>
+        <p class="b-h1">Crece sin <em>comprometer</em> tu operación</p>
+        <p>Obtén los recursos que necesitas para ejecutar tus proyectos y mantener tu negocio en movimiento.</p>
+        <div class="b-copy-acts"><a class="b-more" href="capital-de-trabajo.html?p=b#b-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-more b-more-alt" href="capital-de-trabajo.html?p=b">Más información</a></div>
+      </div></div>
+    <div class="b-dots-row">
+      <button type="button" class="b-arrow" data-prev aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg></button>
+      <div class="b-dots" aria-label="Banners"><button type="button" data-prod="factoring" aria-label="Factoring" class="is-on" aria-current="true"><span>Factoring</span><b class="b-prog"></b></button><button type="button" data-prod="confirming" aria-label="Confirming"><span>Confirming</span><b class="b-prog"></b></button><button type="button" data-prod="capital" aria-label="Capital de Trabajo"><span>Capital de Trabajo</span><b class="b-prog"></b></button></div>
+      <button type="button" class="b-arrow" data-next aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+    </div>
+    <div class="b-sim b-sim-hero" data-sim data-step="datos">
+      <div class="b-sim-head">
+        <span class="b-sim-k">Simula tu factoring</span>
+        <ol class="b-steps" aria-label="Pasos"><li data-s="datos"><i>1</i>Tus datos</li><li data-s="simula"><i>2</i>Simulación</li><li data-s="evalua"><i>3</i>Evaluación</li></ol>
+        <span class="b-hola" data-hola-wrap hidden><span data-hola>Hola</span><button type="button" data-cambiar>Cambiar datos</button></span>
+      </div>
+      <form class="b-step b-gate" data-gate novalidate>
+        <div class="b-bar">
+          <label class="b-f"><span class="b-l">Nombre y apellido</span><input name="nombre" autocomplete="name" required placeholder="Ej. Ana Torres"></label>
+          <label class="b-f"><span class="b-l">RUC de tu empresa</span><input name="ruc" inputmode="numeric" maxlength="11" required placeholder="20123456789" data-digits></label>
+          <label class="b-f"><span class="b-l">Celular</span><span class="b-ph"><b>+51</b><input name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="11" required placeholder="912 345 678" data-phone></span></label>
+          <div class="b-f b-f-lock" aria-hidden="true"><span class="b-l">Recibirías hoy</span><output>S/ ••,•••.••</output><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2"/></svg></div>
+          <button type="submit" class="b-go"><span>Ver mi simulación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="b-gate-foot"><label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=b&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label><p class="b-gate-err" role="alert" hidden></p></div>
+      </form>
+      <div class="b-step b-calc" data-calc hidden>
+        <div class="b-bar">
+          <label class="b-f b-f-amt"><span class="b-l">Monto de la factura</span><span class="b-amt"><button type="button" class="b-cur" data-cur aria-label="Cambiar moneda, ahora soles">S/</button><input data-amt inputmode="numeric" autocomplete="off" value="100,000" aria-label="Monto"></span></label>
+          <div class="b-f b-f-days"><span class="b-l">Vence en (días)</span><span class="b-chips" role="group" aria-label="Plazo en días"><button type="button" data-d="30" aria-pressed="true">30</button><button type="button" data-d="60" aria-pressed="false">60</button><button type="button" data-d="90" aria-pressed="false">90</button><button type="button" data-d="120" aria-pressed="false">120</button></span></div>
+          <div class="b-f b-f-res" aria-live="polite"><span class="b-l">Recibirías hoy</span><output data-o="neto">S/ 96,755.00</output></div>
+          <button type="button" class="b-go" data-expand aria-expanded="false"><span>Quiero mi adelanto</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+        </div>
+        <div class="b-panel" data-panel hidden>
+          <div class="b-panel-in">
+            <div class="b-panel-sum">
+              <span class="b-l">Recibirías hoy</span>
+              <output class="b-panel-net" data-o="neto">S/ 96,755.00</output>
+              <div class="b-split" aria-hidden="true"><i data-split="neto"></i><i data-split="costo"></i></div>
+              <p class="b-split-l"><span><i></i><b data-o="pct">96.8 %</b> para ti</span><span><i></i>Descuento <b data-o="costo">S/ 3,245.00</b></span></p>
+              <dl class="brk">
+            <div><dt>Monto de la factura</dt><dd data-o="monto">S/ 100,000.00</dd></div>
+            <div><dt>Interés <small data-o="tem-l">TEM 1.75 %</small></dt><dd data-o="interes">− S/ 1,750.00</dd></div>
+            <div><dt>Comisión <small>1 %</small></dt><dd data-o="comision">− S/ 1,000.00</dd></div>
+            <div><dt>IGV <small>18 % de interés y comisión</small></dt><dd data-o="igv">− S/ 495.00</dd></div>
+            <div class="brk-t"><dt>Recibirías hoy</dt><dd data-o="neto">S/ 96,755.00</dd></div>
+          </dl>
+              <p class="b-note">Cálculo referencial con la fórmula del instructivo de Falcon Capital. La TEM se define según el monto y el plazo de tu operación; la comisión es de 1 % en soles o dólares, más IGV.</p>
+            </div>
+            <div class="b-panel-form lead">
+              <form class="lead-form" data-eval novalidate>
+                <h3>Recibe tu propuesta formal</h3>
+                <p class="b-panel-p"><span data-nombre1>Ana</span>, solo falta tu correo. La razón social se completa con tu RUC (consulta SUNAT).</p>
+                <label class="lf"><span>Correo</span><input name="email" type="email" placeholder="nombre@empresa.com" autocomplete="email" required><em class="lf-err">Revisa tu correo.</em></label>
+                <button class="lf-send" type="submit"><span>Enviar solicitud</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+                <p class="lf-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Sin costo ni compromiso.</p>
+              </form>
+              <div class="lead-ok" hidden tabindex="-1">
+          <span class="lead-ok-ico"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span>
+          <h3>¡Listo, <span data-ok-name>gracias</span>!</h3>
+          <p>Recibimos tu solicitud de <b data-ok-prod>Factoring</b>. Un ejecutivo de Falcon Capital te contactará en horario de atención.</p>
+          <ol class="lead-steps">
+            <li><b>Revisamos tu solicitud</b> y los datos de tu empresa.</li>
+            <li><b>Te contactamos</b> por llamada o WhatsApp.</li>
+            <li><b>Recibes tu propuesta formal</b> con la tasa final.</li>
+          </ol>
+          <div class="lead-ok-acts">
+            <a class="lead-wa" data-wa href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg> Continuar por WhatsApp</a>
+            <a class="lead-acc" href="ver.html?p=b&amp;u=registro">Crea tu cuenta <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+          </div>
+          <p class="lead-proto">Prototipo: en el sitio publicado este formulario se conecta al CRM de Falcon Capital.</p>
+        </div>
+            </div>
+          </div>
+          <button type="button" class="b-panel-x" data-collapse aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="b-ben" data-sec="beneficios">
+  <div class="b-wrap"><div class="b-ben-in"><p class="b-ben-k"><img src="../img/isotipo-falcon.png" alt="" width="28" height="28">Por qué Falcon Capital</p><ul><li data-r="up"><span class="b-ben-n">01</span><b>Respaldo financiero</b><span>Solidez para seguir creciendo.</span></li><li data-r="up"><span class="b-ben-n">02</span><b>Desembolsos rápidos</b><span>La liquidez que tu negocio necesita.</span></li><li data-r="up"><span class="b-ben-n">03</span><b>Asesoría personalizada</b><span>Te acompañamos en cada paso.</span></li><li data-r="up"><span class="b-ben-n">04</span><b>Experiencia y respaldo legal</b><span>Operaciones seguras y transparentes.</span></li></ul></div></div>
+</section>
+<section class="b-sec b-intro" id="b-presentacion" data-sec="presentacion">
+  <div class="b-wrap"><div class="b-intro-head"><span class="b-kicker" data-r="up">Quiénes somos</span><h2 data-r="up">Accede a la <em>liquidez</em> que impulsa el crecimiento de tu empresa</h2></div></div>
+  <div class="b-wrap b-intro-grid">
+    <div class="b-intro-txt">
+      <p class="b-lead" data-r="up">En Falcon Capital brindamos una alternativa de financiamiento diseñada para impulsar el crecimiento empresarial.</p>
+      <p data-r="up">Somos una empresa de soluciones financieras perteneciente al grupo económico <b>ON Empresas</b>, que ofrece una propuesta moderna, ágil y transparente para brindar liquidez inmediata a las empresas peruanas.</p>
+      <a class="b-link" href="conocenos.html?p=b" data-r="up">Conoce Falcon Capital <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="b-video-wrap" data-scrub="video">
+      <button class="b-video" type="button" data-video aria-label="Reproducir el video institucional">
+        <img src="../img/home-about.jpg" alt="" loading="lazy">
+        <span class="b-play"><svg class="g" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4L18.6 12z"/></svg></span>
+        <span class="b-video-cap"><b>Video institucional</b><small>Conoce cómo trabajamos</small></span>
+      </button>
+    </div>
+  </div>
+  <div class="b-wrap" data-sec="datos"><ul class="b-stats"><li data-r="up"><b><small>+ S/</small><span data-count="300">300</span><small>M</small></b><span>en desembolsos de facturas</span></li><li data-r="up"><b><small>+</small><span data-count="150">150</span></b><span>mypes atendidas en todo el país</span></li><li data-r="up"><b><small>+</small><span data-count="3">3</span><small>años</small></b><span>de operaciones en el mercado peruano</span></li>
+      <li class="b-stats-logo" data-r="up"><span class="b-plate"><img class="lg-on" src="../img/on-empresas-dark.png" alt="ON Empresas" loading="lazy"></span><span>Pertenecemos al grupo económico ON Empresas</span></li>
+      <li class="b-stats-logo" data-r="up"><span class="b-plate"><img class="lg-apefac" src="../img/logo-apefac.png" alt="APEFAC" loading="lazy"></span><span>Miembros de la Asociación Peruana de Factoring</span></li>
+    </ul></div>
+</section>
+<section class="b-sec b-sol" id="b-soluciones" data-sec="soluciones">
+  <div class="b-wrap">
+    <div class="b-head"><div><span class="b-kicker" data-r="up">Soluciones</span><h2 data-r="up">Tres soluciones para impulsar la <em>liquidez</em> de tu empresa</h2></div><p class="b-head-p" data-r="up">Factoring se simula en línea. Confirming y Capital de Trabajo se diseñan a la medida con un ejecutivo.</p></div>
+    <div class="b-stacks" data-stacks>
+    <article class="b-stack" style="--i:0">
+      <div class="b-stack-in">
+        <div class="b-stack-img"><img src="../img/sol-factoring.jpg" alt="" loading="lazy"></div>
+        <div class="b-stack-txt">
+          <span class="b-stack-n">01 / 03</span>
+          <h3>Factoring</h3>
+          <p>Cede tus facturas por cobrar y obtén liquidez en menos de 48 horas, sin recurrir a préstamos bancarios.</p>
+          <ul><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Liquidez en tiempo récord</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Agilidad</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Gestión optimizada</li></ul>
+          <div class="b-stack-acts"><a class="b-btn b-btn-em" href="simulador.html?p=b">Simula tu crédito <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-link" href="factoring.html?p=b">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </div>
+    </article>
+    <article class="b-stack" style="--i:1">
+      <div class="b-stack-in">
+        <div class="b-stack-img"><img src="../img/sol-confirming.jpg" alt="" loading="lazy"></div>
+        <div class="b-stack-txt">
+          <span class="b-stack-n">02 / 03</span>
+          <h3>Confirming</h3>
+          <p>Gestiona el pago a tus proveedores y permíteles adelantar el cobro antes del vencimiento, sin afectar tu liquidez.</p>
+          <ul><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Optimiza tu flujo de pagos</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Fortalece relaciones con proveedores</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Flexibilidad financiera</li></ul>
+          <div class="b-stack-acts"><a class="b-btn b-btn-em" href="confirming.html?p=b#b-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-link" href="confirming.html?p=b">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </div>
+    </article>
+    <article class="b-stack" style="--i:2">
+      <div class="b-stack-in">
+        <div class="b-stack-img"><img src="../img/sol-capital.jpg" alt="" loading="lazy"></div>
+        <div class="b-stack-txt">
+          <span class="b-stack-n">03 / 03</span>
+          <h3>Capital de Trabajo</h3>
+          <p>Financiamiento estructurado para proyectos estratégicos, ajustado a garantías, plazos y capacidad de pago.</p>
+          <ul><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Financiamiento a la medida</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Liquidez sin afectar tu operatividad</li><li><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg>Condiciones personalizadas</li></ul>
+          <div class="b-stack-acts"><a class="b-btn b-btn-em" href="capital-de-trabajo.html?p=b#b-contacto">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a><a class="b-link" href="capital-de-trabajo.html?p=b">Más información <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+        </div>
+      </div>
+    </article>
+    </div>
+  </div>
+</section>
+<section class="b-sec b-ceo" data-sec="gerencia">
+  <div class="b-wrap b-ceo-grid">
+    <div class="b-ceo-txt">
+      <span class="b-kicker" data-r="up">Mensaje de la gerencia</span>
+      <blockquote class="b-bubble"><p data-words>“Hoy las empresas necesitan más que financiamiento: requieren aliados que comprendan su ritmo, su mercado y su visión. En Falcon Capital unimos tecnología, experiencia financiera y compromiso humano para acompañarlos en su crecimiento, fortaleciendo su liquidez, su eficiencia y la relación con sus clientes.”</p></blockquote>
+      <footer class="b-sign" data-r="up"><b>Julio Sebastiani</b><span>Gerente General de Falcon Capital</span></footer>
+    </div>
+    <figure class="b-ceo-photo">
+      <span class="b-ceo-arc" aria-hidden="true"></span>
+      <img src="../img/julio-sin-fondo.png" alt="Julio Sebastiani, Gerente General de Falcon Capital" loading="lazy" data-r="up">
+    </figure>
+  </div>
+</section>
+<section class="b-sec b-act" id="b-actualidad" data-sec="actualidad">
+  <div class="b-wrap"><div class="b-head b-head-row"><div><span class="b-kicker" data-r="up">Falcon Capital en la actualidad</span><h2 data-r="up">Impulsando el futuro del factoring en el Perú</h2></div><div class="b-rail-nav"><button type="button" data-rail-prev aria-label="Anterior"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg></button><button type="button" data-rail-next aria-label="Siguiente"><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div></div></div>
+  <div class="b-rail" data-rail tabindex="0" aria-label="Noticias de Falcon Capital">
+      <article class="b-news">
+        <img src="../img/act-1.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">APEFAC</span><small>Asociación importante como compañía</small><h3>Ahora formamos parte del APEFAC</h3><p>Desde el 2025 somos parte de la Asociación Peruana de Empresas de Factoring (APEFAC), fortaleciendo nuestros procesos internos para brindar un servicio más seguro, ágil y eficiente a nuestros clientes.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-2.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Expopyme</span><small>Evento financiero de gran alcance</small><h3>Presentes en la XXVI Expopyme 2025</h3><p>Bruno Cárdenas, Coordinador de Gestión de Riesgos de Falcon Capital, con su ponencia “Gestión de Riesgos en la Era Digital: Fraude, cumplimiento y modelos predictivos”, destacó el valor de la analítica y la inteligencia artificial en la toma de decisiones financieras.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-3.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Congreso</span><small>Celebramos 10 años de Factoring en el Perú</small><h3>Participamos en el 5° Congreso Nacional de Factoring</h3><p>Nuestra participación reafirma el compromiso de seguir promoviendo soluciones financieras ágiles, transparentes y confiables, que fortalezcan la liquidez y el crecimiento sostenible de las empresas peruanas.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-4.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Rueda de negocio</span><small>Asociación estratégica</small><h3>Participamos en la rueda de negocios del Club Terrazas</h3><p>Fuimos parte de este espacio que conecta a empresas y líderes, fortaleciendo relaciones y generando nuevas oportunidades de crecimiento.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-5.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Seminario</span><small>Espacios clave del sector</small><h3>Conectando ideas en el Factoring Road Show Lima 2026</h3><p>Participamos de este importante seminario que reúne a expertos del Perú y la región, donde profundizamos en las tendencias del confirming y el financiamiento, fortaleciendo nuestro conocimiento en el sector.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-expocobre.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Expocobre</span><small>Oportunidades en sectores estratégicos</small><h3>Estamos presentes en el Expocobre 2026</h3><p>Participamos en uno de los principales encuentros del sector minero, conectando con empresas y ofreciendo soluciones financieras ágiles que impulsan su crecimiento y liquidez.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-expoindustria.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Expo Industria</span><small>Conectados con el crecimiento industrial</small><h3>Falcon Capital presente en el Expo Industria 2026</h3><p>Acompañamos a las industrias con soluciones financieras ágiles para mantener su producción, optimizar su liquidez y potenciar su crecimiento.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-masterclass.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Master class</span><small>Estrategias para generar mejores resultados</small><h3>Participamos en el Master Class “Tus palabras venden”</h3><p>Esta capacitación nos permitió fortalecer nuestras habilidades para estructurar mensajes que generan decisiones, influir de manera efectiva y negociar sin perder valor, logrando cierres más sólidos y estratégicos.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-copa-apefac.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Copa APEFAC</span><small>Juntos, dentro y fuera de la cancha</small><h3>¡Debutamos con triunfo en la Copa APEFAC 2026!</h3><p>Nuestro equipo inició el campeonato de fútbol con una gran victoria, demostrando compromiso, unión y trabajo en equipo dentro y fuera de la cancha.</p></div>
+      </article>
+      <article class="b-news">
+        <img src="../img/act-factrack.jpg" alt="" loading="lazy">
+        <div class="b-news-body"><span class="b-tag">Aniversario</span><small>10 años conectando oportunidades</small><h3>Impulsando juntos el futuro del factoring en el Perú</h3><p>Falcon Capital, representado por nuestro Gerente General, Julio Sebastiani, participó en la celebración por los 10 años de Factrack, un encuentro que reunió a referentes del sector para compartir perspectivas sobre la evolución y futuro del factoring en el Perú.</p></div>
+      </article>
+  </div>
+  <div class="b-wrap"><div class="b-rail-bar"><i data-rail-bar></i></div></div>
+</section>
+<section class="b-sec b-blog" id="b-blog" data-sec="blog">
+  <div class="b-wrap">
+    <div class="b-head b-head-row"><div><span class="b-kicker" data-r="up">Blog</span><h2 data-r="up">Entiende tus finanzas. Impulsa tu negocio</h2></div><a class="b-btn b-btn-dark" href="blog.html?p=b">Ver el blog <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+    <div class="b-blog-grid">
+      <a class="b-post" href="articulo.html?p=b" data-r="up" data-cat="Factoring">
+        <img src="../img/blog-1.jpg" alt="" loading="lazy">
+        <div class="b-post-body"><span class="b-tag">Factoring</span><h3>Cómo mejorar la liquidez de tu empresa sin afectar su estructura financiera</h3><span class="b-post-more">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+      <a class="b-post" href="articulo.html?p=b" data-r="up" data-cat="Factoring">
+        <img src="../img/blog-2.jpg" alt="" loading="lazy">
+        <div class="b-post-body"><span class="b-tag">Factoring</span><h3>5 señales de que tu empresa necesita mejorar su flujo de caja</h3><span class="b-post-more">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+      <a class="b-post" href="articulo.html?p=b" data-r="up" data-cat="Confirming">
+        <img src="../img/blog-5.jpg" alt="" loading="lazy">
+        <div class="b-post-body"><span class="b-tag">Confirming</span><h3>Confirming: la solución para optimizar el pago a tus proveedores</h3><span class="b-post-more">Leer artículo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></span></div>
+      </a>
+    </div>
+  </div>
+</section>
+<section class="b-sec b-testis" data-sec="testimonios">
+  <div class="b-wrap b-testi">
+    <span class="b-kicker" data-r="up">Testimonios</span>
+    <figure data-r="up">
+      <blockquote>“Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.”</blockquote>
+      <figcaption><span class="b-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+    </figure>
+    <div class="b-testi-nav"><span class="is-on"></span><span></span><span></span></div>
+    <p class="b-pend">Formato de ejemplo · Falcon Capital debe entregar los testimonios</p>
+  </div>
+</section>
+<section class="b-sec b-seg" id="b-seguridad" data-sec="seguridad">
+  <div class="b-seg-glow" aria-hidden="true"></div>
+  <div class="b-wrap b-seg-in">
+    <span class="b-kicker" data-r="up">Seguridad y respaldo</span>
+    <h2 data-r="up">Operamos con <em>respaldo</em> y <em>seguridad financiera</em> en Perú</h2>
+    <p data-r="up">En Falcon Capital garantizamos operaciones seguras y confiables, cumpliendo con todas las normativas financieras vigentes aplicables al factoring y descuento de facturas. Somos participantes oficiales en Cavali y estamos debidamente registrados ante la Superintendencia de Banca, Seguros y AFP (SBS), lo que respalda la transparencia y solidez de nuestras operaciones.</p>
+    <div class="b-seals" data-r="up">
+      <figure><span><img src="../img/logo-sbs.png" alt="Superintendencia de Banca, Seguros y AFP" loading="lazy"></span><figcaption>Registrados ante la SBS</figcaption></figure>
+      <figure><span><img src="../img/logo-cavali.png" alt="CAVALI" loading="lazy"></span><figcaption>Participantes en CAVALI</figcaption></figure>
+      <figure><span><img src="../img/logo-apefac.png" alt="APEFAC" loading="lazy"></span><figcaption>Miembros de APEFAC</figcaption></figure>
+    </div>
+    <a class="b-link" href="ver.html?p=b&amp;u=constancia-de-registro" data-r="up">Ver constancia de registro <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+  </div>
+</section>
+<section class="b-sec b-can" id="b-canales" data-sec="canales">
+  <div class="b-wrap">
+    <div class="b-head b-head-c"><div><span class="b-kicker" data-r="up">Canales de atención</span><h2 data-r="up">Una respuesta ágil, cercana y especializada</h2></div></div>
+    <div class="b-can-grid"><a class="b-ch" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-r="up">
+        <span class="b-ch-i"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg></span><span class="b-ch-t"><b>WhatsApp</b><small>Atención directa con un ejecutivo comercial, de lunes a viernes.</small></span><span class="b-ch-v">955 447 475 <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a><a class="b-ch" href="mailto:info@falconcapital.pe" data-r="up">
+        <span class="b-ch-i"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></span><span class="b-ch-t"><b>Correo</b><small>Escríbenos con el detalle de tu consulta y te respondemos en el día.</small></span><span class="b-ch-v">info@falconcapital.pe <svg viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></svg></span>
+      </a><div class="b-ch" data-r="up">
+        <span class="b-ch-i"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.5V12l3.6 2.4"/></svg></span><span class="b-ch-t"><b>Horario de atención</b><small>Lunes a viernes, de 9:00&nbsp;a.&nbsp;m. a 6:00&nbsp;p.&nbsp;m.</small></span><span class="b-ch-v b-open" data-open><i></i><span>Horario de Lima</span></span>
+      </div></div>
+  </div>
+</section>
+<section class="b-cta" data-sec="cta">
+  <img class="b-cta-bg" src="../img/hero-evaluacion.jpg" alt="" loading="lazy" data-scrub="cta">
+  <div class="b-wrap b-cta-in">
+    <h2 data-r="up">¿Preparado para obtener la liquidez que tu empresa necesita?</h2>
+    <p data-r="up">Descubre cómo las soluciones financieras de Falcon Capital pueden impulsar la liquidez y el crecimiento de tu empresa, de forma ágil, segura y sin afectar tu flujo de caja.</p>
+    <div class="b-cta-acts" data-r="up">
+      <a class="b-btn b-btn-em b-btn-lg" href="simulador.html?p=b">Simula tu crédito <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+      <a class="b-btn b-btn-ghost b-btn-lg" href="contactanos.html?p=b">Contáctanos</a>
+    </div>
+  </div>
+</section>
+</main>
+<footer class="b-ft" data-sec="footer">
+  <div class="b-wrap">
+    <div class="b-ft-news">
+      <div><b>Guías para mejorar el flujo de caja de tu empresa</b><span>Un correo al mes con artículos del blog y novedades de Falcon Capital.</span></div>
+      <form class="nl" novalidate data-nl>
+        <input type="email" required placeholder="Tu correo de trabajo" aria-label="Correo">
+        <button type="submit">Suscribirme</button>
+        <p class="nl-ok" hidden>¡Gracias! Te escribiremos pronto.</p>
+      </form>
+    </div>
+    <div class="b-ft-cols">
+      <div class="b-ft-brand">
+        <img src="../img/logo-light.png" alt="Falcon Capital" width="170" height="44" loading="lazy">
+        <p><svg viewBox="0 0 24 24"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg> Av. José Gálvez Barrenechea 535, Urb. Corpac, San Isidro · Lima</p>
+        <div class="b-social"><a href="https://www.facebook.com/falconcapital.p" target="_blank" rel="noopener" aria-label="Facebook"><svg class="g" viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3h-3.1V9.1c0-.9.3-1.5 1.5-1.5h1.7V4.9c-.3 0-1.3-.1-2.4-.1-2.4 0-4 1.5-4 4.1V11H7.6v3h2.7v8z"/></svg></a><a href="https://www.linkedin.com/company/falcon-capital-pe/" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="g" viewBox="0 0 24 24"><path d="M6.9 8.8H3.8V20h3.1zM5.3 3.5A1.8 1.8 0 1 0 5.3 7a1.8 1.8 0 0 0 0-3.5M20.2 20h-3.1v-5.5c0-1.3 0-3-1.8-3s-2.1 1.4-2.1 2.9V20H10V8.8h3v1.5h.1c.4-.8 1.4-1.7 3-1.7 3.2 0 3.8 2.1 3.8 4.9z"/></svg></a><a href="https://www.instagram.com/falcon.capital_" target="_blank" rel="noopener" aria-label="Instagram"><svg class="g" viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.9.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.3.1 1.7.1 4.9s0 3.6-.1 4.9c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.3.1-1.7.1-4.9.1s-3.6 0-4.9-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.9c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4 1.3-.1 1.7-.1 4.8-.1zm0 3.4A6.4 6.4 0 1 0 18.4 12 6.4 6.4 0 0 0 12 5.6zm0 10.5A4.1 4.1 0 1 1 16.1 12 4.1 4.1 0 0 1 12 16.1zm6.6-10.8a1.5 1.5 0 1 1-1.5-1.5 1.5 1.5 0 0 1 1.5 1.5z"/></svg></a></div>
+      </div>
+      <div><h4>Soluciones</h4><a href="factoring.html?p=b">Factoring</a><a href="confirming.html?p=b">Confirming</a><a href="capital-de-trabajo.html?p=b">Capital de Trabajo</a><a href="simulador.html?p=b">Simulador</a></div>
+      <div><h4>Contacta con nosotros</h4><a href="mailto:info@falconcapital.pe">Correo electrónico</a><a href="https://wa.me/51955447475" target="_blank" rel="noopener">WhatsApp</a><a href="contactanos.html?p=b">Contáctanos</a><a href="ver.html?p=b&amp;u=preguntas-frecuentes">Preguntas frecuentes</a></div>
+      <div><h4>Falcon Capital</h4><a href="conocenos.html?p=b">¿Quiénes somos?</a><a href="ver.html?p=b&amp;u=reglamento-de-factoring">Reglamento de Factoring</a><a href="ver.html?p=b&amp;u=politica-de-privacidad">Política de privacidad</a><a href="ver.html?p=b&amp;u=constancia-de-registro">Constancia de registro (SBS)</a></div>
+    </div>
+    <div class="b-ft-btm">
+      <span>© 2026 Falcon Capital · Registrados ante la SBS · Participantes en CAVALI · Miembros de APEFAC</span>
+      <a class="b-ft-book" href="ver.html?p=b&amp;u=reclamaciones"><svg viewBox="0 0 24 24"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8.5h6"/></svg> Libro de Reclamaciones</a>
+    </div>
+  </div>
+</footer>
+<a class="b-fab" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-wa><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg><span>Contacta un experto</span></a>
+<div class="b-mbar" data-mbar>
+  <a class="b-btn b-btn-em" href="simulador.html?p=b">Simula tu crédito</a>
+  <a class="b-mbar-wa" href="https://wa.me/51955447475" target="_blank" rel="noopener" data-wa aria-label="WhatsApp"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg></a>
+</div>
+</div>
+<div class="vmodal" data-vmodal hidden>
+  <div class="vmodal-bg" data-close></div>
+  <div class="vmodal-box" role="dialog" aria-modal="true" aria-label="Video institucional">
+    <button type="button" class="vmodal-x" data-close aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="vmodal-ph"><svg class="g" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4L18.6 12z"/></svg><b>Video institucional</b><span>Aquí se incrusta el video cuando Falcon Capital lo entregue (YouTube, Vimeo o archivo propio).</span></div>
+  </div>
+</div>
+<script src="../assets/propuestas.js"></script>
+</body>
+</html>
