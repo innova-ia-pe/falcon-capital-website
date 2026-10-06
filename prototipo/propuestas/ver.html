@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" data-p="a" data-pag="ver" data-visor="1">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Página interna · Propuestas Falcon Capital</title>
+<meta name="description" content="Propuestas A y B del sitio de Falcon Capital, con la versión actual para comparar.">
+<script>(function(){var d=document.documentElement,p='a';d.className+=' js';try{if('scrollRestoration' in history)history.scrollRestoration='manual';var q=new URLSearchParams(location.search).get('p');p=q||localStorage.getItem('fc-prop')||'a';}catch(e){}if(!/^(a|b|actual)$/.test(p))p='a';d.setAttribute('data-p',p);try{localStorage.setItem('fc-prop',p)}catch(e){}})();</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/prop-base.css">
+<link rel="stylesheet" href="../assets/prop-a.css">
+<link rel="stylesheet" href="../assets/prop-b.css">
+</head>
+<body>
+<div class="veil" aria-hidden="true"></div>
+<div class="pbar" data-pbar>
+  <div class="pbar-in">
+    <div class="pbar-left">
+      <span class="pbar-brand"><img src="../img/logo-light.png" alt="Falcon Capital" width="94" height="24"></span>
+      <a class="pbar-back" href="index.html" data-back><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg><span><b data-back-to>Volver a la propuesta</b><small data-back-page>Página interna · diseño actual</small></span></a>
+      <div class="pbar-pages">
+        <button type="button" class="pbar-pg-btn" aria-expanded="false" aria-haspopup="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg><span class="pbar-pg-l">Página interna</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+        <nav class="pbar-pg-menu" aria-label="Páginas de las propuestas"><a href="index.html" data-pg="index">Inicio</a><a href="conocenos.html" data-pg="conocenos">Conócenos</a><a href="factoring.html" data-pg="factoring">Factoring</a><a href="confirming.html" data-pg="confirming">Confirming</a><a href="capital-de-trabajo.html" data-pg="capital-de-trabajo">Capital de Trabajo</a><a href="simulador.html" data-pg="simulador">Simulador</a><a href="blog.html" data-pg="blog">Blog</a><a href="articulo.html" data-pg="articulo">Artículo</a><a href="contactanos.html" data-pg="contactanos">Contáctanos</a></nav>
+      </div>
+    </div>
+    <div class="pbar-sw" role="tablist" aria-label="Versión">
+      <span class="pbar-ind" aria-hidden="true"></span>
+      <a role="tab" href="#" data-go="actual"><span class="pbar-full">Versión actual</span><span class="pbar-short">Actual</span></a>
+      <a role="tab" href="#" data-go="a"><b>A</b><span class="pbar-full">Claridad</span></a>
+      <a role="tab" href="#" data-go="b"><b>B</b><span class="pbar-full">Impulso</span></a>
+    </div>
+    <button class="pbar-more" type="button" aria-expanded="false" aria-controls="pbar-notes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg><span>¿Qué cambia?</span></button>
+  </div>
+  <div class="pbar-notes" id="pbar-notes" hidden>
+    <div class="pbar-notes-in">
+      <article>
+        <h3>Versión actual</h3>
+        <p>Lo que hoy está en <code>demo</code>, con los cambios de Wilmer. Cada página de la propuesta tiene su par en la
+          versión actual para comparar.</p>
+      </article>
+      <article>
+        <h3><b>A</b> Claridad</h3>
+        <p>Clara y editorial. El simulador conversa contigo: primero «Hola, soy…» con nombre, RUC y celular, y recién
+          después la simulación en una frase. El correo se pide solo al solicitar la evaluación.</p>
+        <ul><li>Flujo de cada producto como recorrido horizontal que avanza al bajar.</li>
+          <li>Marco normativo como expediente ordenado por temas, con los sellos de la SBS y CAVALI.</li></ul>
+      </article>
+      <article>
+        <h3><b>B</b> Impulso</h3>
+        <p>Oscura y fotográfica. El simulador es una barra en dos pasos: tus datos y luego la simulación, sin salir del
+          banner. Los banners se deslizan con el dedo en el celular.</p>
+        <ul><li>Flujo de cada producto en una línea de tiempo que se dibuja al bajar.</li>
+          <li>Marco normativo como índice tipográfico grande sobre la imagen del mazo.</li></ul>
+      </article>
+    </div>
+    <p class="pbar-notes-foot">Solo Factoring tiene simulador; Confirming y Capital de Trabajo son informativos y llevan al
+      formulario. Atajos: teclas 1, 2 y 3. Detalle en <code>PROPUESTAS.md</code>.</p>
+  </div>
+</div>
+<iframe class="actual" title="Versión actual" data-src="../index.html" hidden></iframe>
+
+
+<div class="vmodal" data-vmodal hidden>
+  <div class="vmodal-bg" data-close></div>
+  <div class="vmodal-box" role="dialog" aria-modal="true" aria-label="Video institucional">
+    <button type="button" class="vmodal-x" data-close aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    <div class="vmodal-ph"><svg class="g" viewBox="0 0 24 24"><path d="M8.5 5.8v12.4L18.6 12z"/></svg><b>Video institucional</b><span>Aquí se incrusta el video cuando Falcon Capital lo entregue (YouTube, Vimeo o archivo propio).</span></div>
+  </div>
+</div>
+<script>window.FC_EXTERNAS={"registro": "Crea tu cuenta", "iniciar-sesion": "Iniciar sesión", "reclamaciones": "Libro de Reclamaciones", "preguntas-frecuentes": "Preguntas frecuentes", "reglamento-de-factoring": "Reglamento de Factoring", "politica-de-privacidad": "Política de privacidad", "terminos-y-condiciones": "Términos y condiciones", "politica-de-cookies": "Política de cookies", "constancia-de-registro": "Constancia de registro", "gracias": "Confirmación de contacto", "pantallas": "Mapa de pantallas"};</script>
+<script src="../assets/propuestas.js"></script>
+</body>
+</html>
