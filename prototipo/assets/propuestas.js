@@ -11,7 +11,7 @@
        IGV      = 18 % del interés y de la comisión (antes de redondear)
        neto     = monto − interés − comisión − IGV       (la retención no se usa)
      TARIFA.tramos: TEM por monto y plazo. Falcon debe entregar la tabla final;
-     mientras tanto todos los tramos usan la TEM del ejemplo (1.75 %).
+     mientras tanto todos los tramos usan la TEM de pizarra acordada (1.80 %, minuta 006).
    ========================================================================== */
 (function () {
   'use strict';
@@ -27,7 +27,7 @@
     comision: 1.0,          /* % sobre el monto, en soles o dólares */
     igv: 18,
     tramos: [               /* hasta: monto máximo del tramo · tem: TEM % por plazo en días */
-      { hasta: Infinity, tem: { 30: 1.75, 60: 1.75, 90: 1.75, 120: 1.75 } }
+      { hasta: Infinity, tem: { 30: 1.80, 60: 1.80, 90: 1.80, 120: 1.80 } }
     ]
   };
   var MAX = 100000000;
@@ -339,6 +339,11 @@
       $$('[data-s]', sim).forEach(function (li) {
         li.classList.toggle('is-done', n === 'ok' || orden.indexOf(li.dataset.s) < orden.indexOf(n));
       });
+      $$('[data-ir]', sim).forEach(function (b) {
+        var actual = b.dataset.ir === n || (n === 'ok' && b.dataset.ir === 'evalua');
+        b.disabled = b.dataset.ir !== 'datos' && !lead;
+        if (b.closest('.b-steps')) b.setAttribute('aria-current', actual ? 'step' : 'false');
+      });
       if (gate) gate.hidden = n !== 'datos';
       if (calc) calc.hidden = n === 'datos' || (!panel && (n === 'evalua' || n === 'ok'));
       if (evalf && !panel) evalf.hidden = n !== 'evalua';
@@ -392,6 +397,38 @@
         setTimeout(function () { var i = gate && $('input', gate); if (i) i.focus({ preventScroll: true }); }, 50);
       });
     });
+
+    /* --- pasos clicables (B): volver a cualquier etapa para editar y recalcular (minuta 006).
+       «Tus datos» abre el formulario con lo ya ingresado; al enviarlo se conserva la simulación. */
+    function llenarGate() {
+      if (!gate || !lead) return;
+      ['nombre', 'ruc', 'celular'].forEach(function (k) { if (gate.elements[k]) gate.elements[k].value = lead[k] || ''; });
+      if (gate.elements.acepto) gate.elements.acepto.checked = true;
+      $$('.bad', gate).forEach(function (x) { x.classList.remove('bad'); });
+    }
+    function reabrirEnvio() {
+      /* si ya se envió y la persona vuelve a editar, el formulario de evaluación queda listo para reenviar */
+      if (panel && ok && evalf && !ok.hidden) { ok.hidden = true; evalf.hidden = false; }
+    }
+    function ir(n) {
+      if (n !== 'datos' && !lead) return;
+      if (n === 'datos') {
+        reabrirEnvio();
+        if (panel && !panel.hidden) abrirPanel(false);
+        llenarGate();
+        paso('datos');
+        setTimeout(function () { var i = gate && $('input', gate); if (i) i.focus({ preventScroll: true }); }, 50);
+      } else if (n === 'simula') {
+        reabrirEnvio();
+        if (panel && !panel.hidden) abrirPanel(false); else paso('simula');
+        calcular();
+      } else if (panel) {
+        if (panel.hidden) abrirPanel(true);
+      } else {
+        paso('evalua');
+      }
+    }
+    $$('[data-ir]', sim).forEach(function (b) { b.addEventListener('click', function () { ir(b.dataset.ir); }); });
 
     /* --- paso 2: simulación */
     function tween(els, desde, hasta, cur) {
@@ -779,6 +816,25 @@
 
   /* ================================================================ efectos ligados al scroll */
   var flujos = $$('[data-flow]', root), why = $('[data-why]', root);
+  /* la línea de la línea de tiempo empieza y termina en el centro del primer y del último paso (minuta 006) */
+  function ajustarLineas() {
+    $$('.b-tl-line', root).forEach(function (l) {
+      var ol = l.parentElement, ref = l.offsetParent || ol, dots = $$('.b-tl-dot', ol);
+      if (dots.length < 2) return;
+      /* se mide contra el bloque que contiene a la línea (su offsetParent), no contra la lista */
+      var ro = ref.getBoundingClientRect(), a = dots[0].getBoundingClientRect(), z = dots[dots.length - 1].getBoundingClientRect();
+      l.style.top = Math.round(a.top + a.height / 2 - ro.top - ref.clientTop) + 'px';
+      l.style.bottom = Math.round(ro.bottom - ref.clientTop - (z.top + z.height / 2)) + 'px';
+    });
+  }
+  ajustarLineas();
+  addEventListener('resize', ajustarLineas);
+  addEventListener('load', ajustarLineas);
+  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(ajustarLineas);
+  if ('ResizeObserver' in window) {
+    var roLineas = new ResizeObserver(ajustarLineas);
+    $$('.b-tl ol', root).forEach(function (ol) { roLineas.observe(ol); });
+  }
   var lastY = scrollY, pend = false;
   function efectos() {
     pend = false;
@@ -791,6 +847,7 @@
         else if (y < lastY - 6 || y < 500) hdr.classList.remove('is-hidden');
       }
     }
+    if (flujos.length) ajustarLineas();
     flujos.forEach(function (f) {
       var r = f.getBoundingClientRect(), p = clamp((vh * 0.75 - r.top) / Math.max(r.height, 1), 0, 1);
       f.style.setProperty('--p', p.toFixed(3));

@@ -36,7 +36,7 @@ entre páginas; los formularios de contacto llegan precompletados.
 | Pedir los datos **antes** del simulador, de forma amigable | Simulador en tres pasos: **1 Tus datos** (nombre, RUC, celular y consentimiento) → **2 Simulación** al instante → **3 Evaluación** (solo falta el correo). Detalle abajo. |
 | Solo Factoring con simulador; Confirming y Capital de Trabajo informativos | En el banner, Factoring muestra el simulador. Confirming y Capital de Trabajo muestran una tarjeta informativa que lleva al formulario de contacto. En sus páginas no hay simulador. |
 | Comisión de 1 % en soles o dólares | Aplicada (`TARIFA.comision` en `assets/propuestas.js`). |
-| Tasas de interés | **No llegó la tabla:** el mensaje decía «usar esto:» sin adjunto. El simulador ya acepta TEM por monto y plazo (`TARIFA.tramos`); mientras tanto usa la TEM del ejemplo del instructivo (1.75 %). |
+| Tasas de interés | **No llegó la tabla:** el mensaje decía «usar esto:» sin adjunto. El simulador ya acepta TEM por monto y plazo (`TARIFA.tramos`); mientras tanto usa la TEM de pizarra de 1.80 % acordada en la minuta 006. |
 | Logos SBS, CAVALI y APEFAC en PNG | `img/logo-sbs.png`, `img/logo-cavali.png` (del SVG oficial que subió Wilmer, renderizado en alta) y `img/logo-apefac.png` (del sitio oficial apefac.com, con fondo transparente). |
 | Confirming con más detalle en «¿Qué es?» | Nueva sección: las **tres partes** (tu empresa, Falcon Capital y tus proveedores), **lo que gana cada lado** y las **5 ventajas** del confirming, tomadas del artículo del blog del cliente. |
 | Cumplimiento y respaldo: sin las «cardsitas» de arriba y más protagonismo al marco normativo | Se eliminan las cinco etiquetas. A: expediente ordenado por tema, con la Ley N.° 29623 destacada y los sellos de la SBS y CAVALI. B: índice tipográfico grande sobre la foto del mazo. |
@@ -50,6 +50,25 @@ entre páginas; los formularios de contacto llegan precompletados.
 | Formulario «Contacta a un experto» en las tres páginas de producto (minuta 004) | Con los campos de la maqueta y la solución preseleccionada, más «Ten a la mano» (requisitos). |
 | Conócenos: foto del equipo al costado del texto (minuta 004) | Hecho en las dos propuestas. |
 | Home orientado a conversión (minuta 005) | Simulador y beneficios en el primer pantallazo; franja «Por qué Falcon Capital» bajo el banner; barra fija en celular con «Simula tu crédito» y WhatsApp. |
+
+## Ajustes de la minuta 006 (07/10/2026) · solo propuesta B
+
+Falcon Capital prefirió la **opción B**; los cambios se aplicaron solo ahí.
+
+| Pedido | Resultado |
+|---|---|
+| Reemplazar «Quiero mi adelanto» | El botón dice **«Solicitar evaluación»**. |
+| Tasa 1.80 % en lugar de 1.75 % | `TARIFA.tramos` usa 1.80 % (sujeto a la fórmula y reglas vigentes de Falcon). |
+| Mensaje de tasa referencial | Bajo la simulación: «Cálculo referencial basado en tasas de pizarra. La tasa final depende de la evaluación crediticia». En el desglose se aclara que la simulación no es una oferta. |
+| Volver de la etapa 3 a la 2 y la 1 | Los pasos **Tus datos · Mi simulación · Mi evaluación** son clicables. «Tus datos» abre el formulario con lo ya ingresado; al guardar se conserva la simulación. Si ya se envió la solicitud, se puede editar y volver a enviar. |
+| Contraste del nombre y «Cambiar datos» | Saludo en una cápsula oscura y «Cambiar datos» como botón verde. |
+| Espacio vacío del simulador | El panel de evaluación va en horizontal: resumen · desglose · formulario. En tablet pasa a dos columnas y en celular a una. |
+| Servicios sin números de orden | Menú Soluciones, banner, tarjetas de soluciones, franja «Por qué Falcon Capital», «Por qué elegirnos» y las 5 ventajas del confirming usan íconos. La numeración queda solo en «Así funciona» (pasos reales). |
+| Líneas de «Así funciona» | La línea va del centro del primer paso al del último (la calcula `propuestas.js`). |
+| Grupo empresarial | Debajo de las cifras, franja con el logo y el nombre **Grupo ON Empresas** (y APEFAC). En Conócenos se quitaron las etiquetas duplicadas del banner. |
+| Indicadores | Cifras más grandes, en tres tarjetas destacadas; se mantiene el conteo animado. |
+| Animación de secciones | Las entradas son laterales y más suaves en lugar de subir desde abajo. |
+| Imágenes por servicio | Pendiente: Falcon enviará propuestas e Innova IA propondrá variantes durante el desarrollo. |
 
 ## Cómo pedir los datos antes del simulador
 
@@ -102,7 +121,7 @@ tramos: [ { hasta: 50000,   tem: { 30: 2.1, 60: 2.0, 90: 1.9, 120: 1.9 } },
 ```
 
 Los valores de este ejemplo son ilustrativos: hay que reemplazarlos por la tabla
-de Falcon.
+de Falcon. Hoy todos los tramos usan 1.80 % (minuta 006).
 
 ## Diferencias entre A y B
 
