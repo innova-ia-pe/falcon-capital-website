@@ -60,8 +60,6 @@
       return;
     }
 
-    var d = e.target.closest('.hero-nav button');
-    if (d) { go([].indexOf.call(d.parentNode.children, d), true); }
   });
 
   function closeDock() {
@@ -83,41 +81,13 @@
     if (!saved) { setTimeout(function () { box.hidden = false; }, 900); }
   }
 
-  /* Los formularios son maqueta: no envían datos a ningún servidor */
+  /* Los formularios normales de la web son maqueta */
   document.addEventListener('submit', function (e) {
+    if (e.target.classList.contains('fsim-form')) return;
     e.preventDefault();
     var msg = e.target.querySelector('.form-msg');
     if (msg) { msg.hidden = false; }
   });
-
-  /* --------------------------------------------------- carrusel del banner */
-  var groups = [].slice.call(document.querySelectorAll('[data-slides]'));
-  var nav = document.querySelector('.hero-nav');
-  var timer, current = 0;
-
-  function go(i, manual) {
-    if (!groups.length) { return; }
-    current = i;
-    groups.forEach(function (g) {
-      [].forEach.call(g.children, function (s, n) { s.classList.toggle('on', n === i); });
-    });
-    if (nav) {
-      [].forEach.call(nav.children, function (b, n) {
-        b.classList.remove('on');
-        if (n === i) { void b.offsetWidth; b.classList.add('on'); }
-      });
-    }
-    if (manual) { schedule(); }
-  }
-
-  function schedule() {
-    clearTimeout(timer);
-    var total = groups.length ? groups[0].children.length : 0;
-    if (total < 2) { return; }
-    timer = setTimeout(function () { go((current + 1) % total); schedule(); }, 7000);
-  }
-
-  if (groups.length) { go(0); schedule(); }
 
   /* ------------------------------------------- aparición suave al hacer scroll */
   if ('IntersectionObserver' in window) {
@@ -140,4 +110,266 @@
       io.observe(el);
     });
   }
+
+  /* --------------------------------------------------- simulador (maqueta v2.0)
+     En tres pasos para que el banner no se sature: 1) producto, monto y plazo,
+     2) datos de contacto, 3) resultado. Los campos son los de la maqueta.
+     Falcon Capital aún no entrega tasas, comisiones ni fórmula: el resultado se
+     queda en cero, como en la maqueta. Cuando lleguen se completa
+     PRODUCTOS[x].calcular(monto, dias, moneda) → {neto, tasa, comision}. */
+  function initSimulador() {
+    var PRODUCTOS = {
+      factoring: {
+        nombre: 'Factoring',
+        subtitulo: 'Porque la rapidez no cuesta más, simula tu anticipo ahora.',
+        monto: 'Monto de la factura',
+        tasa: 'Tasa Factoring Efectiva Mensual',
+        calcular: null
+      },
+      confirming: {
+        nombre: 'Confirming',
+        subtitulo: 'Porque la rapidez no cuesta más.',
+        monto: 'Monto de las facturas',
+        tasa: 'Tasa Confirming Efectiva Mensual',
+        calcular: null
+      },
+      capital: {
+        nombre: 'Capital de Trabajo',
+        subtitulo: 'Porque la rapidez no cuesta más.',
+        monto: 'Monto a solicitar',
+        tasa: 'Tasa Efectiva Mensual',
+        calcular: null
+      }
+    };
+    function miles(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
+    function numero(v) { return parseFloat(String(v || '').replace(/[^0-9.]/g, '')) || 0; }
+
+    document.querySelectorAll('.fsim').forEach(function (c) {
+      var prod = 'factoring';
+      var form = c.querySelector('.fsim-form');
+      var pasos = [].slice.call(c.querySelectorAll('.fsim-step'));
+      var marcas = [].slice.call(c.querySelectorAll('.fsim-steps li'));
+      var monto = form.querySelector('[name=monto]');
+      var q = function (s) { return c.querySelector(s); };
+
+      function paso(n) {
+        pasos.forEach(function (p) { p.hidden = +p.dataset.step !== n; });
+        marcas.forEach(function (m, k) {
+          m.classList.toggle('is-on', k + 1 === n);
+          m.classList.toggle('is-done', k + 1 < n);
+        });
+        c.dataset.step = n;
+        /* paso 2: al primer campo; paso 3: al título del resultado (para lectores de pantalla) */
+        var foco = n === 2 ? pasos[1].querySelector('input') : n === 3 ? pasos[2].querySelector('.fsim-lead') : null;
+        if (foco) { foco.focus({ preventScroll: true }); }
+      }
+
+      function valido(ambito) {
+        var campos = [].slice.call(ambito.querySelectorAll('input[required]'));
+        campos.forEach(function (i) { i.classList.add('touched'); });
+        var malo = campos.filter(function (i) { return !i.checkValidity(); })[0];
+        if (malo) { malo.reportValidity(); return false; }
+        return true;
+      }
+
+      function pintar() {
+        var p = PRODUCTOS[prod];
+        var moneda = form.querySelector('[name=moneda]').value;
+        var dias = +(form.querySelector('[name=plazo]:checked') || {}).value || 30;
+        var sim = moneda === 'USD' ? 'US$' : 'S/';
+        var r = p.calcular ? p.calcular(numero(monto.value), dias, moneda) : null;
+        q('.r-neto').textContent = sim + ' ' + (r ? miles(r.neto) : '0');
+        q('.r-tasa').textContent = r ? r.tasa.toFixed(2) + '%' : '0%';
+        q('.r-com').textContent = sim + ' ' + (r ? miles(r.comision) : '0');
+        q('.r-resumen').textContent = p.nombre + ' · ' + sim + ' ' + (monto.value || '0') + ' · ' + dias + ' días';
+      }
+
+      c.querySelectorAll('.fsim-tabs [data-p]').forEach(function (t) {
+        t.addEventListener('click', function () {
+          prod = t.dataset.p;
+          var p = PRODUCTOS[prod];
+          var tabs = [].slice.call(c.querySelectorAll('.fsim-tabs [data-p]'));
+          tabs.forEach(function (x) { x.setAttribute('aria-selected', x === t ? 'true' : 'false'); });
+          c.querySelector('.fsim-tabs').style.setProperty('--i', tabs.indexOf(t));
+          q('.fsim-prod').textContent = p.nombre;
+          q('.fsim-sub').textContent = p.subtitulo;
+          q('.fsim-monto-l').textContent = p.monto;
+          q('.r-tasa-l').textContent = p.tasa;
+          if (+c.dataset.step === 3) { pintar(); }
+        });
+      });
+      var cur = q('.fsim-cur'), curBtn = q('.fsim-cur-btn');
+      function moneda(abrir) {
+        cur.classList.toggle('open', abrir);
+        curBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
+      }
+      function elegir(o) {
+        form.querySelector('[name=moneda]').value = o.dataset.v;
+        curBtn.querySelector('b').textContent = o.dataset.s;
+        c.querySelectorAll('.fsim-cur-menu [role=option]').forEach(function (x) {
+          x.setAttribute('aria-selected', x === o ? 'true' : 'false');
+        });
+        moneda(false);
+        curBtn.focus();
+      }
+      curBtn.addEventListener('click', function (e) { e.stopPropagation(); moneda(!cur.classList.contains('open')); });
+      c.querySelectorAll('.fsim-cur-menu [role=option]').forEach(function (o) {
+        o.addEventListener('click', function (e) { e.stopPropagation(); elegir(o); });
+      });
+      cur.addEventListener('keydown', function (e) {
+        var ops = [].slice.call(cur.querySelectorAll('[role=option]')), k = ops.indexOf(document.activeElement);
+        if (e.key === 'Escape') { moneda(false); curBtn.focus(); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); moneda(true); ops[Math.min(k + 1, ops.length - 1)].focus(); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); ops[Math.max(k - 1, 0)].focus(); }
+      });
+      document.addEventListener('click', function (e) { if (!cur.contains(e.target)) moneda(false); });
+
+      monto.addEventListener('input', function () {
+        var n = numero(monto.value);
+        monto.value = n > 0 ? miles(n) : '';
+      });
+      q('.fsim-next').addEventListener('click', function () {
+        if (valido(pasos[0])) { paso(2); }
+      });
+      q('.fsim-back').addEventListener('click', function () { paso(1); });
+      q('.fsim-reset').addEventListener('click', function () {
+        form.reset();
+        elegir(c.querySelector('.fsim-cur-menu [data-v=PEN]'));
+        form.querySelectorAll('.touched').forEach(function (i) { i.classList.remove('touched'); });
+        paso(1);
+      });
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (+c.dataset.step === 1) { if (valido(pasos[0])) { paso(2); } return; }
+        if (!valido(pasos[1])) { return; }
+        pintar();
+        paso(3);
+      });
+      paso(1);
+    });
+  }
+
+  /* --------------------------------------------- banner principal (4 diapositivas)
+     Rota cada 7 s y se detiene en cuanto la persona empieza a usar el simulador. */
+  function initHero() {
+    var h = document.querySelector('.hero2');
+    if (!h) return;
+    var slides = [].slice.call(h.querySelectorAll('.hero2-slide'));
+    var dots = [].slice.call(h.querySelectorAll('.hero2-dots button'));
+    var i = 0, t = null, quieto = false;
+    var calma = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function ir(n) {
+      i = (n + slides.length) % slides.length;
+      slides.forEach(function (s, k) {
+        var on = k === i;
+        s.classList.toggle('is-on', on);
+        s.setAttribute('aria-hidden', on ? 'false' : 'true');
+        s.inert = !on;
+      });
+      dots.forEach(function (d, k) {
+        d.classList.remove('is-on');
+        d.setAttribute('aria-current', k === i ? 'true' : 'false');
+      });
+      void h.offsetWidth; /* reinicia la animación del progreso */
+      dots[i].classList.add('is-on');
+    }
+    function play() {
+      clearInterval(t);
+      h.classList.toggle('is-playing', !quieto && !calma);
+      if (!quieto && !calma) { t = setInterval(function () { ir(i + 1); }, 7000); }
+    }
+    function parar() { quieto = true; clearInterval(t); h.classList.remove('is-playing'); }
+
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { ir(k); parar(); }); });
+    var prev = h.querySelector('.hero2-prev'), next = h.querySelector('.hero2-next');
+    if (prev) prev.addEventListener('click', function () { ir(i - 1); parar(); });
+    if (next) next.addEventListener('click', function () { ir(i + 1); parar(); });
+    h.addEventListener('mouseenter', function () { clearInterval(t); h.classList.add('is-paused'); });
+    h.addEventListener('mouseleave', function () { h.classList.remove('is-paused'); if (!quieto) { ir(i); play(); } });
+    h.addEventListener('focusin', function (e) { if (e.target.closest('.fsim')) parar(); });
+    ir(0);
+    play();
+  }
+
+  /* ------------------------------------------ carrusel de noticias (3 por vista) */
+  function initRails() {
+    document.querySelectorAll('.rail').forEach(function (rail) {
+      var nav = document.querySelector('.rail-nav[data-rail="' + rail.id + '"]');
+      var prev = nav && nav.querySelector('.rail-prev'), next = nav && nav.querySelector('.rail-next');
+      var dots = document.createElement('div');
+      dots.className = 'rail-dots';
+      rail.parentNode.insertBefore(dots, rail.nextSibling);
+
+      function paso() {
+        var c = rail.children[0];
+        return c ? c.getBoundingClientRect().width + parseFloat(getComputedStyle(rail).columnGap || 0) : rail.clientWidth;
+      }
+      function estado() {
+        var max = rail.scrollWidth - rail.clientWidth - 2;
+        if (prev) prev.disabled = rail.scrollLeft <= 2;
+        if (next) next.disabled = rail.scrollLeft >= max;
+        var vistas = Math.max(1, Math.round(rail.clientWidth / paso()));
+        var paginas = Math.max(1, Math.ceil(rail.children.length / vistas));
+        var actual = Math.min(paginas - 1, Math.round(rail.scrollLeft / (paso() * vistas)));
+        if (rail.scrollLeft >= max) actual = paginas - 1;
+        if (dots.children.length !== paginas) {
+          dots.innerHTML = new Array(paginas + 1).join('<i></i>');
+        }
+        [].forEach.call(dots.children, function (d, i) { d.classList.toggle('on', i === actual); });
+      }
+      if (prev) prev.addEventListener('click', function () { rail.scrollBy({ left: -paso(), behavior: 'smooth' }); });
+      if (next) next.addEventListener('click', function () { rail.scrollBy({ left: paso(), behavior: 'smooth' }); });
+      rail.addEventListener('scroll', function () { window.requestAnimationFrame(estado); }, { passive: true });
+      rail.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowRight') { rail.scrollBy({ left: paso() }); e.preventDefault(); }
+        if (e.key === 'ArrowLeft') { rail.scrollBy({ left: -paso() }); e.preventDefault(); }
+      });
+      window.addEventListener('resize', estado);
+      estado();
+    });
+  }
+
+  /* --------------------------------- menú Soluciones, contraseña y adjuntos */
+  function initExtras() {
+    document.addEventListener('click', function (e) {
+      var dd = e.target.closest('.nav-dd-btn');
+      document.querySelectorAll('.nav-dd').forEach(function (n) {
+        if (!dd || n !== dd.parentNode) { n.classList.remove('open'); n.querySelector('.nav-dd-btn').setAttribute('aria-expanded', 'false'); }
+      });
+      if (dd) {
+        var box = dd.parentNode, abre = !box.classList.contains('open');
+        box.classList.toggle('open', abre);
+        dd.setAttribute('aria-expanded', abre ? 'true' : 'false');
+      }
+      var eye = e.target.closest('.pw-eye');
+      if (eye) {
+        var inp = eye.parentNode.querySelector('input');
+        inp.type = inp.type === 'password' ? 'text' : 'password';
+        eye.setAttribute('aria-label', inp.type === 'password' ? 'Mostrar contraseña' : 'Ocultar contraseña');
+      }
+    });
+    document.addEventListener('change', function (e) {
+      if (e.target.matches('.file input[type=file]')) {
+        var n = e.target.files && e.target.files[0];
+        e.target.parentNode.querySelector('.file-name').textContent = n ? n.name : 'Seleccionar archivo';
+      }
+    });
+  }
+
+  // Initialize components
+  function initApp() {
+    initSimulador();
+    initHero();
+    initRails();
+    initExtras();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initApp);
+  } else {
+    initApp();
+  }
 })();
+
+

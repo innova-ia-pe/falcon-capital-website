@@ -8,7 +8,7 @@
 <script>try{var t=localStorage.getItem('fc-theme');if(t){document.documentElement.dataset.theme=t;}}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/falcon.css">
 </head>
 <body>
@@ -21,81 +21,105 @@
     <img class="lg-d" src="img/logo-light.png" alt="Falcon Capital">
     <img class="lg-l" src="img/logo-dark.png" alt="Falcon Capital">
   </a>
-  <nav><a href="conocenos.html">Conócenos</a><a href="soluciones.html" class="on">Soluciones</a><a href="como-funciona.html">Cómo funciona</a><a href="preguntas-frecuentes.html">Preguntas frecuentes</a><a href="blog.html">Blog</a><a href="contactanos.html">Contáctanos</a></nav>
+  <nav aria-label="Principal">
+    <a href="conocenos.html">Conócenos</a>
+    <div class="nav-dd">
+      <button class="nav-dd-btn" type="button" aria-expanded="false" aria-haspopup="true">Soluciones <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+      <div class="nav-dd-menu">
+        <a href="factoring.html"><b>Factoring</b><small>Transforma tus facturas en liquidez</small></a>
+        <a href="confirming.html"><b>Confirming</b><small>Administra el pago a tus proveedores</small></a>
+        <a href="capital-de-trabajo.html"><b>Capital de Trabajo</b><small>Recursos para tus proyectos</small></a>
+      </div>
+    </div>
+    <a href="blog.html">Blog</a>
+    <a href="simulador.html" class="on">Simulador</a>
+    <div class="nav-acts">
+      <a class="btn btn-primary" href="registro.html">Crea tu cuenta</a>
+      <a class="btn btn-line" href="iniciar-sesion.html">Iniciar sesión</a>
+    </div>
+  </nav>
   <div class="acts">
-    <a class="btn btn-line btn-sm ext" href="mi-portal.html">Mi Portal <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></a>
-    <a class="btn btn-primary btn-sm" href="evaluacion.html">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+    <a class="btn btn-primary btn-sm" href="registro.html">Crea tu cuenta</a>
+    <a class="btn btn-line btn-sm" href="iniciar-sesion.html">Iniciar sesión</a>
   </div>
   <button class="th" type="button" aria-label="Cambiar entre modo claro y oscuro"><svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg><svg class="moon" viewBox="0 0 24 24"><path d="M20.5 14.3A8.8 8.8 0 0 1 9.7 3.5a8.8 8.8 0 1 0 10.8 10.8z"/></svg></button>
-  <button class="burger" aria-label="Menú"><span></span><span></span><span></span></button>
+  <button class="burger" type="button" aria-label="Menú"><span></span><span></span><span></span></button>
 </div></header>
 <main>
-<section class="bg hero-slim">
-  <div class="wrap">
-    <div class="bento">
-      <div class="tile tile-plain tile-mid c7">
-        <span class="eyebrow">Factoring · Simulador</span>
-        <h1 style="margin-top:18px">Calcula cuánta <span class="em">liquidez</span> obtienes por tus facturas</h1>
-        <p class="lead" style="margin-top:18px">Ingresa los datos de la factura y obtén una estimación del adelanto.
-          Puedes enviarte la cotización por correo y continuar con la evaluación cuando quieras.</p>
-      </div>
-      <div class="hero-media c5" style="min-height:300px"><img src="img/sol-factoring.jpg" alt=""></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec sec-light">
-  <div class="wrap">
-    <div class="sim">
-      <div class="form-card">
-        <form novalidate>
-          <div class="fgroup" style="margin-top:0"><i>1</i><b>Datos de la factura</b></div>
-          <div class="form">
-            <div class="f"><label>Moneda <span class="star">*</span></label>
-              <select required><option>Soles (S/.)</option><option>Dólares (US$)</option></select></div>
-            <div class="f"><label>Monto de la factura <span class="star">*</span></label>
-              <input inputmode="decimal" placeholder="0.00" required></div>
-            <div class="f"><label>Fecha de emisión <span class="star">*</span></label><input type="date" required></div>
-            <div class="f"><label>Fecha de pago pactada <span class="star">*</span></label><input type="date" required></div>
-            <div class="f full"><label>RUC del cliente pagador <span class="star">*</span></label>
-              <input inputmode="numeric" maxlength="11" required><span class="hint">11 dígitos</span></div>
+<section class="simp">
+  <div class="wrap simp-grid">
+    <div class="fsim fsim-page" data-step="1">
+          <div class="fsim-head">
+            <h1 class="fsim-title"><span class="fsim-kicker">Simulador de</span> <span class="em fsim-prod">Factoring</span></h1>
+            <p class="fsim-sub">Porque la rapidez no cuesta más, simula tu anticipo ahora.</p>
           </div>
-          <div class="fgroup"><i>2</i><b>Envío de la cotización</b></div>
-          <div class="form">
-            <div class="f"><label>Nombres y apellidos <span class="star">*</span></label><input required></div>
-            <div class="f"><label>Correo electrónico <span class="star">*</span></label><input type="email" required></div>
-            <label class="check"><input type="checkbox" required>
-              Autorizo el tratamiento de mis datos personales para recibir la cotización y ser contactado por
-              Falcon Capital, según la Política de Privacidad.</label>
-            <div class="form-foot full">
-              <button class="btn btn-dark btn-lg" type="submit">Enviar cotización por correo <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-              <small>Protegido con antispam</small>
-              <p class="form-msg form-note" hidden><b>Prototipo:</b> el simulador no calcula ni envía correos.</p>
+          <div class="fsim-tabs" role="group" aria-label="Producto" style="--i:0">
+            <span class="fsim-tabs-ind" aria-hidden="true"></span>
+            <button type="button" data-p="factoring" aria-selected="true">Factoring</button>
+            <button type="button" data-p="confirming" aria-selected="false">Confirming</button>
+            <button type="button" data-p="capital" aria-selected="false">Capital de Trabajo</button>
+          </div>
+          <ol class="fsim-steps" aria-label="Pasos"><li class="is-on"><b>01</b><span>Tu operación</span></li><li><b>02</b><span>Tus datos</span></li><li><b>03</b><span>Resultado</span></li></ol>
+          <form class="fsim-form" novalidate>
+            <div class="fsim-step" data-step="1">
+              <label class="fsim-f"><span class="fsim-l fsim-monto-l">Monto de la factura</span>
+                <span class="fsim-money">
+                  <span class="fsim-cur">
+                    <input type="hidden" name="moneda" value="PEN">
+                    <button type="button" class="fsim-cur-btn" aria-haspopup="listbox" aria-expanded="false" aria-label="Moneda"><b>S/</b><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+                    <span class="fsim-cur-menu" role="listbox">
+                      <button type="button" role="option" aria-selected="true" data-v="PEN" data-s="S/"><b>S/</b>Soles</button>
+                      <button type="button" role="option" aria-selected="false" data-v="USD" data-s="US$"><b>US$</b>Dólares</button>
+                    </span>
+                  </span>
+                  <input name="monto" inputmode="numeric" placeholder="Ej. 100,000" required>
+                </span></label>
+              <div class="fsim-f"><span class="fsim-l">Plazo en días</span><div class="fsim-seg"><label><input type="radio" name="plazo" value="30" checked><span>30 días</span></label><label><input type="radio" name="plazo" value="60"><span>60 días</span></label><label><input type="radio" name="plazo" value="90"><span>90 días</span></label></div></div>
+              <button type="button" class="btn btn-primary btn-lg fsim-next">Continuar <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
             </div>
-          </div>
-        </form>
-      </div>
-
-      <div>
-        <div class="sim-out">
-          <span class="eyebrow">Resultado estimado</span>
-          <div class="sim-line" style="margin-top:20px"><span>Monto de la factura</span><b>—</b></div>
-          <div class="sim-line"><span>Días por adelantar</span><b>—</b></div>
-          <div class="sim-line"><span>Tasa aplicada</span><b>—</b></div>
-          <div class="sim-line"><span>Comisiones</span><b>—</b></div>
-          <div class="sim-line total"><span>Adelanto estimado</span><b>—</b></div>
+            <div class="fsim-step" data-step="2" hidden>
+              <p class="fsim-lead">Completa la información para simular tu operación.</p>
+              <div class="fsim-grid">
+                <label class="fsim-f full"><span class="fsim-l">Nombre completo</span><input name="nombre" placeholder="Ej. Juan Pérez García" required></label>
+                <label class="fsim-f"><span class="fsim-l">RUC</span><input name="ruc" inputmode="numeric" maxlength="11" pattern="\d{11}" placeholder="Ej. 20123456789" required></label>
+                <label class="fsim-f"><span class="fsim-l">Razón social</span><input name="razon_social" placeholder="Ej. Empresa S.A.C." required></label>
+                <label class="fsim-f"><span class="fsim-l">Correo de contacto</span><input type="email" name="email" placeholder="Ej. nombre@empresa.com" required></label>
+                <label class="fsim-f"><span class="fsim-l">Celular</span><span class="fsim-phone"><b>+51</b><input type="tel" name="celular" inputmode="numeric" placeholder="912 345 678" required></span></label>
+              </div>
+              <div class="fsim-acts">
+                <button type="button" class="fsim-back"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver</button>
+                <button type="submit" class="btn btn-primary btn-lg">Simular ahora <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
+              </div>
+              <p class="fsim-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Tu información está protegida y será utilizada solo para brindarte asesoría.</p>
+            </div>
+            <div class="fsim-step" data-step="3" hidden>
+              <p class="fsim-lead" tabindex="-1"><b>Resultado estimado</b> · <span class="r-resumen"></span></p>
+              <dl class="fsim-res">
+                <div class="fsim-res-main"><dt>Recibe hoy</dt><dd class="r-neto">S/ 0</dd></div>
+                <div><dt class="r-tasa-l">Tasa Factoring Efectiva Mensual</dt><dd class="r-tasa">0%</dd></div>
+                <div><dt>Comisión de desembolso</dt><dd class="r-com">S/ 0</dd></div>
+              </dl>
+              <p class="fsim-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg> <span><b>Pendiente de Falcon Capital:</b> tasas, comisiones y fórmula de cada producto. Por eso el resultado aparece en cero.</span></p>
+              <div class="fsim-ok"><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg><p><b>¿Listo para avanzar?</b> Un operador de Falcon Capital se comunicará contigo a la brevedad para continuar con tu solicitud.</p></div>
+              <div class="fsim-acts">
+                <button type="button" class="fsim-back fsim-reset"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Nueva simulación</button>
+                <a class="btn btn-primary btn-lg" href="registro.html">Crea tu cuenta <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+              </div>
+            </div>
+          </form>
+          <p class="fsim-foot">¿Quieres agilizar el proceso? <a href="registro.html">Crea tu cuenta e inicia tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></p>
         </div>
-        <div class="pending" style="margin-top:22px"><b>Pendiente de Falcon Capital.</b> La pantalla y el envío de
-          la cotización están definidos, pero falta la fórmula del cálculo: tasa, comisiones, topes por pagador y
-          el formato del correo. Sin esos datos el resultado no puede mostrarse.</div>
-        <div class="tile" style="margin-top:22px"><div class="ico-box"><svg viewBox="0 0 24 24"><rect x="4" y="2.8" width="16" height="18.4" rx="2.5"/><path d="M8 7h8M8.5 12h.01M12 12h.01M15.5 12h.01M8.5 16.5h.01M12 16.5h.01M15.5 16.5h.01"/></svg></div>
-          <h3>La simulación es referencial</h3>
-          <p class="tile-txt">Las tasas y líneas aprobadas se definen tras el análisis financiero. La evaluación
-            es gratuita y no compromete a tu empresa.</p>
-          <div class="tile-cta"><a class="btn btn-lightline btn-sm" href="evaluacion.html">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
-        </div>
-      </div>
-    </div>
+    <aside class="simp-side">
+      <span class="eyebrow">Evaluación</span>
+      <ul class="simp-list">
+        <li><i><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></i><b>Respuesta ágil</b></li>
+        <li><i><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.4 8.4-8 10-4.6-1.6-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg></i><b>Información segura</b></li>
+        <li><i><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg></i><b>Decisiones en tiempo real</b></li>
+      </ul>
+      <div class="simp-ok"><b>¿Listo para avanzar?</b>
+        <p>Un operador de Falcon Capital se comunicará contigo a la brevedad para continuar con tu solicitud.</p>
+        <a href="registro.html">Crea tu cuenta e inicia tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a></div>
+    </aside>
   </div>
 </section>
 <section class="sec bg bg-flat">
@@ -105,7 +129,7 @@
       <p class="lead">Descubre cómo las soluciones financieras de Falcon Capital pueden impulsar la liquidez y el
         crecimiento de tu empresa, de forma ágil, segura y sin afectar tu flujo de caja.</p>
       <div class="acts">
-        <a class="btn btn-primary btn-lg" href="evaluacion.html">Solicita tu evaluación <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
+        <a class="btn btn-primary btn-lg" href="simulador.html">Simula tu crédito <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
         <a class="btn btn-line btn-lg" href="contactanos.html">Contáctanos</a>
       </div>
     </div>
@@ -127,18 +151,17 @@
     <div>
       <h4>Soluciones</h4>
       <a href="factoring.html">Factoring</a>
-      <a href="simulador.html">Simulador de Factoring</a>
       <a href="confirming.html">Confirming</a>
       <a href="capital-de-trabajo.html">Capital de Trabajo</a>
+      <a href="simulador.html">Simulador</a>
     </div>
     <div>
       <h4>Falcon Capital</h4>
       <a href="conocenos.html">Conócenos</a>
-      <a href="como-funciona.html">Cómo funciona</a>
-      <a href="preguntas-frecuentes.html">Preguntas frecuentes</a>
       <a href="blog.html">Blog</a>
+      <a href="preguntas-frecuentes.html">Preguntas frecuentes</a>
       <a href="contactanos.html">Contáctanos</a>
-      <a class=" ext" href="mi-portal.html">Mi Portal Falcon <svg viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-8.5 8.5"/><path d="M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></svg></a>
+      <a href="iniciar-sesion.html">Iniciar sesión</a>
     </div>
     <div>
       <h4>Legal</h4>
@@ -154,10 +177,10 @@
 <div class="dock">
   <div class="bot-panel" hidden>
     <header><svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg> ¿Cómo prefieres conversar?</header>
-    <a class="dock-opt" href="https://wa.me/51955447475">
+    <a class="dock-opt" href="https://wa.me/51955447475" target="_blank" rel="noopener">
       <i><svg viewBox="0 0 24 24"><path d="M12 2.6a9.4 9.4 0 0 0-8 14.3L2.6 21.4l4.6-1.3A9.4 9.4 0 1 0 12 2.6z"/><path d="M8.6 8c-.3 0-.7.1-.9.5-.3.5-.7 1.4 0 2.6.7 1.2 1.8 2.8 3.5 3.8 1.5.9 2.3.8 2.9.7.5-.2 1.1-.8 1.3-1.3"/></svg></i><span><b>WhatsApp</b><small>Atención directa con un ejecutivo</small></span></a>
-    <a class="dock-opt alt" href="contactanos.html">
-      <i><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></i><span><b>Déjanos tus datos</b><small>Un experto te contacta</small></span></a>
+    <a class="dock-opt alt" href="mailto:info@falconcapital.pe">
+      <i><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg></i><span><b>Correo</b><small>info@falconcapital.pe</small></span></a>
     <p><b>Bot conversacional · pendiente.</b> Elemento transversal previsto en el sitemap: responderá
       las preguntas frecuentes y derivará a un ejecutivo. Falcon Capital debe validar el banco de
       preguntas antes de conectarlo.</p>
