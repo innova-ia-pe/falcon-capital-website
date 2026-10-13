@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="../assets/prop-base.css">
 <link rel="stylesheet" href="../assets/prop-a.css">
 <link rel="stylesheet" href="../assets/prop-b.css">
+<link rel="stylesheet" href="../assets/prop-b-hero.css">
 </head>
 <body>
 <div class="veil" aria-hidden="true"></div>
@@ -31,6 +32,7 @@
       <a role="tab" href="#" data-go="a"><b>A</b><span class="pbar-full">Claridad</span></a>
       <a role="tab" href="#" data-go="b"><b>B</b><span class="pbar-full">Impulso</span></a>
     </div>
+    <div class="pbar-hv" role="group" aria-label="Banner del Inicio de la propuesta B"><span class="pbar-hv-l">Banner</span><button type="button" data-hb="1" aria-pressed="false" title="Banner 1 · Vidrio: tarjeta por pasos"><b>1</b><span>Vidrio</span></button><button type="button" data-hb="2" aria-pressed="false" title="Banner 2 · Conversación: una pregunta a la vez"><b>2</b><span>Conversación</span></button><button type="button" data-hb="3" aria-pressed="false" title="Banner 3 · Factura: el simulador como documento"><b>3</b><span>Factura</span></button></div>
     <button class="pbar-more" type="button" aria-expanded="false" aria-controls="pbar-notes"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg><span>¿Qué cambia?</span></button>
   </div>
   <div class="pbar-notes" id="pbar-notes" hidden>
@@ -275,84 +277,13 @@
 </div>
 <main>
 <section class="b-phero b-simpage" data-sec="hero">
-  <div class="b-phero-bg" aria-hidden="true"><img src="../img/hero-factoring.jpg" alt="" style="object-position:58% 40%" loading="lazy"></div>
+  <div class="b-phero-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1758520144864-fb42371d9e60?auto=format&fit=crop&w=2000&q=78" srcset="https://images.unsplash.com/photo-1758520144864-fb42371d9e60?auto=format&fit=crop&w=800&q=78 800w, https://images.unsplash.com/photo-1758520144864-fb42371d9e60?auto=format&fit=crop&w=1400&q=78 1400w, https://images.unsplash.com/photo-1758520144864-fb42371d9e60?auto=format&fit=crop&w=2000&q=78 2000w, https://images.unsplash.com/photo-1758520144864-fb42371d9e60?auto=format&fit=crop&w=2600&q=78 2600w" sizes="(min-width: 981px) 60vw, 100vw" alt="" style="object-position:80% 35%" loading="lazy"></div>
   <div class="b-wrap b-phero-in">
     <nav class="b-crumbs" aria-label="Ruta"><a href="index.html?p=b">Inicio</a><span>/</span><b>Simulador</b></nav>
     <h1 class="b-h1" data-r="up">Simula tu <em>factoring</em></h1>
     <p class="b-phero-sub" data-r="up">Porque la rapidez no cuesta más: simula tu anticipo ahora. Primero tus datos, luego tu resultado al instante.</p>
     <ul class="b-facts" data-r="up"><li><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span>Respuesta ágil</span></li><li><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Información segura</span></li><li><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg><span>Decisiones en tiempo real</span></li></ul>
-    <div class="b-sim b-sim-page" data-sim data-step="datos">
-      <div class="b-sim-head">
-        <span class="b-sim-k">Simula tu factoring</span>
-        <ol class="b-steps" aria-label="Pasos del simulador"><li data-s="datos"><button type="button" data-ir="datos"><i>1</i>Tus datos</button></li><li data-s="simula"><button type="button" data-ir="simula"><i>2</i>Mi simulación</button></li><li data-s="evalua"><button type="button" data-ir="evalua"><i>3</i>Mi evaluación</button></li></ol>
-      </div>
-      <div class="b-who" data-hola-wrap hidden><span class="b-who-av" data-who-ini aria-hidden="true">A</span><span class="b-who-t"><b data-who-name>Tus datos</b><small data-who-meta></small></span><button type="button" class="b-who-edit" data-ir="datos" aria-label="Editar mis datos"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar</span></button></div>
-      <form class="b-step b-gate" data-gate novalidate>
-        <div class="b-bar">
-          <label class="b-f"><span class="b-l">Nombre y apellido</span><input name="nombre" autocomplete="name" required placeholder="Ej. Ana Torres"></label>
-          <label class="b-f"><span class="b-l">RUC de tu empresa</span><input name="ruc" inputmode="numeric" maxlength="11" required placeholder="20123456789" data-digits></label>
-          <label class="b-f"><span class="b-l">Celular</span><span class="b-ph"><b>+51</b><input name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="11" required placeholder="912 345 678" data-phone></span></label>
-          <div class="b-f b-f-lock" aria-hidden="true"><span class="b-l">Recibirías hoy</span><output>S/ ••,•••.••</output><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2"/></svg></div>
-          <button type="submit" class="b-go"><span>Ver mi simulación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-        </div>
-        <div class="b-gate-foot"><label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=b&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label><p class="b-gate-err" role="alert" hidden></p></div><button type="button" class="b-cancel" data-ir="simula"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a mi simulación sin cambios</button>
-      </form>
-      <div class="b-step b-calc" data-calc hidden>
-        <div class="b-bar">
-          <label class="b-f b-f-amt"><span class="b-l">Monto de la factura</span><span class="b-amt"><button type="button" class="b-cur" data-cur aria-label="Cambiar moneda, ahora soles">S/</button><input data-amt inputmode="numeric" autocomplete="off" value="100,000" aria-label="Monto"></span></label>
-          <div class="b-f b-f-days"><span class="b-l">Vence en (días)</span><span class="b-chips" role="group" aria-label="Plazo en días"><button type="button" data-d="30" aria-pressed="true">30</button><button type="button" data-d="60" aria-pressed="false">60</button><button type="button" data-d="90" aria-pressed="false">90</button><button type="button" data-d="120" aria-pressed="false">120</button></span></div>
-          <div class="b-f b-f-res" aria-live="polite"><span class="b-l">Recibirías hoy</span><output data-o="neto">S/ 96,696.00</output></div>
-          <button type="button" class="b-go" data-expand aria-expanded="false"><span>Solicitar evaluación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-        </div>
-        <p class="b-calc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg>Cálculo referencial basado en tasas de pizarra. La tasa final depende de la evaluación crediticia.</p>
-        <div class="b-panel" data-panel hidden>
-          <div class="b-panel-in">
-            <div class="b-panel-sum">
-              <span class="b-l">Recibirías hoy</span>
-              <output class="b-panel-net" data-o="neto">S/ 96,696.00</output>
-              <div class="b-split" aria-hidden="true"><i data-split="neto"></i><i data-split="costo"></i></div>
-              <p class="b-split-l"><span><i></i><b data-o="pct">96.7 %</b> para ti</span><span><i></i>Descuento <b data-o="costo">S/ 3,304.00</b></span></p><button type="button" class="b-desg" data-desglose aria-expanded="false"><span>Ver desglose del cálculo</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
-            </div>
-            <div class="b-panel-brk">
-              <span class="b-l">Desglose de tu simulación</span>
-              <dl class="brk">
-            <div><dt>Monto de la factura</dt><dd data-o="monto">S/ 100,000.00</dd></div>
-            <div><dt>Interés <small data-o="tem-l">TEM 1.80 %</small></dt><dd data-o="interes">− S/ 1,800.00</dd></div>
-            <div><dt>Comisión <small>1 %</small></dt><dd data-o="comision">− S/ 1,000.00</dd></div>
-            <div><dt>IGV <small>18 % de interés y comisión</small></dt><dd data-o="igv">− S/ 504.00</dd></div>
-            <div class="brk-t"><dt>Recibirías hoy</dt><dd data-o="neto">S/ 96,696.00</dd></div>
-          </dl>
-              <p class="b-note"><b>Cálculo referencial basado en tasas de pizarra.</b> La tasa final depende de la evaluación crediticia de tu empresa y de otras variables de la operación; esta simulación no constituye una oferta. La comisión es de 1 % en soles o dólares, más IGV.</p>
-            </div>
-            <div class="b-panel-form lead">
-              <form class="lead-form" data-eval novalidate>
-                <h3>Recibe tu propuesta formal</h3>
-                <p class="b-panel-p"><span data-nombre1>Ana</span>, solo falta tu correo. La razón social se completa con tu RUC (consulta SUNAT).</p>
-                <label class="lf"><span>Correo</span><input name="email" type="email" placeholder="nombre@empresa.com" autocomplete="email" required><em class="lf-err">Revisa tu correo.</em></label>
-                <button class="lf-send" type="submit"><span>Enviar solicitud</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-                <p class="lf-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Sin costo ni compromiso.</p><button type="button" class="b-back" data-ir="simula"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a mi simulación</button>
-              </form>
-              <div class="lead-ok" hidden tabindex="-1">
-          <span class="lead-ok-ico"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span>
-          <h3>¡Listo, <span data-ok-name>gracias</span>!</h3>
-          <p>Recibimos tu solicitud de <b data-ok-prod>Factoring</b>. Un ejecutivo de Falcon Capital te contactará en horario de atención.</p>
-          <ol class="lead-steps">
-            <li><b>Revisamos tu solicitud</b> y los datos de tu empresa.</li>
-            <li><b>Te contactamos</b> por llamada o WhatsApp.</li>
-            <li><b>Recibes tu propuesta formal</b> con la tasa final.</li>
-          </ol>
-          <div class="lead-ok-acts">
-            <a class="lead-wa" data-wa href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg> Continuar por WhatsApp</a>
-            <a class="lead-acc" href="ver.html?p=b&amp;u=registro">Crea tu cuenta <svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></a>
-          </div>
-          <p class="lead-proto">Prototipo: en el sitio publicado este formulario se conecta al CRM de Falcon Capital.</p>
-        </div>
-            </div>
-          </div>
-          <button type="button" class="b-panel-x" data-collapse aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
-        </div>
-      </div>
-    </div>
+    <div class="b-sim b-sim-page bs bs1" data-sim data-v2 data-step="datos"><div class="b-sim-head"><span class="b-sim-k">Simula tu factoring</span><ol class="b-steps" aria-label="Pasos del simulador"><li data-s="datos"><button type="button" data-ir="datos"><i>1</i>Tus datos</button></li><li data-s="simula"><button type="button" data-ir="simula"><i>2</i>Simulación</button></li><li data-s="evalua"><button type="button" data-ir="evalua"><i>3</i>Evaluación</button></li></ol></div><div class="bs-stage"><form class="bs-view b-gate bs1-datos" data-gate data-en="datos" novalidate><div class="bs-fields"><label class="b-f"><span class="b-l">Nombre y apellido</span><input name="nombre" autocomplete="name" required placeholder="Ej. Ana Torres"></label><label class="b-f"><span class="b-l">RUC de tu empresa</span><input name="ruc" inputmode="numeric" maxlength="11" required placeholder="20123456789" data-digits></label><label class="b-f"><span class="b-l">Celular</span><span class="b-ph"><b>+51</b><input name="celular" type="tel" inputmode="numeric" autocomplete="tel-national" maxlength="11" required placeholder="912 345 678" data-phone></span></label><div class="b-f b-f-lock" aria-hidden="true"><span class="b-l">Recibirías hoy</span><output>S/ ••,•••.••</output><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2"/></svg></div></div><div class="bs-consent"><label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=b&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label></div><div class="bs-foot"><div class="bs-cta"><button type="submit" class="b-go"><span>Ver mi simulación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div><div class="bs-swap bs-sub"><p class="bs-view bs-safe" data-sub="nuevo"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Sin costo ni compromiso</p><button type="button" class="bs-view b-cancel" data-sub="editando" data-ir="simula" hidden><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver sin cambios</button><p class="b-gate-err" role="alert" hidden></p></div></div></form><div class="bs-view b-calc bs1-sim" data-calc data-en="simula" hidden><div class="b-who"><span class="b-who-av" data-who-ini aria-hidden="true">A</span><span class="b-who-t"><b data-who-name>Tus datos</b><small data-who-meta></small></span><button type="button" class="b-who-edit" data-ir="datos" aria-label="Editar mis datos"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar</span></button></div><div class="bs-fields"><label class="b-f b-f-amt"><span class="b-l">Monto de la factura</span><span class="b-amt"><button type="button" class="b-cur" data-cur aria-label="Cambiar moneda, ahora soles">S/</button><input data-amt inputmode="numeric" autocomplete="off" value="100,000" aria-label="Monto de la factura"></span></label><div class="b-f b-f-days"><span class="b-l">Vence en (días)</span><span class="b-chips" role="group" aria-label="Plazo en días"><button type="button" data-d="30" aria-pressed="true">30</button><button type="button" data-d="60" aria-pressed="false">60</button><button type="button" data-d="90" aria-pressed="false">90</button><button type="button" data-d="120" aria-pressed="false">120</button></span></div><div class="b-f b-f-res" aria-live="polite"><span class="b-l">Recibirías hoy</span><output data-o="neto">S/ 96,696.00</output></div></div><div class="bs-foot"><div class="bs-cta"><button type="button" class="b-go" data-expand><span>Solicitar evaluación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div><div class="bs-swap bs-sub"><p class="bs-view b-calc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 11v5M12 7.5h.01"/></svg>Cálculo referencial basado en tasas de pizarra. La tasa final depende de la evaluación crediticia.</p></div></div></div><div class="bs-view bs1-eval" data-en="evalua ok" hidden><div class="b-who"><span class="b-who-av" data-who-ini aria-hidden="true">A</span><span class="b-who-t"><b data-who-name>Tus datos</b><small data-who-meta></small></span><button type="button" class="b-who-edit" data-ir="datos" aria-label="Editar mis datos"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar</span></button></div><div class="bs-sum"><span class="b-l">Recibirías hoy</span><output class="bs-net" data-o="neto">S/ 96,696.00</output><div class="b-split" aria-hidden="true"><i data-split="neto"></i><i data-split="costo"></i></div><p class="bs-sum-l"><span><b data-s="monto">S/ 100,000.00</b> a <b data-s="dias">30 días</b></span><button type="button" class="b-desg" data-desglose aria-expanded="false"><span>Ver desglose</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button></p></div><div class="bs-swap"><form class="bs-view lead-form" data-eval data-en="evalua" novalidate><label class="lf"><span><b data-nombre1>Ana</b>, ¿a qué correo te enviamos la propuesta formal?</span><input name="email" type="email" placeholder="nombre@empresa.com" autocomplete="email" required><em class="lf-err">Revisa tu correo.</em></label><div class="bs-foot"><div class="bs-cta"><button class="lf-send b-go" type="submit"><span>Enviar solicitud</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button></div><div class="bs-swap bs-sub"><button type="button" class="bs-view b-back" data-ir="simula"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a mi simulación</button></div></div></form><div class="bs-view lead-ok" data-en="ok" hidden tabindex="-1"><span class="lead-ok-ico"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span><h3>¡Listo, <span data-ok-name>gracias</span>!</h3><p>Recibimos tu solicitud de <b data-ok-prod>Factoring por S/ 100,000.00 a 30 días</b>. Te contactaremos en horario de atención.</p><div class="lead-ok-acts"><a class="lead-wa" data-wa href="https://wa.me/51955447475" target="_blank" rel="noopener"><svg class="g" viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.13-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88 2.64 0 5.12 1.03 6.99 2.9a9.83 9.83 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88m8.41-18.3A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89a11.82 11.82 0 0 0-3.48-8.41z"/></svg> Continuar por WhatsApp</a></div></div></div></div></div><div class="bs-sheet" role="region" aria-label="Desglose de tu simulación" inert><div class="bs-sheet-h"><b>Desglose de tu simulación</b><button type="button" class="bs-sheet-x" data-desglose="x" aria-label="Cerrar el desglose"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div><dl class="brk"><div><dt>Monto de la factura</dt><dd data-o="monto">S/ 100,000.00</dd></div><div><dt>Interés <small data-o="tem-l">TEM 1.80 %</small></dt><dd data-o="interes">− S/ 1,800.00</dd></div><div><dt>Comisión <small>1 %</small></dt><dd data-o="comision">− S/ 1,000.00</dd></div><div><dt>IGV <small>18 % de interés y comisión</small></dt><dd data-o="igv">− S/ 504.00</dd></div><div class="brk-t"><dt>Recibirías hoy</dt><dd data-o="neto">S/ 96,696.00</dd></div></dl><p class="b-note"><b>Cálculo referencial basado en tasas de pizarra.</b> La tasa final depende de la evaluación crediticia de tu empresa y de otras variables de la operación; esta simulación no constituye una oferta. La comisión es de 1 % en soles o dólares, más IGV.</p></div></div>
     <p class="b-simpage-alt">¿Buscas Confirming o Capital de Trabajo? Se evalúan a la medida: <a href="contactanos.html?p=b">solicita tu evaluación</a>.</p>
   </div>
 </section>
