@@ -749,6 +749,8 @@
       pin.classList.toggle('is-h', activo);
       pin.style.height = '';
       if (!activo) return;
+      /* si el título y la tarjeta no entran en la pantalla, se queda como carrusel normal (sin cortar nada) */
+      if (sticky.scrollHeight > sticky.clientHeight + 2) { activo = false; pin.classList.remove('is-h'); return; }
       pin.style.height = (sticky.offsetHeight + dist()) + 'px';
       mover();
     }
