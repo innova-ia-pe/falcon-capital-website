@@ -174,6 +174,22 @@
   if (!root) { html.classList.add('listo'); return; }
   var X = MODO;
 
+  /* B · tres banners del Home (1 Vidrio, 2 Conversación, 3 Factura): queda solo el elegido.
+     Cambiar de banner recarga la página, igual que cambiar de versión. */
+  var HB = html.getAttribute('data-hb');
+  if (!HB) { try { HB = localStorage.getItem('fc-hb'); } catch (e) { /* */ } }
+  if (!/^[123]$/.test(HB || '')) HB = '1';
+  $$('[data-hv]', root).forEach(function (s) { if (s.dataset.hv !== HB) s.parentNode.removeChild(s); });
+  /* el selector está en todas las páginas de B: fuera del Inicio lleva al Inicio con ese banner */
+  $$('[data-hb]', pbar).forEach(function (b) {
+    b.setAttribute('aria-pressed', b.dataset.hb === HB ? 'true' : 'false');
+    b.addEventListener('click', function () {
+      if (PAG === 'index' && b.dataset.hb === HB) return;
+      try { localStorage.setItem('fc-hb', b.dataset.hb); } catch (e) { /* */ }
+      navegar('index.html?p=b&h=' + b.dataset.hb, 'b');
+    });
+  });
+
   /* enlaces a otras páginas: salida con el velo, sin perder la versión */
   root.addEventListener('click', function (e) {
     var a = e.target.closest ? e.target.closest('a[href]') : null;
@@ -314,7 +330,19 @@
     var amt = $('[data-amt]', sim), curBtn = $('[data-cur]', sim), range = $('[data-range]', sim);
     var expand = $('[data-expand]', sim), panel = $('[data-panel]', sim);
     var estado = { cur: 'PEN', monto: 100000, dias: 30 }, ultimo = null, raf = 0;
-    var heroSim = sim.closest('.b-hero');
+    /* B: el simulador es una tarjeta vertical junto al texto del banner; al abrir la evaluación
+       el banner ya no se oculta (antes la barra horizontal necesitaba ese espacio) */
+    var heroSim = null;
+    /* B (data-v2): las vistas de cada paso se apilan en la misma celda, así la tarjeta no cambia de alto
+       al avanzar o volver; [data-en] dice en qué pasos se ve cada vista y [data-lock] en cuáles queda
+       bloqueada (inert). El botón principal queda siempre en el mismo lugar. */
+    var V2 = sim.hasAttribute('data-v2'), CONV = sim.hasAttribute('data-conv');
+    var ORDEN = ['datos', 'simula', 'evalua', 'ok'];
+    var conv = null;
+    /* banner 2: la misma conversación sirve para las tres soluciones. Solo Factoring simula; Confirming y
+       Capital de Trabajo pasan de tus datos al correo (solicitud de evaluación). */
+    var PRODS = { factoring: 'Factoring', confirming: 'Confirming', capital: 'Capital de Trabajo' };
+    function esFactoring() { return (sim.dataset.prod || 'factoring') === 'factoring'; }
 
     function anchoAuto(i) {
       if (!i) return;
@@ -344,47 +372,187 @@
         b.disabled = b.dataset.ir !== 'datos' && !lead;
         if (b.closest('.b-steps')) b.setAttribute('aria-current', actual ? 'step' : 'false');
       });
+      /* corregir datos: el botón lo dice y aparece una salida sin cambios */
+      var editando = n === 'datos' && !!(lead && lead.nombre);
+      sim.classList.toggle('editando', editando);
+      if (V2) {
+        var ni = ORDEN.indexOf(n);
+        $$('[data-en]', sim).forEach(function (el) {
+          var lst = el.dataset.en.split(' '), on = lst.indexOf(n) > -1, ini = ORDEN.indexOf(lst[0]);
+          el.classList.toggle('is-past', !on && ini < ni);
+          el.classList.toggle('is-future', !on && ini > ni);
+          el.hidden = !on;
+        });
+        $$('[data-sub]', sim).forEach(function (el) { el.hidden = el.dataset.sub !== (editando ? 'editando' : 'nuevo'); });
+        $$('[data-solo]', sim).forEach(function (el) { el.hidden = (el.dataset.solo === 'factoring') !== esFactoring(); });
+        $$('[data-prod-nombre]', sim).forEach(function (el) { el.textContent = PRODS[sim.dataset.prod] || 'Factoring'; });
+        $$('[data-lock]', sim).forEach(function (el) { el.classList.toggle('is-locked', el.dataset.lock.split(' ').indexOf(n) > -1); });
+        $$('[data-en], [data-lock], [data-sub]', sim).forEach(function (el) {
+          var fuera = el.hidden || el.classList.contains('is-locked');
+          if (fuera) el.setAttribute('inert', ''); else el.removeAttribute('inert');
+        });
+        verDesglose(false);
+        if (!CONV) {
+          var gs2 = gate && $('button[type="submit"] span', gate);
+          if (gs2) gs2.textContent = editando ? (sim.hasAttribute('data-doc') ? 'Guardar cambios' : 'Guardar y ver mi simulación') : 'Ver mi simulación';
+        }
+        if (conv) conv.pintar();
+        anchos();
+        return;
+      }
       if (gate) gate.hidden = n !== 'datos';
       if (calc) calc.hidden = n === 'datos' || (!panel && (n === 'evalua' || n === 'ok'));
       if (evalf && !panel) evalf.hidden = n !== 'evalua';
       if (ok && !panel) ok.hidden = n !== 'ok';
       var hw = $('[data-hola-wrap]', sim);
       if (hw) hw.hidden = n === 'datos';
+      var gs = gate && $('button[type="submit"] span', gate);
+      if (gs) gs.textContent = editando ? 'Guardar y ver mi simulación' : 'Ver mi simulación';
       var visible = n === 'datos' ? gate : n === 'simula' ? calc : panel ? calc : n === 'evalua' ? evalf : ok;
       if (visible && antes && antes !== n && !reduce) {
         visible.classList.remove('is-entering'); void visible.offsetWidth; visible.classList.add('is-entering');
       }
       anchos();
     }
+    /* desglose: en B (data-v2) es una hoja que sube sobre la tarjeta, sin cambiar su alto */
+    var desgs = $$('[data-desglose]', sim), hojaD = $('.bs-sheet', sim);
+    desgs.forEach(function (d) { var s = $('span', d); if (s && !d.dataset.t) d.dataset.t = s.textContent; });
+    function verDesglose(on) {
+      sim.classList.toggle('ver-desglose', on);
+      desgs.forEach(function (d) {
+        d.setAttribute('aria-expanded', on ? 'true' : 'false');
+        var s = $('span', d);
+        /* con hoja (B) la etiqueta no cambia: así no varía el alto de la fila */
+        if (s && d.dataset.desglose !== 'x' && !hojaD) s.textContent = on ? 'Ocultar desglose' : d.dataset.t;
+      });
+      if (hojaD) { if (on) hojaD.removeAttribute('inert'); else hojaD.setAttribute('inert', ''); }
+    }
     function saludo() {
       var n = primerNombre(lead && lead.nombre);
       $$('[data-hola]', sim).forEach(function (e) { e.textContent = n ? 'Hola, ' + n : 'Hola'; });
       $$('[data-nombre1]', sim).forEach(function (e) { e.textContent = n || 'listo'; });
+      /* fila «Tus datos» (B): nombre, RUC y celular, con botón Editar */
+      var w = lead || {}, partes = (w.nombre || '').trim().split(/\s+/).filter(Boolean);
+      $$('[data-who-name]', sim).forEach(function (e) { e.textContent = w.nombre || 'Tus datos'; });
+      $$('[data-who-meta]', sim).forEach(function (e) {
+        e.textContent = [w.ruc ? 'RUC ' + w.ruc : '', w.celular ? '+51 ' + w.celular : ''].filter(Boolean).join(' · ');
+      });
+      $$('[data-who-ini]', sim).forEach(function (e) {
+        e.textContent = ((partes[0] || '?').charAt(0) + (partes.length > 1 ? partes[partes.length - 1].charAt(0) : '')).toUpperCase();
+      });
+      if (conv) conv.pintar();
     }
 
     /* --- paso 1: datos */
+    var err = gate && $('.a-gate-err, .b-gate-err', gate);
+    function avisar(i) {
+      if (conv) { conv.error(i); if (i) { conv.irA(i.name); setTimeout(function () { i.focus({ preventScroll: true }); }, 30); } return; }
+      if (err) {
+        err.hidden = !i;
+        if (i) err.textContent = MENSAJES[i.name] || 'Revisa tus datos.';
+        var sub = err.closest('.bs-sub');
+        if (sub) sub.classList.toggle('con-error', !!i);
+      }
+      if (i) i.focus({ preventScroll: V2 });
+    }
+    function enfocar(el, t) {
+      setTimeout(function () { var i = el && (el.matches('input') ? el : $('input:not([type="checkbox"])', el)); if (i) i.focus({ preventScroll: true }); }, reduce ? 0 : (t || 380));
+    }
+    /* --- B2 · conversación: «Tus datos» se pide una pregunta a la vez; cada respuesta queda como una
+       etiqueta arriba y basta tocarla para corregirla */
+    if (CONV && gate) conv = (function () {
+      var qs = $$('[data-q]', gate), i = 0, prev = $('[data-conv-prev]', gate);
+      var bar = $('[data-conv-bar]', sim), num = $('[data-conv-n]', sim), lbl = $('button[type="submit"] span', gate), hola = $('[data-hola-q]', gate);
+      var claves = qs.map(function (q) { return q.dataset.q; });
+      function chips() {
+        var st = sim.dataset.step;
+        $$('[data-conv-ir]', sim).forEach(function (c) {
+          var k = c.dataset.convIr, x = gate.elements[k], v = (x.value || '').trim(), j = claves.indexOf(k);
+          c.hidden = !(v && valido(x) && (lead || j < i || st !== 'datos'));
+          $('[data-chip]', c).textContent = v;
+          c.classList.toggle('is-on', st === 'datos' && j === i);
+        });
+      }
+      function pintar() {
+        var st = sim.dataset.step, total = esFactoring() ? 5 : 4, edit = st === 'datos' && !!(lead && lead.nombre);
+        var n = st === 'datos' ? i + 1 : st === 'simula' ? 4 : total;
+        /* al corregir no se «retrocede»: la barra queda donde iba y el texto lo dice */
+        if (num) num.textContent = st === 'ok' ? 'Solicitud enviada' : edit ? 'Corrige tus datos' : 'Paso ' + n + ' de ' + total;
+        if (bar) bar.style.transform = 'scaleX(' + (st === 'ok' ? 1 : edit ? (total - 1) / total : n / total) + ')';
+        if (lbl) lbl.textContent = edit ? 'Guardar y volver' : i < qs.length - 1 || !esFactoring() ? 'Continuar' : 'Ver mi simulación';
+        if (prev) prev.classList.toggle('is-off', i === 0 && !edit);
+        if (hola) { var nm = primerNombre(gate.elements.nombre.value); hola.textContent = nm ? 'Gracias, ' + nm + '.' : 'Gracias.'; }
+        chips();
+      }
+      function mostrar(k) {
+        i = Math.max(0, Math.min(qs.length - 1, k));
+        qs.forEach(function (q, j) {
+          q.hidden = j !== i;
+          q.classList.toggle('is-past', j < i);
+          q.classList.toggle('is-future', j > i);
+          if (j === i) q.removeAttribute('inert'); else q.setAttribute('inert', '');
+        });
+        pintar();
+      }
+      function error(x) {
+        qs.forEach(function (q) {
+          var h = $('.bs2-hint', q);
+          if (!h) return;
+          if (!h.dataset.t) h.dataset.t = h.textContent;
+          var mio = !!x && q.contains(x);
+          h.textContent = mio ? (MENSAJES[x.name] || 'Revisa este dato.') : h.dataset.t;
+          h.classList.toggle('is-err', mio);
+        });
+      }
+      if (prev) prev.addEventListener('click', function () {
+        error(null);
+        if (i > 0) { mostrar(i - 1); enfocar(qs[i], 200); } else if (lead) ir('simula');
+      });
+      $$('[data-conv-ir]', sim).forEach(function (c) {
+        c.addEventListener('click', function () {
+          if (sim.dataset.step !== 'datos') { llenarGate(); paso('datos'); }
+          mostrar(claves.indexOf(c.dataset.convIr));
+          enfocar(qs[i], 200);
+        });
+      });
+      $$('input', gate).forEach(function (x) { x.addEventListener('input', function () { error(null); if (x.name === 'nombre') pintar(); }); });
+      return {
+        pintar: pintar, mostrar: mostrar, error: error, ultima: function () { mostrar(qs.length - 1); enfocar(qs[i]); },
+        /* Enter o «Continuar»: con la pregunta bien respondida pasa a la siguiente; la última (o al corregir) envía */
+        antes: function () {
+          if ((lead && lead.nombre) || i === qs.length - 1) return false;
+          var m = $$('input[required]', qs[i]).filter(function (x) { x.dataset.t = '1'; return !marcar(x); });
+          if (m.length) { avisar(m[0]); return true; }
+          mostrar(i + 1);
+          enfocar(qs[i], 200);
+          return true;
+        },
+        irA: function (name) { var k = claves.indexOf(name === 'acepto' ? 'celular' : name); if (k > -1) mostrar(k); }
+      };
+    })();
     if (gate) {
       vigilar(gate);
-      var err = $('.a-gate-err, .b-gate-err', gate);
       gate.addEventListener('submit', function (e) {
         e.preventDefault();
+        if (conv && conv.antes()) return;
         var malos = revisar(gate);
-        if (malos.length) {
-          if (err) { err.textContent = MENSAJES[malos[0].name] || 'Revisa tus datos.'; err.hidden = false; }
-          malos[0].focus();
-          return;
-        }
-        if (err) err.hidden = true;
+        if (malos.length) { avisar(malos[0]); return; }
+        avisar(null);
         lead = { nombre: gate.elements.nombre.value.trim(), ruc: gate.elements.ruc.value.trim(),
           celular: gate.elements.celular.value.trim(), email: (lead && lead.email) || '' };
         guardar('fc-lead', lead);
         saludo();
-        paso('simula');
-        calcular();
-        setTimeout(function () { if (amt) amt.focus({ preventScroll: true }); }, reduce ? 0 : 450);
+        if (esFactoring()) {
+          paso('simula');
+          calcular();
+          if (amt) enfocar(amt, 450);
+        } else {
+          paso('evalua');
+          if (evalf) enfocar(evalf, 450);
+        }
       });
       $$('input', gate).forEach(function (i) {
-        i.addEventListener('input', function () { if (i.hasAttribute('data-auto')) anchoAuto(i); if (err && !err.hidden) err.hidden = true; });
+        i.addEventListener('input', function () { if (i.hasAttribute('data-auto')) anchoAuto(i); if (err && !err.hidden) avisar(null); });
       });
     }
     $$('[data-cambiar]', sim).forEach(function (b) {
@@ -412,6 +580,27 @@
     }
     function ir(n) {
       if (n !== 'datos' && !lead) return;
+      if (V2) {
+        var desde = sim.dataset.step;
+        /* sin simulación (Confirming, Capital): «volver» desde el correo va a tus datos y cancelar una
+           corrección regresa al correo */
+        if (n === 'simula' && !esFactoring()) n = desde === 'datos' ? 'evalua' : 'datos';
+        if (n === 'datos') {
+          llenarGate();
+          avisar(null);
+          paso('datos');
+          if (conv) conv.ultima(); else enfocar(gate);
+        } else if (n === 'simula') {
+          /* «Volver sin cambios»: lo escrito y no guardado se descarta */
+          if (desde === 'datos') { llenarGate(); avisar(null); }
+          paso('simula');
+          calcular();
+        } else {
+          paso(desde === 'ok' ? 'ok' : 'evalua');
+          if (evalf && desde !== 'ok') enfocar(evalf);
+        }
+        return;
+      }
       if (n === 'datos') {
         reabrirEnvio();
         if (panel && !panel.hidden) abrirPanel(false);
@@ -571,7 +760,20 @@
         if (sim.dataset.step !== 'datos') paso('simula');
       }
     }
-    if (expand && panel) {
+    desgs.forEach(function (d) {
+      d.addEventListener('click', function () {
+        var on = d.dataset.desglose !== 'x' && !sim.classList.contains('ver-desglose');
+        verDesglose(on);
+        if (on && hojaD) { var x = $('[data-desglose="x"]', hojaD); if (x) setTimeout(function () { x.focus({ preventScroll: true }); }, 60); }
+        else if (!on) { var b = desgs.filter(function (q) { return q.dataset.desglose !== 'x' && !q.closest('[inert]'); })[0]; if (b) b.focus({ preventScroll: true }); }
+      });
+    });
+    if (V2) {
+      sim.addEventListener('keydown', function (e) { if (e.key === 'Escape' && sim.classList.contains('ver-desglose')) verDesglose(false); });
+      if (expand) expand.addEventListener('click', function () { ir('evalua'); });
+      /* Enter en el monto: pasa a la evaluación */
+      if (amt) amt.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); ir('evalua'); } });
+    } else if (expand && panel) {
       expand.addEventListener('click', function () { abrirPanel(panel.hidden); });
       $('[data-collapse]', panel).addEventListener('click', function () { abrirPanel(false); expand.focus(); });
       panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') { abrirPanel(false); expand.focus(); } });
@@ -591,8 +793,9 @@
           lead.email = evalf.elements.email.value.trim();
           guardar('fc-lead', lead);
           $('[data-ok-name]', ok).textContent = primerNombre(lead.nombre) || 'gracias';
-          $('[data-ok-prod]', ok).textContent = 'Factoring por ' + money(estado.monto, estado.cur) + ' a ' + estado.dias + ' días';
-          if (panel) { evalf.hidden = true; ok.hidden = false; }
+          $('[data-ok-prod]', ok).textContent = esFactoring() ? 'Factoring por ' + money(estado.monto, estado.cur) + ' a ' + estado.dias + ' días'
+            : PRODS[sim.dataset.prod];
+          if (panel && !V2) { evalf.hidden = true; ok.hidden = false; }
           paso('ok');
           ok.focus({ preventScroll: true });
         }, reduce ? 0 : 900);
@@ -602,11 +805,23 @@
     /* --- estado inicial: si ya dejó sus datos, va directo a simular */
     sincRange();
     calcular();
+    /* B: con datos guardados, el formulario ya los muestra (la factura los «imprime», la conversación los
+       resume en etiquetas) */
+    if (V2 && lead && lead.nombre) llenarGate();
+    if (conv) conv.mostrar(0);
     saludo();
     paso(lead && lead.nombre ? 'simula' : 'datos');
     if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(anchos);
     addEventListener('resize', anchos);
-    return { el: sim, anchos: anchos, enfocar: function () {
+    function producto(k) {
+      if (!PRODS[k] || (sim.dataset.prod || 'factoring') === k) return;
+      sim.dataset.prod = k;
+      var st = sim.dataset.step;
+      if (lead && lead.nombre && st !== 'datos') {
+        if (k === 'factoring') { paso('simula'); calcular(); } else paso('evalua');
+      } else paso(st);
+    }
+    return { el: sim, anchos: anchos, producto: producto, enfocar: function () {
       sim.classList.remove('is-flash'); void sim.offsetWidth; sim.classList.add('is-flash');
       var i = sim.dataset.step === 'datos' ? $('input', gate) : amt;
       if (i) i.focus({ preventScroll: true });
@@ -655,8 +870,9 @@
   }
 
   /* ================================================================ banner B: rota, flechas y deslizar */
-  var heroB = $('.b-hero[data-hero]', root);
-  if (heroB) {
+  /* solo el banner 1 (los banners 2 y 3 tienen su propio control más abajo) */
+  var heroB = $('.b-hero[data-hero]:not(.bh)', root);
+  if (heroB && $('.b-dots', heroB) && $('.b-hero-bg', heroB)) {
     var ordenB = $$('.b-dots [data-prod]', heroB).map(function (b) { return b.dataset.prod; });
     var actualB = ordenB[0], timer = 0, quieto = false, pausa = false, DUR = 7000;
     heroB.style.setProperty('--dur', DUR / 1000 + 's');
@@ -668,6 +884,7 @@
         if (el.matches('.b-dots button')) { if (on) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current'); return; }
         if (el.tagName !== 'IMG') { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
       });
+      if (typeof fondoB === 'function') fondoB();
     };
     var programar = function () {
       clearTimeout(timer);
@@ -685,8 +902,10 @@
     deslizar($('[data-swipe]', heroB), moverB);
     var simB = $('[data-sim]', heroB);
     if (simB) { simB.addEventListener('focusin', detener); simB.addEventListener('pointerdown', detener); }
-    heroB.addEventListener('mouseenter', function () { if (!quieto) { pausa = true; programar(); } });
-    heroB.addEventListener('mouseleave', function () { if (!quieto) { pausa = false; programar(); } });
+    /* se pausa mientras se lee el texto (no al pasar por cualquier parte del banner) */
+    var copiasB = $('.b-copies', heroB);
+    copiasB.addEventListener('mouseenter', function () { if (!quieto) { pausa = true; programar(); } });
+    copiasB.addEventListener('mouseleave', function () { if (!quieto) { pausa = false; programar(); } });
     doc.addEventListener('visibilitychange', function () { if (doc.hidden) { clearTimeout(timer); heroB.classList.remove('is-playing'); } else programar(); });
     $$('[data-focus-sim]', heroB).forEach(function (a) {
       a.addEventListener('click', function (e) {
@@ -696,6 +915,255 @@
       });
     });
     programar();
+
+    /* --- encuadre (escritorio): cada foto se escala y se centra en el espacio libre entre el texto y la
+       tarjeta del simulador, para que la tarjeta no tape a las personas. x0–x1: ancho de las personas en la
+       foto; y: altura de los rostros (fracciones de la imagen). */
+    var SUJETOS = { factoring: { x0: 0.26, x1: 0.62, y: 0.27 }, confirming: { x0: 0.22, x1: 0.86, y: 0.30 },
+      capital: { x0: 0.33, x1: 0.69, y: 0.36 }, mypes: { x0: 0.45, x1: 0.86, y: 0.20 }, liquidez: { full: true } };
+    var bgB = $('.b-hero-bg', heroB), copiesB = $('.b-copies', heroB), cardB = $('[data-sim]', heroB);
+    /* fondo desenfocado con la foto del banner visible */
+    var fondoB = function () {
+      var im = $('img.is-on', bgB) || $('img', bgB);
+      if (im) heroB.style.setProperty('--fondo', 'url("' + (im.dataset.blur || im.currentSrc || im.src) + '")');
+    };
+    /* borde derecho real del texto de cada banner (título, bajada y enlaces) */
+    var textoDerecho = function (prod, left) {
+      var copy = $('.b-copy[data-prod="' + prod + '"]', heroB), max = 0;
+      if (!copy) return 0;
+      $$('.b-h1, p, .b-copy-acts', copy).forEach(function (el) {
+        var r = doc.createRange();
+        r.selectNodeContents(el);
+        [].forEach.call(r.getClientRects(), function (q) { if (q.width) max = Math.max(max, q.right); });
+      });
+      return max - left;
+    };
+    var encuadrar = function () {
+      var imgs = $$('img', bgB);
+      if (innerWidth < 981 || !cardB || !copiesB) {
+        heroB.classList.remove('encuadre');
+        imgs.forEach(function (im) { ['left', 'top', 'width', 'height', 'transform-origin'].forEach(function (k) { im.style.removeProperty(k); }); });
+        return;
+      }
+      heroB.classList.add('encuadre');
+      var box = bgB.getBoundingClientRect(), W = box.width, H = box.height;
+      var cardL = cardB.getBoundingClientRect().left - box.left, maxCopy = 0;
+      imgs.forEach(function (im) {
+        var su = SUJETOS[im.dataset.prod] || { x0: 0.4, x1: 0.6, y: 0.3 };
+        /* fotos sin personas (billetes, documentos): cubren todo el fondo */
+        im.style.objectFit = su.full ? 'cover' : '';
+        if (su.full) {
+          im.style.left = '0px'; im.style.top = '0px'; im.style.width = W + 'px'; im.style.height = H + 'px';
+          return;
+        }
+        var w = im.naturalWidth || 2000, h = im.naturalHeight || 1300;
+        var copyR = Math.max(textoDerecho(im.dataset.prod, box.left), 200) + 24;
+        maxCopy = Math.max(maxCopy, copyR);
+        var G = (copyR + cardL) / 2, hueco = Math.max(cardL - copyR, 180);
+        /* la escala cubre el alto, salvo que las personas no quepan en el hueco: entonces se reduce (hasta 55 %)
+           y la foto se apoya abajo, fundida arriba con el fondo */
+        var cubre = H / h, cabe = hueco / (w * (su.x1 - su.x0));
+        var k = Math.max(Math.min(cubre, cabe), cubre * 0.55);
+        var iw = w * k, ih = h * k;
+        var x = G - iw * (su.x0 + su.x1) / 2;
+        /* rostros a la altura del 24 % del banner; si la foto es más baja que el banner, lo que queda se
+           rellena con la misma foto desenfocada (ver .b-hero-bg::before), nunca con una franja vacía */
+        var y = H * 0.24 - ih * su.y;
+        y = ih >= H ? Math.min(0, Math.max(H - ih, y)) : Math.min(H - ih, Math.max(0, y));
+        im.style.left = Math.round(x) + 'px';
+        im.style.top = Math.round(y) + 'px';
+        im.style.width = Math.round(iw) + 'px';
+        im.style.height = Math.round(ih) + 'px';
+        im.style.transformOrigin = ((su.x0 + su.x1) / 2 * 100).toFixed(1) + '% ' + (su.y * 100).toFixed(1) + '%';
+      });
+      fondoB();
+      heroB.style.setProperty('--g1', (maxCopy / W * 100).toFixed(1) + '%');
+      heroB.style.setProperty('--g2', (cardL / W * 100).toFixed(1) + '%');
+    };
+    encuadrar();
+    addEventListener('resize', encuadrar);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(encuadrar);
+    $$('img', bgB).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadrar); });
+    if ('ResizeObserver' in window) new ResizeObserver(encuadrar).observe(heroB);
+  }
+
+  /* ================================================================ rotación de fotos (banners 2 y 3)
+     Avanza sola cada «dur» ms; se pausa mientras se escribe en el formulario o se lee el texto y se puede
+     elegir a mano con el indicador. Sin movimiento si la persona lo prefiere (prefers-reduced-motion). */
+  function Rotador(o) {
+    var i = 0, t = 0, pausas = {};
+    function marcar() {
+      o.barras.forEach(function (b, j) {
+        var on = j === i;
+        b.classList.toggle('is-on', on);
+        if (on) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
+        b.hidden = j >= o.n;
+      });
+    }
+    function programar() {
+      clearTimeout(t);
+      o.hero.classList.remove('rota');
+      if (reduce || o.n < 2 || Object.keys(pausas).some(function (k) { return pausas[k]; })) return;
+      void o.hero.offsetWidth;
+      o.hero.classList.add('rota');
+      t = setTimeout(function () { ir(i + 1); }, o.dur);
+    }
+    function ir(k) { i = (k + o.n) % o.n; o.mostrar(i); marcar(); programar(); }
+    function pausa(k, v) { pausas[k] = v; programar(); }
+    o.barras.forEach(function (b, j) { b.addEventListener('click', function () { ir(j); }); });
+    if (o.form) {
+      o.form.addEventListener('focusin', function () { pausa('form', true); });
+      o.form.addEventListener('focusout', function () { setTimeout(function () { pausa('form', o.form.contains(doc.activeElement)); }, 0); });
+    }
+    if (o.texto) {
+      o.texto.addEventListener('mouseenter', function () { pausa('texto', true); });
+      o.texto.addEventListener('mouseleave', function () { pausa('texto', false); });
+    }
+    doc.addEventListener('visibilitychange', function () { pausa('oculta', doc.hidden); });
+    o.hero.style.setProperty('--rot', o.dur / 1000 + 's');
+    marcar();
+    programar();
+    return { ir: ir, actual: function () { return i; }, reiniciar: function (n) { o.n = n; i = 0; o.mostrar(0); marcar(); programar(); } };
+  }
+
+  /* ================================================================ banner 2 (Conversación): soluciones en pestañas
+     Factoring, Confirming y Capital de Trabajo cambian fotos, texto y conversación sin salir del banner;
+     cada solución rota entre tres fotos. En escritorio cada foto se encuadra en el espacio libre a la derecha
+     del texto (con la misma foto desenfocada de fondo), así la persona no queda tapada ni recortada en
+     pantallas anchas o bajas. */
+  var hero2 = $('.bh2[data-hero]', root);
+  if (hero2) {
+    var tabs2 = $$('.bh2-tabs [role="tab"]', hero2), ind2 = $('.bh2-tabs-ind', hero2);
+    var bg2 = $('.bh2-bg', hero2), col2 = $('.bh2-col', hero2), pings2 = $('.bh2-pings', hero2);
+    var sim2 = sims.filter(function (x) { return hero2.contains(x.el); })[0];
+    var mas2 = $('[data-mas]', hero2);
+    /* x0–x1: ancho de lo importante en la foto (personas, manos); y: altura de los rostros; full: cubre todo */
+    var SUJ2 = { taller: { x0: 0.44, x1: 0.72, y: 0.40 }, cafe: { x0: 0.45, x1: 0.86, y: 0.20 }, celebran: { x0: 0.25, x1: 0.92, y: 0.28 },
+      acuerdo: { x0: 0.2, x1: 0.88, y: 0.30 }, trato: { x0: 0.15, x1: 0.82, y: 0.32 }, manos: { full: true },
+      planta: { x0: 0.33, x1: 0.69, y: 0.36 }, obra: { x0: 0.08, x1: 0.76, y: 0.34 }, equipo: { x0: 0.40, x1: 0.98, y: 0.30 } };
+    var MAS2 = { factoring: ['factoring.html?p=b', 'el Factoring'], confirming: ['confirming.html?p=b', 'el Confirming'],
+      capital: ['capital-de-trabajo.html?p=b', 'el Capital de Trabajo'] };
+    var actual2 = 'factoring', PW = 250, rot2 = null;
+    var fotos2 = function (k) { return $$('img.bh2-photo', bg2).filter(function (im) { return im.dataset.prod === (k || actual2); }); };
+    var marcar2 = function () {
+      var t = tabs2.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0];
+      if (t && ind2) { ind2.style.width = t.offsetWidth + 'px'; ind2.style.transform = 'translateX(' + t.offsetLeft + 'px)'; }
+    };
+    var encuadre2 = function () {
+      var imgs = $$('img.bh2-photo', bg2);
+      if (innerWidth < 981) {
+        hero2.classList.remove('encuadre');
+        imgs.forEach(function (im) { ['left', 'top', 'width', 'height', 'object-fit'].forEach(function (k) { im.style.removeProperty(k); }); });
+        return;
+      }
+      hero2.classList.add('encuadre');
+      var box = bg2.getBoundingClientRect(), W = box.width, H = box.height;
+      var ini = col2.getBoundingClientRect().right - box.left + 40, fin = W - 32, activo = null;
+      imgs.forEach(function (im) {
+        var su = SUJ2[im.dataset.k] || { x0: 0.35, x1: 0.75, y: 0.3 };
+        var x, y, iw, ih;
+        if (su.full) {
+          x = 0; y = 0; iw = W; ih = H;
+          im.style.objectFit = 'cover';
+        } else {
+          im.style.objectFit = '';
+          var w = im.naturalWidth || 2000, h = im.naturalHeight || 1125;
+          var hueco = Math.max(fin - ini, 260), cubre = H / h, ancho = w * (su.x1 - su.x0);
+          var k = Math.max(Math.min(cubre, hueco / ancho), cubre * 0.6), finP = fin;
+          /* si cabe (achicando la foto hasta 15 %), se deja a la derecha el lugar del aviso */
+          var huecoP = fin - PW - 40 - ini;
+          if (pings2 && huecoP >= ancho * cubre * 0.85) { k = Math.min(k, huecoP / ancho); finP = fin - PW - 40; }
+          iw = w * k; ih = h * k;
+          x = (ini + finP) / 2 - iw * (su.x0 + su.x1) / 2;
+          var falta = W - (x + iw);
+          if (falta > 0) x += Math.min(falta, Math.max(0, finP - (x + iw * su.x1)));
+          y = H * 0.36 - ih * su.y;
+          y = ih >= H ? Math.min(0, Math.max(H - ih, y)) : Math.min(H - ih, Math.max(0, y));
+        }
+        im.style.left = Math.round(x) + 'px';
+        im.style.top = Math.round(y) + 'px';
+        im.style.width = Math.round(iw) + 'px';
+        im.style.height = Math.round(ih) + 'px';
+        if (im.classList.contains('is-on')) activo = { im: im, full: su.full, sL: x + iw * (su.x0 || 0), sR: x + iw * (su.x1 || 1), top: y, ih: ih };
+      });
+      if (!activo) return;
+      hero2.style.setProperty('--fondo', 'url("' + (activo.im.dataset.blur || activo.im.currentSrc || activo.im.src) + '")');
+      /* el aviso va al lado de la persona, nunca encima: a su derecha si cabe, si no entre el texto y ella */
+      if (pings2) {
+        var px = null;
+        if (!activo.full) {
+          if (W - activo.sR >= PW + 40) px = Math.min(activo.sR + 28, W - PW - 24);
+          else if (activo.sL - ini >= PW + 20) px = ini + (activo.sL - ini - PW) / 2;
+        }
+        pings2.classList.toggle('is-off', px === null);
+        if (px !== null) {
+          pings2.style.left = Math.round(px) + 'px';
+          pings2.style.top = Math.round(Math.min(H - 150, Math.max(140, activo.top + activo.ih * 0.58))) + 'px';
+        }
+      }
+    };
+    var mostrarFoto2 = function (n) {
+      var lista = fotos2();
+      $$('img.bh2-photo', bg2).forEach(function (im) { im.classList.toggle('is-on', im === lista[n]); });
+      encuadre2();
+    };
+    var producto2 = function (k, foco) {
+      if (k === actual2) return;
+      actual2 = k;
+      $$('[data-prod]', hero2).forEach(function (el) {
+        if (el.closest('[data-sim]') || el.tagName === 'IMG') return;
+        var on = el.dataset.prod === k;
+        if (el.getAttribute('role') === 'tab') {
+          el.setAttribute('aria-selected', on ? 'true' : 'false');
+          el.tabIndex = on ? 0 : -1;
+          if (on && foco) el.focus();
+          return;
+        }
+        el.classList.toggle('is-on', on);
+        if (!el.closest('.bh2-bg')) { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
+      });
+      if (mas2) { mas2.setAttribute('href', MAS2[k][0]); $('[data-mas-n]', mas2).textContent = MAS2[k][1]; }
+      marcar2();
+      if (rot2) rot2.reiniciar(fotos2().length); else mostrarFoto2(0);
+      if (sim2) sim2.producto(k);
+    };
+    tabs2.forEach(function (b, n) {
+      b.addEventListener('click', function () { producto2(b.dataset.prod); });
+      b.addEventListener('keydown', function (e) {
+        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        producto2(tabs2[(n + d + tabs2.length) % tabs2.length].dataset.prod, true);
+      });
+    });
+    rot2 = Rotador({ hero: hero2, n: fotos2().length, dur: 6500, barras: $$('[data-rot]', hero2), mostrar: mostrarFoto2,
+      form: sim2 && sim2.el });
+    marcar2();
+    encuadre2();
+    addEventListener('resize', function () { marcar2(); encuadre2(); });
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { marcar2(); encuadre2(); });
+    $$('img', bg2).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadre2); });
+    if ('ResizeObserver' in window) new ResizeObserver(encuadre2).observe(hero2);
+  }
+
+  /* ================================================================ banner 3 (Factura): cuatro diapositivas */
+  var hero3 = $('.bh3[data-hero]', root);
+  if (hero3) {
+    var slides3 = $$('.bh3-dots [data-slide]', hero3).map(function (b) { return b.dataset.slide; });
+    var sim3 = sims.filter(function (x) { return hero3.contains(x.el); })[0];
+    var mostrar3 = function (n) {
+      var k = slides3[n];
+      $$('[data-slide]', hero3).forEach(function (el) {
+        var on = el.dataset.slide === k;
+        el.classList.toggle('is-on', on);
+        if (el.matches('.b-copy')) { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
+      });
+    };
+    var rot3 = Rotador({ hero: hero3, n: slides3.length, dur: 7000, barras: $$('.bh3-dots [data-slide]', hero3), mostrar: mostrar3,
+      form: sim3 && sim3.el, texto: $('.bh3-copies', hero3) });
+    $('[data-prev]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() - 1); });
+    $('[data-next]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() + 1); });
+    deslizar($('.bh3-copies', hero3), function (d) { rot3.ir(rot3.actual() + d); });
   }
 
   /* ================================================================ carrusel de noticias */

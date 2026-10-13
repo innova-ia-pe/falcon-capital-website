@@ -70,6 +70,81 @@ Falcon Capital prefirió la **opción B**; los cambios se aplicaron solo ahí.
 | Animación de secciones | Las entradas son laterales y más suaves en lugar de subir desde abajo. **Soluciones** del Home ya no apila las tarjetas: en escritorio la sección queda fija y, **al bajar, las tarjetas avanzan de lado**; las flechas llevan a la tarjeta siguiente o anterior. En celular es un carrusel que se desliza con el dedo. |
 | Imágenes por servicio | Pendiente: Falcon enviará propuestas e Innova IA propondrá variantes durante el desarrollo. |
 
+## Simulador vertical (12/10/2026) · solo propuesta B
+
+Pedido: el formulario del banner en vertical y más fácil de corregir.
+
+| Cambio | Detalle |
+|---|---|
+| Tarjeta vertical | El simulador pasa de barra horizontal a tarjeta a la derecha del banner, con los campos apilados. En la sección del simulador de Factoring y en la página Simulador va junto al texto. |
+| Encuadre de la foto | Cada foto del banner se escala y se centra en el espacio libre entre el texto y la tarjeta, para que la tarjeta no tape a las personas. Si la foto queda más baja que el banner, el resto se rellena con la misma foto desenfocada (sin franjas vacías). |
+| Pasos con barra de progreso | Tus datos · Mi simulación · Mi evaluación, con marca de completado y clicables. |
+| Corregir datos | Desde el paso 2 se ve la fila «Tus datos» (nombre, RUC y celular) con botón **Editar**. Al editar, el botón dice «Guardar y ver mi simulación» y hay «Volver a mi simulación sin cambios». La simulación (monto, plazo y moneda) se conserva. |
+| Evaluación dentro de la tarjeta | Resumen con lo que recibe, desglose plegable («Ver desglose del cálculo»), correo y «Volver a mi simulación». |
+
+## Tres banners para B y fotos nuevas (13/10/2026) · solo propuesta B
+
+Pedido: fotos que representen el factoring (no más almacenes), que el formulario no mueva la página al cambiar
+de paso y tres propuestas de banner para B, incluida la actual mejorada. En el Inicio de B, el selector
+**Banner 1 · 2 · 3** de la barra superior cambia entre ellas (`index.html?p=b&h=1|2|3`; se recuerda la última). El selector
+está en todas las páginas de B; fuera del Inicio lleva al Inicio con ese banner.
+
+| Banner | Tipo de formulario | Cómo se corrige un dato | Fondo |
+|---|---|---|---|
+| **1 · Vidrio** (la actual, mejorada) | Tarjeta por pasos: tus datos → simulación → evaluación | Fila «Tus datos» con **Editar** y pasos clicables | Carrusel Factoring / Confirming / Capital con fotos nuevas; el lado de la tarjeta se desenfoca de a poco y la tarjeta deja ver la foto |
+| **2 · Conversación** | Pestañas Factoring · Confirming · Capital de Trabajo dentro del banner (cambian foto, texto y conversación sin salir de la página). Una pregunta a la vez (nombre, RUC, celular) con Enter para seguir; Factoring sigue con monto y plazo y al final el correo (5 pasos); Confirming y Capital pasan de tus datos al correo (4 pasos) | Cada respuesta queda como etiqueta arriba («Nombre: Ana Torez ✎»); se toca y vuelve a esa pregunta. Cambiar de pestaña no borra lo avanzado | Una foto por solución, encuadrada a la derecha del texto según el ancho de la pantalla (la misma foto desenfocada llena el resto) y un aviso junto a la persona, nunca encima |
+| **3 · Factura** | El simulador es una factura: 01 Emitida por (tus datos) · 02 Tu factura (monto y plazo) · 03 Talón con lo que recibes | Los datos quedan «impresos» en la factura con **Editar**; nada cambia de lugar | Lima desde el aire (ciudad y Costa Verde) |
+
+**Fotos que rotan.** En los tres banners las fotos cambian solas (se pausan mientras se escribe en el
+formulario o se lee el texto) y se pueden elegir a mano:
+
+- **Banner 1:** cinco diapositivas: Factoring, «En 48 horas» (billetes sobre una factura), «Para mypes» (un cliente
+  le paga a la dueña de un café), Confirming y Capital de Trabajo.
+- **Banner 2:** cada pestaña rota entre tres fotos. Factoring: emprendedora al teléfono, pago en el mostrador y
+  dos emprendedoras que celebran. Confirming: apretón de manos, acuerdo en tono oscuro y manos de cerca. Capital:
+  planta textil, ingeniera con planos y equipo de una mype. Indicador de fotos abajo a la derecha.
+- **Banner 3:** cuatro diapositivas con su texto: Lima, «Liquidez en 48 horas» (billetes y documentos), «Sin
+  préstamos bancarios» (factura revisada a mano) y «Respaldo y asesoría» (apretón de manos).
+
+**Formulario pulido.** Banner 2: las respuestas son etiquetas con ícono y valor (caben las tres); al corregir, la
+barra dice «Corrige tus datos», la pregunta cambia a «Corrige tu nombre…» y aparece «Cancelar»; el botón principal
+queda siempre a la derecha. Banner 3: tras tus datos aparece una guía del siguiente paso («Ahora ajusta el monto…»,
+«Último paso: tu correo»), al corregir la simulación queda atenuada en vez de borrarse y el sello de «Solicitud
+enviada» ocupa el espacio libre sin tapar texto.
+
+**Sin saltos.** En las tres, las vistas de cada paso se apilan en la misma celda: la tarjeta mide siempre lo que la
+vista más alta y el botón principal queda siempre en el mismo lugar. Los errores, «Volver sin cambios» y «Sin costo
+ni compromiso» comparten una sola línea bajo el botón. El desglose es una hoja que sube sobre la tarjeta. Medido en
+1440, 1024 y 375 px: el alto y la posición de la tarjeta no cambian en todo el flujo (datos, error, simulación,
+editar, desglose, evaluación y envío). La tarjeta de Factoring y de la página Simulador usa el mismo mecanismo.
+
+**Llamadas a la acción.** Una sola principal por paso (Ver mi simulación → Solicitar evaluación → Enviar
+solicitud), siempre en el mismo sitio. Las secundarias van fuera de la tarjeta: «Habla con un asesor» (WhatsApp),
+«Cómo funciona el factoring» y, en el banner 2, Confirming y Capital de Trabajo.
+
+### Fotos (Unsplash, licencia gratuita)
+
+Se cargan desde el CDN de Unsplash en tamaños adaptables. Para WordPress conviene descargarlas a la biblioteca de
+medios. La licencia de Unsplash no exige crédito.
+
+| Uso | Foto |
+|---|---|
+| Banner 1 · Factoring; fondo del simulador de Factoring; página Simulador | https://unsplash.com/photos/32HbasUeSA4 |
+| Banner 1 · Confirming; página Confirming | https://unsplash.com/photos/lZXX-QVdyXY |
+| Banner 1 · Capital de Trabajo; página Capital de Trabajo | https://unsplash.com/photos/_nkk-Jv56Pc |
+| Banner 2; página Factoring | https://unsplash.com/photos/kk4J92iaSBk |
+| Banner 3 | https://unsplash.com/photos/ieMzKs0_MbM |
+| Soluciones · Factoring; «Por qué» de Factoring | https://unsplash.com/photos/QzY81G7dbOo |
+| Soluciones · Confirming; «Por qué» de Confirming | https://unsplash.com/photos/x5xdzVHKqJ8 |
+| Soluciones · Capital de Trabajo | https://unsplash.com/photos/4llRev_UMgw |
+| «Por qué» de Capital de Trabajo; banner 2 · Capital | https://unsplash.com/photos/MThcHX1xBAs |
+| Banner 1 · Para mypes; banner 2 · Factoring | https://unsplash.com/photos/2cGIkBSspFM |
+| Banner 2 · Factoring | https://unsplash.com/photos/Yy8qu396OP8 |
+| Banner 1 · En 48 horas; banner 3 · Liquidez en 48 horas | https://unsplash.com/photos/P_f_UvZhj8Q |
+| Banner 3 · Sin préstamos bancarios | https://unsplash.com/photos/Dtx8nMCwSqo |
+| Banner 2 · Confirming; banner 3 · Respaldo y asesoría | https://unsplash.com/photos/DLZ2_kaO3JI |
+| Banner 2 · Confirming | https://unsplash.com/photos/nZi5og5YslQ |
+
 ## Cómo pedir los datos antes del simulador
 
 Las dos propuestas usan la misma lógica, que es la **recomendación**: pedir
