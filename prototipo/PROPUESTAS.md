@@ -92,7 +92,7 @@ está en todas las páginas de B; fuera del Inicio lleva al Inicio con ese banne
 | Banner | Tipo de formulario | Cómo se corrige un dato | Fondo |
 |---|---|---|---|
 | **1 · Vidrio** (la actual, mejorada) | Tarjeta por pasos: tus datos → simulación → evaluación | Fila «Tus datos» con **Editar** y pasos clicables | Carrusel Factoring / Confirming / Capital con fotos nuevas; el lado de la tarjeta se desenfoca de a poco y la tarjeta deja ver la foto |
-| **2 · Conversación** | Pestañas Factoring · Confirming · Capital de Trabajo dentro del banner (cambian foto, texto y conversación sin salir de la página). Una pregunta a la vez (nombre, RUC, celular) con Enter para seguir; Factoring sigue con monto y plazo y al final el correo (5 pasos); Confirming y Capital pasan de tus datos al correo (4 pasos) | Cada respuesta queda como etiqueta arriba («Nombre: Ana Torez ✎»); se toca y vuelve a esa pregunta. Cambiar de pestaña no borra lo avanzado | Una foto por solución, encuadrada a la derecha del texto según el ancho de la pantalla (la misma foto desenfocada llena el resto) y un aviso junto a la persona, nunca encima |
+| **2 · Conversación** | Pestañas Factoring · Confirming · Capital de Trabajo dentro del banner (cambian foto, texto y conversación sin salir de la página). Una pregunta a la vez (nombre, RUC, celular) con Enter para seguir; Factoring sigue con monto y plazo y al final el correo (5 pasos); Confirming y Capital pasan de tus datos al correo (4 pasos) | Cada respuesta queda como etiqueta arriba («Nombre: Ana Torez ✎»); se toca y vuelve a esa pregunta. Cambiar de pestaña no borra lo avanzado | Tres fotos por solución a todo el alto, con las caras a la derecha del texto; donde la foto no llega al borde la continúa su reflejo desenfocado. Un aviso junto a las personas, nunca encima de una cara |
 | **3 · Factura** | El simulador es una factura: 01 Emitida por (tus datos) · 02 Tu factura (monto y plazo) · 03 Talón con lo que recibes | Los datos quedan «impresos» en la factura con **Editar**; nada cambia de lugar | Lima desde el aire (ciudad y Costa Verde) |
 
 **Fotos que rotan.** En los tres banners las fotos cambian solas (se pausan mientras se escribe en el
@@ -104,7 +104,8 @@ formulario o se lee el texto) y se pueden elegir a mano:
   dos emprendedoras que celebran. Confirming: apretón de manos, acuerdo en tono oscuro y manos de cerca. Capital:
   planta textil, ingeniera con planos y equipo de una mype. Indicador de fotos abajo a la derecha.
 - **Banner 3:** cuatro diapositivas con su texto: Lima, «Liquidez en 48 horas» (billetes y documentos), «Sin
-  préstamos bancarios» (factura revisada a mano) y «Respaldo y asesoría» (apretón de manos).
+  préstamos bancarios» (escritorio con café y laptop, foto del cliente) y «Respaldo y asesoría» (reunión con
+  gráficos, foto del cliente).
 
 **Formulario pulido.** Banner 2: las respuestas son etiquetas con ícono y valor (caben las tres); al corregir, la
 barra dice «Corrige tus datos», la pregunta cambia a «Corrige tu nombre…» y aparece «Cancelar»; el botón principal
@@ -121,6 +122,57 @@ editar, desglose, evaluación y envío). La tarjeta de Factoring y de la página
 **Llamadas a la acción.** Una sola principal por paso (Ver mi simulación → Solicitar evaluación → Enviar
 solicitud), siempre en el mismo sitio. Las secundarias van fuera de la tarjeta: «Habla con un asesor» (WhatsApp),
 «Cómo funciona el factoring» y, en el banner 2, Confirming y Capital de Trabajo.
+
+### Fotos del cliente (zip del 13/10) y «Probar fotos»
+
+Del zip se usan seis fotos, guardadas en `img/` como JPG para web:
+
+| Archivo | Origen en el zip | Dónde va por defecto |
+|---|---|---|
+| `b-factoring.jpg` | FACTORING.png | Banner 1 · Factoring; banner 2 · Factoring (foto 1); portada de Factoring |
+| `b-confirming.jpg` | CONFIRMING.png | Banner 1 · Confirming; banner 2 · Confirming (foto 1); portada de Confirming |
+| `b-capital.jpg` | CAPITAL DE TRABAJO.png | Banner 1 · Capital; banner 2 · Capital (foto 1); portada de Capital de Trabajo |
+| `b-mype.jpg` | Banner 4.svg | Banner 1 · Para mypes; banner 2 · Capital (foto 2) |
+| `b-cafeteria.jpg` | Banner 10.svg | Banner 2 · Factoring (foto 3) |
+| `b-reunion.jpg` | Banner 7.svg | Banner 3 · Respaldo y asesoría |
+| `b-escritorio.jpg` | Banner 15.svg | Banner 3 · Sin préstamos bancarios |
+
+Los «Banner N» restantes no se usan: 1, 3, 5, 6, 9 y 12 son almacenes (las fotos anteriores del sitio); 2 y 13 son
+genéricas ya usadas; 8 es la del marco legal (ya está en esa sección); 11 y 14 son laptops con personas cortadas
+en el borde (no sirven de fondo).
+Las tres con nombre parecen generadas con IA y miden 1672 × 941 px: bastan hasta unos 1700 px de ancho.
+
+**Probar fotos.** En el Inicio de B, el botón «Probar fotos» (abajo a la izquierda, mientras se ve el banner) abre
+las candidatas de la diapositiva o pestaña visible. Al tocar una, la foto cambia al instante y la elección se
+recuerda en ese navegador (`localStorage` «fc-fotos»); «Volver a las predeterminadas» deshace todo. Mientras el
+panel está abierto el banner no rota. Es una herramienta del prototipo para decidir con el cliente: en WordPress
+se usa solo la foto elegida.
+
+### Encuadre por caras (QA del 13/10, noche)
+
+Revisión vista por vista de los tres banners con todas las fotos candidatas, en 2500 (pantalla 2560 de Aaron),
+1920, 1440, 1366, 1280 y 390 px. Lo que se corrigió:
+
+- **Banner 2:** en pantallas anchas la izquierda quedaba vacía (la foto se achicaba a la derecha y el resto era un
+  fondo casi negro). Ahora la foto va siempre a todo el alto y, donde no llega al borde, la continúa su propio
+  reflejo desenfocado: la escena llena todo el ancho y el texto se lee sobre un vidrio. El velo oscuro sigue a la
+  columna del texto, no al ancho de la pantalla.
+- **Banner 3:** con una foto con personas la cara quedaba bajo el título o pegada a la factura: el texto y la
+  factura ocupan todo el ancho y no queda dónde poner una persona. Por eso el banner 3 usa solo fotos de fondo sin
+  caras (Lima, billetes, escritorio y reunión con gráficos); «Probar fotos» ya no ofrece ahí fotos con personas y
+  una elección así guardada se descarta. Se quitaron la factura con un precio en euros y la mano en primer plano,
+  que quedaba enorme detrás del título.
+- **Banner 1:** las dos personas de cada foto se ven enteras entre el texto y la tarjeta, con aire alrededor;
+  alrededor, la misma escena muy desenfocada. Ninguna cara queda detrás del título, ni siquiera oscurecida: si una
+  foto de dos personas no cabe, la segunda queda oculta tras la tarjeta.
+- **Aviso flotante (banner 2):** va a la derecha de las caras, a su izquierda o debajo; nunca encima de una cara.
+
+Cómo funciona: cada foto lleva en `FOTOS_B` (propuestas.js) dónde están sus caras. Al cargar y al cambiar el tamaño
+de la ventana, `encuadreB` prueba escalas y posiciones y elige la que deja todas las caras principales enteras y
+fuera del texto, la tarjeta y el menú (con margen), con la foto a todo el alto, sin pegar caras al borde y sin
+ampliarla de más. Las fotos sin personas (Lima, billetes, escritorio, manos, reunión con gráficos) cubren todo el fondo. En celular
+cada foto usa su recorte fijo (`pos`). En WordPress basta con elegir una foto por banner y fijar su recorte para
+escritorio y celular.
 
 ### Fotos (Unsplash, licencia gratuita)
 

@@ -869,6 +869,198 @@
     deslizar($('[data-swipe]', heroA), moverA);
   }
 
+  /* ================================================================ fotos de los banners de B
+     Registro de todas las fotos candidatas: de dónde salen (Unsplash o el zip del cliente), cómo se llaman en
+     el selector «Probar fotos» y dónde está lo importante, en fracciones de la imagen: c, las caras
+     [x0, y0, x1, y1, peso] (peso menor: de espaldas o secundaria); b, el ancho de las personas; full, la foto
+     no tiene personas y cubre todo el fondo; fondo, sirve de fondo (sin caras) aunque tenga un objeto que se
+     encuadra como si fuera una cara. Lo usan el encuadre de los tres banners y el selector. */
+  var FOTOS_B = {
+    'factoring-ia': { src: '../img/b-factoring.jpg', n: 'Equipo revisando una factura', nueva: true, c: [[0.35, 0.12, 0.46, 0.35, 1], [0.555, 0.06, 0.71, 0.39, 1]], b: [0.21, 0.86], pos: '55% 30%' },
+    'confirming-ia': { src: '../img/b-confirming.jpg', n: 'Acuerdo en la oficina', nueva: true, c: [[0.245, 0.14, 0.38, 0.4, 1], [0.5, 0.21, 0.625, 0.47, 1], [0.74, 0.03, 0.9, 0.43, 0.4]], b: [0.13, 0.97], pos: '45% 30%' },
+    'capital-ia': { src: '../img/b-capital.jpg', n: 'Equipo en su almacén', nueva: true, c: [[0.3, 0.17, 0.42, 0.41, 1], [0.545, 0.09, 0.69, 0.38, 1]], b: [0.23, 0.8], pos: '70% 30%' },
+    mype: { src: '../img/b-mype.jpg', n: 'Emprendedor en su tienda', nueva: true, c: [[0.595, 0.1, 0.72, 0.33, 1]], b: [0.51, 0.85], pos: '68% 30%' },
+    cafeteria: { src: '../img/b-cafeteria.jpg', n: 'Dueña de un café', nueva: true, c: [[0.355, 0.25, 0.455, 0.48, 1]], b: [0.28, 0.54], pos: '41% 40%' },
+    mesa: { src: '../img/b-reunion.jpg', n: 'Reunión con gráficos', nueva: true, full: true, pos: '60% 50%' },
+    escritorio: { src: '../img/b-escritorio.jpg', n: 'Escritorio con café y laptop', nueva: true, fondo: true, c: [[0.28, 0.45, 0.52, 0.85, 1]], b: [0.25, 0.95], pos: '40% 75%' },
+    oficina: { u: '1758520144864-fb42371d9e60', n: 'Empresaria al teléfono', c: [[0.32, 0.1, 0.445, 0.4, 1]], b: [0.26, 0.6], pos: '40% 35%' },
+    taller: { u: '1753164597612-5e71b83fda91', n: 'Taller de confección', c: [[0.475, 0.17, 0.59, 0.45, 1]], b: [0.45, 0.7], pos: '64% 30%' },
+    cafe: { u: '1778790508237-3c6cb00f152a', n: 'Pago en el mostrador', c: [[0.13, 0.15, 0.28, 0.34, 0.5], [0.63, 0.07, 0.73, 0.24, 1]], b: [0.07, 0.84], pos: '72% 30%' },
+    celebran: { u: '1758526213729-50208a451702', n: 'Emprendedoras celebran', c: [[0.27, 0.05, 0.42, 0.44, 1], [0.64, 0.12, 0.86, 0.5, 1]], b: [0.2, 0.92], pos: '55% 30%' },
+    llamada: { u: '1758876022836-70b89d3e6944', n: 'Llamada en la oficina', c: [[0.555, 0.08, 0.68, 0.36, 1]], b: [0.41, 0.77], pos: '68% 30%' },
+    billetes: { u: '1765868017186-18a3fc4c2942', n: 'Billetes y factura', full: true, pos: '50% 50%' },
+    manos: { u: '1696861270495-7f35c35c3273', n: 'Apretón de manos', full: true, pos: '50% 50%' },
+    trato: { u: '1638262052630-9c3f7dd449c4', n: 'Acuerdo (tono oscuro)', c: [[0.19, 0.1, 0.3, 0.35, 1], [0.575, 0.07, 0.7, 0.32, 1]], b: [0.1, 0.8], pos: '50% 40%' },
+    acuerdo: { u: '1758519288905-38b7b00c1023', n: 'Apretón de manos en la oficina', c: [[0.25, 0.09, 0.385, 0.39, 1], [0.68, 0.18, 0.83, 0.48, 1]], b: [0.17, 0.92], pos: '50% 30%' },
+    reunion: { u: '1758519288557-9a9dee0a7f58', n: 'Reunión de negocios', c: [[0.24, 0.16, 0.36, 0.47, 1], [0.7, 0.19, 0.8, 0.47, 1]], b: [0.12, 0.95], pos: '60% 40%' },
+    planta: { u: '1685475887169-9c9a84bf740f', n: 'Planta textil', c: [[0.42, 0.19, 0.57, 0.49, 1]], b: [0.33, 0.69], pos: '52% 30%' },
+    obra: { u: '1716037991590-c975184b37df', n: 'Ingeniera con planos', c: [[0.18, 0.1, 0.48, 0.54, 0.6], [0.59, 0.4, 0.75, 0.8, 0.5]], b: [0.08, 0.76], pos: '30% 30%' },
+    equipo: { u: '1753162658547-f017a4d84541', n: 'Equipo de una mype', c: [[0.47, 0.28, 0.64, 0.6, 1], [0.7, 0.02, 0.91, 0.46, 1]], b: [0.4, 0.98], pos: '72% 30%' },
+    lima: { u: '1777198498604-a924324d1eb2', n: 'Lima desde el aire', full: true, pos: '50% 0%' }
+  };
+  /* candidatas por diapositiva o pestaña (la primera de cada lista es la que se recomienda). En el banner 3 solo
+     van fotos sin personas: el texto y la factura ocupan todo el ancho y no queda dónde poner una cara */
+  var GRUPOS_B = {
+    factoring: ['factoring-ia', 'oficina', 'taller', 'cafe', 'cafeteria', 'celebran', 'llamada'],
+    liquidez: ['billetes', 'escritorio', 'mesa', 'cafe'],
+    mypes: ['mype', 'cafe', 'cafeteria', 'taller', 'celebran'],
+    confirming: ['confirming-ia', 'acuerdo', 'trato', 'manos', 'mesa', 'reunion'],
+    capital: ['capital-ia', 'planta', 'mype', 'obra', 'equipo'],
+    fondo: ['lima', 'escritorio', 'billetes', 'mesa'],
+    fondo2: ['billetes', 'escritorio', 'mesa', 'lima'],
+    fondo3: ['escritorio', 'billetes', 'mesa', 'lima'],
+    respaldo: ['mesa', 'escritorio', 'lima', 'billetes']
+  };
+  function urlU(id, w) { return 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=' + w + '&q=78'; }
+
+  /* ================================================================ encuadre de las fotos de B (escritorio)
+     Cada foto con personas se escala y se mueve para que las caras queden a la vista: fuera del texto, de la
+     tarjeta y del menú. Se prueban varias escalas y posiciones y se queda la que deja más caras enteras, con
+     la foto a todo el alto, cerca del centro del espacio libre y sin ampliarla de más. Donde la foto no llega
+     al borde del banner la continúa su reflejo desenfocado (.bh-amb): ningún lado queda vacío. */
+  function rectRel(el, box, m) {
+    var r = el.getBoundingClientRect();
+    return { l: r.left - box.left - m, t: r.top - box.top - m, r: r.right - box.left + m, b: r.bottom - box.top + m };
+  }
+  function bandaMenu(W) {
+    var h = $('.b-hdr');
+    return { l: 0, t: 0, r: W, b: (h ? h.offsetHeight : 84) + 24 };
+  }
+  /* centro del tramo libre más ancho a la altura y (para decidir hacia dónde van las caras) */
+  function centroLibre(W, y, tapan, a, z) {
+    var cortes = tapan.filter(function (q) { return q.t <= y && q.b >= y; }).map(function (q) { return [q.l, q.r]; })
+      .sort(function (p, q) { return p[0] - q[0]; });
+    var x = a, mejor = [a, a];
+    cortes.forEach(function (c) {
+      if (c[0] - x > mejor[1] - mejor[0]) mejor = [x, c[0]];
+      x = Math.max(x, c[1]);
+    });
+    if (z - x > mejor[1] - mejor[0]) mejor = [x, z];
+    return (mejor[0] + mejor[1]) / 2;
+  }
+  function encuadreB(o) {
+    var W = o.W, H = o.H, w = o.w, h = o.h, C = o.f.c, B = o.f.b || [0, 1], kc = H / h, mejor = null;
+    var peso = 0, cx = 0, cy = 0, fx0 = 1, fx1 = 0, top = 1;
+    C.forEach(function (c) {
+      peso += c[4]; cx += c[4] * (c[0] + c[2]) / 2; cy += c[4] * (c[1] + c[3]) / 2; top = Math.min(top, c[1]);
+      if (c[4] >= 0.9) { fx0 = Math.min(fx0, c[0]); fx1 = Math.max(fx1, c[2]); }
+    });
+    cx /= peso; cy /= peso;
+    if (fx1 < fx0) { fx0 = cx - 0.05; fx1 = cx + 0.05; }
+    var vis = function (l, t, r, b, tapan) {
+      var A = (r - l) * (b - t);
+      if (A <= 0) return 0;
+      var L = Math.max(l, 0), T = Math.max(t, 0), R = Math.min(r, W), Bo = Math.min(b, H);
+      if (R <= L || Bo <= T) return 0;
+      var tapado = 0;
+      tapan.forEach(function (q) { tapado += Math.max(0, Math.min(R, q.r) - Math.max(L, q.l)) * Math.max(0, Math.min(Bo, q.b) - Math.max(T, q.t)); });
+      return Math.max(0, (R - L) * (Bo - T) - tapado) / A;
+    };
+    [1.2, 1.1, 1, 0.9, 0.8, 0.7, 0.62].forEach(function (m) {
+      if (m < (o.kMin || 1)) return;
+      var k = kc * m, iw = w * k, ih = h * k, lleno = ih >= H - 1;
+      var ya = lleno ? H - ih : 0, yb = lleno ? 0 : H - ih;
+      var ys = [Math.min(yb, Math.max(ya, o.idealY * H - cy * ih))];
+      for (var i = 0; i <= 6; i++) ys.push(ya + (yb - ya) * i / 6);
+      /* las caras, nunca pegadas al borde de la pantalla */
+      var mg = Math.max(16, W * 0.03), xa = mg - fx0 * iw, xb = W - mg - fx1 * iw;
+      if (xa > xb) xa = xb = (xa + xb) / 2;
+      var paso = Math.max(6, (xb - xa) / 90), fade = Math.min(170, iw * 0.12), fadeV = Math.min(56, ih * 0.1);
+      for (var x = xa; x <= xb + 0.5; x += paso) {
+        ys.forEach(function (y) {
+          /* donde la foto se funde con su reflejo (la mitad más transparente del fundido) tampoco debe haber caras */
+          var tapan = o.tapan.slice();
+          if (x > 0) tapan.push({ l: x, t: -1e4, r: x + fade * 0.6, b: 1e4 });
+          if (x + iw < W) tapan.push({ l: x + iw - fade * 0.6, t: -1e4, r: x + iw, b: 1e4 });
+          if (!lleno) { if (y > 0) tapan.push({ l: -1e4, t: y, r: 1e4, b: y + fadeV / 2 }); if (y + ih < H) tapan.push({ l: -1e4, t: y + ih - fadeV / 2, r: 1e4, b: y + ih }); }
+          var vC = 0, vP = 0, medio = 0, enteras = 0, bajoTexto = 0;
+          C.forEach(function (c) {
+            var l = x + c[0] * iw, t = y + c[1] * ih, r = x + c[2] * iw, b = y + c[3] * ih;
+            var v = vis(l, t, r, b, tapan), pw = (r - l) * 0.2, ph = (b - t) * 0.12;
+            vC += c[4] * v * v * v;
+            vP += c[4] * vis(l - pw, t - ph, r + pw, b + ph, tapan);
+            /* una cara cortada se ve peor que una que no se ve; ante todo, que se vean enteras las principales */
+            if (v > 0.02 && v < 0.92) medio += c[4];
+            if (c[4] >= 0.9 && v >= 0.92) enteras++;
+            /* bajo el texto una cara se sigue viendo (oscurecida) aunque no se lea: nunca ahí; detrás de la
+               tarjeta, en cambio, queda oculta */
+            o.tapan.forEach(function (q) {
+              if (q.texto) bajoTexto += c[4] * Math.max(0, Math.min(r, q.r) - Math.max(l, q.l)) * Math.max(0, Math.min(b, q.b) - Math.max(t, q.t)) / ((r - l) * (b - t));
+            });
+          });
+          var cuerpo = vis(x + B[0] * iw, y + top * ih, x + B[1] * iw, Math.min(H, y + ih), tapan);
+          var cubre = (Math.min(W, x + iw) - Math.max(0, x)) / W;
+          var s = 1000 * enteras - 1500 * bajoTexto + 70 * vC / peso + 30 * vP / peso - 30 * medio / peso + 10 * cuerpo + 14 * cubre - 70 * (1 - Math.min(1, ih / H)) -
+            25 * Math.max(0, m - 1) - 10 * Math.abs(x + cx * iw - o.idealX) / W - 12 * Math.abs(y + cy * ih - o.idealY * H) / H;
+          if (!mejor || s > mejor.s) mejor = { s: s, x: x, y: y, iw: iw, ih: ih, k: k, cx: cx, cy: cy, fade: fade, fadeV: fadeV, lleno: lleno };
+        });
+      }
+    });
+    return mejor;
+  }
+  /* aplica el encuadre a la foto y a su reflejo desenfocado */
+  function colocarFoto(im, r, W, H) {
+    var px = function (v) { return Math.round(v) + 'px'; };
+    im.classList.add('enc');
+    im.style.objectFit = 'fill';
+    im.style.left = px(r.x); im.style.top = px(r.y); im.style.width = px(r.iw); im.style.height = px(r.ih);
+    im.style.transformOrigin = (r.cx * 100).toFixed(1) + '% ' + (r.cy * 100).toFixed(1) + '%';
+    var dentro = r.x > 0.5 || r.x + r.iw < W - 0.5 || !r.lleno;
+    im.style.setProperty('--mL', r.x > 0.5 ? px(r.fade) : '0px');
+    im.style.setProperty('--mR', r.x + r.iw < W - 0.5 ? px(r.fade) : '0px');
+    im.style.setProperty('--mT', !r.lleno && r.y > 0.5 ? px(r.fadeV) : '0px');
+    im.style.setProperty('--mB', !r.lleno && r.y + r.ih < H - 0.5 ? px(r.fadeV) : '0px');
+    var a = im.nextElementSibling;
+    if (!dentro) { if (a && a.classList.contains('bh-amb')) a.hidden = true; return; }
+    if (!a || !a.classList.contains('bh-amb')) {
+      a = doc.createElement('span');
+      a.className = 'bh-amb';
+      a.setAttribute('aria-hidden', 'true');
+      a.innerHTML = '<i></i><i></i><i></i>';
+      im.parentNode.insertBefore(a, im.nextSibling);
+    }
+    a.hidden = false;
+    var src = im.dataset.blur || im.currentSrc || im.src;
+    if (a.dataset.src !== src) {
+      a.dataset.src = src;
+      $$('i', a).forEach(function (i) { i.style.backgroundImage = 'url("' + src + '")'; });
+    }
+    a.style.left = px(r.x - r.iw); a.style.top = px(r.y); a.style.width = px(3 * r.iw); a.style.height = px(r.ih);
+    a.style.transformOrigin = px(r.iw + r.cx * r.iw) + ' ' + px(r.cy * r.ih);
+  }
+  /* foto sin personas: cubre todo el banner */
+  function cubrirFoto(im, W, H) {
+    im.classList.add('enc');
+    im.style.objectFit = 'cover';
+    im.style.left = '0px'; im.style.top = '0px'; im.style.width = W + 'px'; im.style.height = H + 'px';
+    ['--mL', '--mR', '--mT', '--mB'].forEach(function (k) { im.style.setProperty(k, '0px'); });
+    var a = im.nextElementSibling;
+    if (a && a.classList.contains('bh-amb')) a.hidden = true;
+  }
+  /* celular: la foto vuelve a su recorte con object-position */
+  function soltarFoto(im) {
+    im.classList.remove('enc');
+    ['left', 'top', 'width', 'height', 'object-fit', 'transform-origin', '--mL', '--mR', '--mT', '--mB'].forEach(function (k) { im.style.removeProperty(k); });
+    var a = im.nextElementSibling;
+    if (a && a.classList.contains('bh-amb')) a.hidden = true;
+  }
+  /* encuadra todas las fotos de un banner: o.zonas(box) devuelve lo que tapa y dónde conviene poner las caras */
+  function encuadrarFotos(imgs, box, o) {
+    var W = box.width, H = box.height, res = {};
+    imgs.forEach(function (im) {
+      var f = FOTOS_B[im.dataset.k];
+      if (!f || f.full || !f.c) { cubrirFoto(im, W, H); return; }
+      var z = o.zonas(im);
+      var r = encuadreB({ W: W, H: H, w: im.naturalWidth || 2000, h: im.naturalHeight || 1125, f: f, tapan: z.tapan,
+        idealX: z.idealX, idealY: o.idealY, kMin: o.kMin });
+      if (!r) { cubrirFoto(im, W, H); return; }
+      colocarFoto(im, r, W, H);
+      res[im.dataset.k + '|' + (im.dataset.prod || im.dataset.slide)] = r;
+      im._enc = r;
+    });
+    return res;
+  }
+
   /* ================================================================ banner B: rota, flechas y deslizar */
   /* solo el banner 1 (los banners 2 y 3 tienen su propio control más abajo) */
   var heroB = $('.b-hero[data-hero]:not(.bh)', root);
@@ -889,12 +1081,15 @@
     var programar = function () {
       clearTimeout(timer);
       heroB.classList.remove('is-playing');
-      if (quieto || pausa || reduce) return;
+      if (quieto || pausa || probando || reduce) return;
       void heroB.offsetWidth;
       heroB.classList.add('is-playing');
       timer = setTimeout(function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); }, DUR);
     };
     var detener = function () { quieto = true; clearTimeout(timer); heroB.classList.remove('is-playing'); };
+    /* «Probar fotos» abierto: el banner no rota */
+    var probando = false;
+    heroB.addEventListener('fc-pausa', function (e) { probando = !!e.detail; programar(); });
     var moverB = function (d) { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + d + ordenB.length) % ordenB.length]); detener(); };
     $$('.b-dots [data-prod]', heroB).forEach(function (b) { b.addEventListener('click', function () { mostrarB(b.dataset.prod); detener(); }); });
     $('[data-prev]', heroB).addEventListener('click', function () { moverB(-1); });
@@ -916,11 +1111,7 @@
     });
     programar();
 
-    /* --- encuadre (escritorio): cada foto se escala y se centra en el espacio libre entre el texto y la
-       tarjeta del simulador, para que la tarjeta no tape a las personas. x0–x1: ancho de las personas en la
-       foto; y: altura de los rostros (fracciones de la imagen). */
-    var SUJETOS = { factoring: { x0: 0.26, x1: 0.62, y: 0.27 }, confirming: { x0: 0.22, x1: 0.86, y: 0.30 },
-      capital: { x0: 0.33, x1: 0.69, y: 0.36 }, mypes: { x0: 0.45, x1: 0.86, y: 0.20 }, liquidez: { full: true } };
+    /* --- encuadre (escritorio): las caras van entre el texto y la tarjeta del simulador (ver encuadreB) */
     var bgB = $('.b-hero-bg', heroB), copiesB = $('.b-copies', heroB), cardB = $('[data-sim]', heroB);
     /* fondo desenfocado con la foto del banner visible */
     var fondoB = function () {
@@ -942,43 +1133,20 @@
       var imgs = $$('img', bgB);
       if (innerWidth < 981 || !cardB || !copiesB) {
         heroB.classList.remove('encuadre');
-        imgs.forEach(function (im) { ['left', 'top', 'width', 'height', 'transform-origin'].forEach(function (k) { im.style.removeProperty(k); }); });
+        imgs.forEach(soltarFoto);
         return;
       }
       heroB.classList.add('encuadre');
-      var box = bgB.getBoundingClientRect(), W = box.width, H = box.height;
-      var cardL = cardB.getBoundingClientRect().left - box.left, maxCopy = 0;
-      imgs.forEach(function (im) {
-        var su = SUJETOS[im.dataset.prod] || { x0: 0.4, x1: 0.6, y: 0.3 };
-        /* fotos sin personas (billetes, documentos): cubren todo el fondo */
-        im.style.objectFit = su.full ? 'cover' : '';
-        if (su.full) {
-          im.style.left = '0px'; im.style.top = '0px'; im.style.width = W + 'px'; im.style.height = H + 'px';
-          return;
-        }
-        var w = im.naturalWidth || 2000, h = im.naturalHeight || 1300;
-        var copyR = Math.max(textoDerecho(im.dataset.prod, box.left), 200) + 24;
+      var box = bgB.getBoundingClientRect(), W = box.width, maxCopy = 0;
+      var card = rectRel(cardB, box, 40), menu = bandaMenu(W);
+      encuadrarFotos(imgs, box, { idealY: 0.3, kMin: 0.62, zonas: function (im) {
+        var copyR = Math.max(textoDerecho(im.dataset.prod, box.left), 200) + 36;
         maxCopy = Math.max(maxCopy, copyR);
-        var G = (copyR + cardL) / 2, hueco = Math.max(cardL - copyR, 180);
-        /* la escala cubre el alto, salvo que las personas no quepan en el hueco: entonces se reduce (hasta 55 %)
-           y la foto se apoya abajo, fundida arriba con el fondo */
-        var cubre = H / h, cabe = hueco / (w * (su.x1 - su.x0));
-        var k = Math.max(Math.min(cubre, cabe), cubre * 0.55);
-        var iw = w * k, ih = h * k;
-        var x = G - iw * (su.x0 + su.x1) / 2;
-        /* rostros a la altura del 24 % del banner; si la foto es más baja que el banner, lo que queda se
-           rellena con la misma foto desenfocada (ver .b-hero-bg::before), nunca con una franja vacía */
-        var y = H * 0.24 - ih * su.y;
-        y = ih >= H ? Math.min(0, Math.max(H - ih, y)) : Math.min(H - ih, Math.max(0, y));
-        im.style.left = Math.round(x) + 'px';
-        im.style.top = Math.round(y) + 'px';
-        im.style.width = Math.round(iw) + 'px';
-        im.style.height = Math.round(ih) + 'px';
-        im.style.transformOrigin = ((su.x0 + su.x1) / 2 * 100).toFixed(1) + '% ' + (su.y * 100).toFixed(1) + '%';
-      });
+        return { tapan: [{ l: -1e4, t: -1e4, r: copyR, b: 1e4, texto: 1 }, { l: card.l, t: -1e4, r: 1e4, b: 1e4 }, menu], idealX: (copyR + card.l) / 2 };
+      } });
       fondoB();
       heroB.style.setProperty('--g1', (maxCopy / W * 100).toFixed(1) + '%');
-      heroB.style.setProperty('--g2', (cardL / W * 100).toFixed(1) + '%');
+      heroB.style.setProperty('--g2', ((card.l + 40) / W * 100).toFixed(1) + '%');
     };
     encuadrar();
     addEventListener('resize', encuadrar);
@@ -1020,6 +1188,7 @@
       o.texto.addEventListener('mouseleave', function () { pausa('texto', false); });
     }
     doc.addEventListener('visibilitychange', function () { pausa('oculta', doc.hidden); });
+    o.hero.addEventListener('fc-pausa', function (e) { pausa('fotos', !!e.detail); });
     o.hero.style.setProperty('--rot', o.dur / 1000 + 's');
     marcar();
     programar();
@@ -1037,10 +1206,6 @@
     var bg2 = $('.bh2-bg', hero2), col2 = $('.bh2-col', hero2), pings2 = $('.bh2-pings', hero2);
     var sim2 = sims.filter(function (x) { return hero2.contains(x.el); })[0];
     var mas2 = $('[data-mas]', hero2);
-    /* x0–x1: ancho de lo importante en la foto (personas, manos); y: altura de los rostros; full: cubre todo */
-    var SUJ2 = { taller: { x0: 0.44, x1: 0.72, y: 0.40 }, cafe: { x0: 0.45, x1: 0.86, y: 0.20 }, celebran: { x0: 0.25, x1: 0.92, y: 0.28 },
-      acuerdo: { x0: 0.2, x1: 0.88, y: 0.30 }, trato: { x0: 0.15, x1: 0.82, y: 0.32 }, manos: { full: true },
-      planta: { x0: 0.33, x1: 0.69, y: 0.36 }, obra: { x0: 0.08, x1: 0.76, y: 0.34 }, equipo: { x0: 0.40, x1: 0.98, y: 0.30 } };
     var MAS2 = { factoring: ['factoring.html?p=b', 'el Factoring'], confirming: ['confirming.html?p=b', 'el Confirming'],
       capital: ['capital-de-trabajo.html?p=b', 'el Capital de Trabajo'] };
     var actual2 = 'factoring', PW = 250, rot2 = null;
@@ -1053,53 +1218,34 @@
       var imgs = $$('img.bh2-photo', bg2);
       if (innerWidth < 981) {
         hero2.classList.remove('encuadre');
-        imgs.forEach(function (im) { ['left', 'top', 'width', 'height', 'object-fit'].forEach(function (k) { im.style.removeProperty(k); }); });
+        imgs.forEach(soltarFoto);
         return;
       }
       hero2.classList.add('encuadre');
       var box = bg2.getBoundingClientRect(), W = box.width, H = box.height;
-      var ini = col2.getBoundingClientRect().right - box.left + 40, fin = W - 32, activo = null;
-      imgs.forEach(function (im) {
-        var su = SUJ2[im.dataset.k] || { x0: 0.35, x1: 0.75, y: 0.3 };
-        var x, y, iw, ih;
-        if (su.full) {
-          x = 0; y = 0; iw = W; ih = H;
-          im.style.objectFit = 'cover';
-        } else {
-          im.style.objectFit = '';
-          var w = im.naturalWidth || 2000, h = im.naturalHeight || 1125;
-          var hueco = Math.max(fin - ini, 260), cubre = H / h, ancho = w * (su.x1 - su.x0);
-          var k = Math.max(Math.min(cubre, hueco / ancho), cubre * 0.6), finP = fin;
-          /* si cabe (achicando la foto hasta 15 %), se deja a la derecha el lugar del aviso */
-          var huecoP = fin - PW - 40 - ini;
-          if (pings2 && huecoP >= ancho * cubre * 0.85) { k = Math.min(k, huecoP / ancho); finP = fin - PW - 40; }
-          iw = w * k; ih = h * k;
-          x = (ini + finP) / 2 - iw * (su.x0 + su.x1) / 2;
-          var falta = W - (x + iw);
-          if (falta > 0) x += Math.min(falta, Math.max(0, finP - (x + iw * su.x1)));
-          y = H * 0.36 - ih * su.y;
-          y = ih >= H ? Math.min(0, Math.max(H - ih, y)) : Math.min(H - ih, Math.max(0, y));
-        }
-        im.style.left = Math.round(x) + 'px';
-        im.style.top = Math.round(y) + 'px';
-        im.style.width = Math.round(iw) + 'px';
-        im.style.height = Math.round(ih) + 'px';
-        if (im.classList.contains('is-on')) activo = { im: im, full: su.full, sL: x + iw * (su.x0 || 0), sR: x + iw * (su.x1 || 1), top: y, ih: ih };
-      });
+      var col = rectRel(col2, box, 0), ini = col.r + 56;
+      var tapan = [{ l: -1e4, t: -1e4, r: ini, b: 1e4, texto: 1 }, bandaMenu(W)];
+      encuadrarFotos(imgs, box, { idealY: 0.34, kMin: 0.8, zonas: function () { return { tapan: tapan, idealX: (ini + W - 32) / 2 }; } });
+      hero2.style.setProperty('--c0', (col.l / W * 100).toFixed(1) + '%');
+      hero2.style.setProperty('--c1', (col.r / W * 100).toFixed(1) + '%');
+      var activo = $('img.bh2-photo.is-on', bg2);
       if (!activo) return;
-      hero2.style.setProperty('--fondo', 'url("' + (activo.im.dataset.blur || activo.im.currentSrc || activo.im.src) + '")');
-      /* el aviso va al lado de la persona, nunca encima: a su derecha si cabe, si no entre el texto y ella */
+      hero2.style.setProperty('--fondo', 'url("' + (activo.dataset.blur || activo.currentSrc || activo.src) + '")');
+      /* el aviso va junto a las caras, nunca encima: a su derecha si cabe, si no a su izquierda y, si tampoco,
+         debajo de ellas (sobre las manos o la mesa) */
       if (pings2) {
-        var px = null;
-        if (!activo.full) {
-          if (W - activo.sR >= PW + 40) px = Math.min(activo.sR + 28, W - PW - 24);
-          else if (activo.sL - ini >= PW + 20) px = ini + (activo.sL - ini - PW) / 2;
-        }
+        var f = FOTOS_B[activo.dataset.k], r = activo._enc, px = null, py = Math.round(H * 0.58);
+        if (f && f.c && r) {
+          var fL = 1, fR = 0, fB = 0;
+          f.c.forEach(function (c) { if (c[4] < 0.9) return; fL = Math.min(fL, c[0]); fR = Math.max(fR, c[2]); fB = Math.max(fB, c[3]); });
+          fL = r.x + fL * r.iw; fR = r.x + fR * r.iw; fB = r.y + fB * r.ih;
+          if (W - 24 - PW >= fR + 28) px = Math.min(fR + 40, W - 24 - PW);
+          else if (fL - 28 - PW >= ini) px = fL - 40 - PW;
+          py = Math.round(Math.min(H - 150, Math.max(150, fB + 36)));
+          if (px === null && fB + 36 <= H - 150) px = Math.max(ini, Math.min(W - 24 - PW, fR - PW * 0.7));
+        } else if (f && f.full) px = W - PW - Math.max(40, W * 0.05);
         pings2.classList.toggle('is-off', px === null);
-        if (px !== null) {
-          pings2.style.left = Math.round(px) + 'px';
-          pings2.style.top = Math.round(Math.min(H - 150, Math.max(140, activo.top + activo.ih * 0.58))) + 'px';
-        }
+        if (px !== null) { pings2.style.left = Math.round(px) + 'px'; pings2.style.top = py + 'px'; }
       }
     };
     var mostrarFoto2 = function (n) {
@@ -1164,7 +1310,145 @@
     $('[data-prev]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() - 1); });
     $('[data-next]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() + 1); });
     deslizar($('.bh3-copies', hero3), function (d) { rot3.ir(rot3.actual() + d); });
+    /* fotos con personas (elegidas en «Probar fotos»): las caras van entre el texto y la factura o a la
+       derecha de la factura, nunca bajo el título; las fotos sin personas cubren todo el fondo */
+    var bg3 = $('.bh3-bg', hero3), copy3 = $('.bh3-copy', hero3);
+    var encuadre3 = function () {
+      var imgs = $$('img.bh3-photo', bg3);
+      if (innerWidth < 981 || !sim3) {
+        hero3.classList.remove('encuadre');
+        imgs.forEach(soltarFoto);
+        return;
+      }
+      hero3.classList.add('encuadre');
+      var box = bg3.getBoundingClientRect(), W = box.width, H = box.height;
+      var tx = rectRel(copy3, box, 28), cd = rectRel(sim3.el, box, 24);
+      var tapan = [{ l: -1e4, t: -1e4, r: tx.r, b: 1e4, texto: 1 }, cd, bandaMenu(W)];
+      encuadrarFotos(imgs, box, { idealY: 0.3, kMin: 1, zonas: function () { return { tapan: tapan, idealX: centroLibre(W, H * 0.3, tapan, 0, W) }; } });
+    };
+    encuadre3();
+    addEventListener('resize', encuadre3);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(encuadre3);
+    $$('img', bg3).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadre3); });
+    if ('ResizeObserver' in window) new ResizeObserver(encuadre3).observe(hero3);
   }
+
+  /* ================================================================ «Probar fotos» (solo en el prototipo)
+     Botón abajo a la izquierda mientras se ve el banner: muestra las candidatas de la diapositiva o pestaña
+     visible; al elegir una, la foto cambia al instante y la elección se recuerda (localStorage «fc-fotos»).
+     Mientras el panel está abierto, el banner no rota. */
+  var heroF = $('[data-hero][data-hv]', root);
+  if (heroF) (function () {
+    var hv = heroF.dataset.hv;
+    var ETQ = { factoring: 'Factoring', liquidez: 'En 48 horas', mypes: 'Para mypes', confirming: 'Confirming', capital: 'Capital de Trabajo',
+      lima: 'Factoring', billetes: 'Liquidez en 48 horas', factura: 'Sin préstamos bancarios', trato: 'Respaldo y asesoría' };
+    var GRUPO_B3 = { lima: 'fondo', billetes: 'fondo2', factura: 'fondo3', trato: 'respaldo' };
+    var NOMBRE_BANNER = { 1: 'Banner 1 · Vidrio', 2: 'Banner 2 · Conversación', 3: 'Banner 3 · Factura' };
+    var fotos = function () { return $$('img[data-k]', heroF).filter(function (i) { return i.closest('.b-hero-bg, .bh2-bg, .bh3-bg'); }); };
+    var clave = function (im) { return im.dataset.prod || im.dataset.slide; };
+    var hermanas = function (im) { return fotos().filter(function (x) { return clave(x) === clave(im); }); };
+    var slot = function (im) { return hv + ':' + clave(im) + ':' + hermanas(im).indexOf(im); };
+    var grupo = function (im) { return im.dataset.slide ? GRUPO_B3[im.dataset.slide] : im.dataset.prod; };
+    var vale = function (k) { return FOTOS_B[k] && (hv !== '3' || FOTOS_B[k].full || FOTOS_B[k].fondo); };
+    var candidatas = function (im) { return (GRUPOS_B[grupo(im)] || []).filter(vale); };
+    var activa = function () { return fotos().filter(function (i) { return i.classList.contains('is-on'); })[0] || fotos()[0]; };
+    var reencuadrar = function () { dispatchEvent(new Event('resize')); };
+    var poner = function (im, k) {
+      var f = FOTOS_B[k];
+      if (!f) return;
+      im.dataset.k = k;
+      if (f.u) {
+        im.setAttribute('srcset', [800, 1400, 2000, 2600].map(function (w) { return urlU(f.u, w) + ' ' + w + 'w'; }).join(', '));
+        im.setAttribute('sizes', '100vw');
+        im.src = urlU(f.u, 2000);
+        im.dataset.blur = urlU(f.u, 480);
+      } else {
+        im.removeAttribute('srcset');
+        im.src = f.src;
+        im.dataset.blur = f.src;
+      }
+      im.removeAttribute('loading');
+      im.style.objectPosition = f.pos || '50% 40%';
+      im.addEventListener('load', reencuadrar, { once: true });
+      reencuadrar();
+    };
+    var inicial = {};
+    fotos().forEach(function (im) { inicial[slot(im)] = im.dataset.k; });
+    var elegidas = leer('fc-fotos') || {};
+    fotos().forEach(function (im) {
+      var s = slot(im), k = elegidas[s];
+      /* una elección guardada que ya no es candidata de su diapositiva se descarta */
+      if (k && candidatas(im).indexOf(k) < 0 && k !== inicial[s]) { delete elegidas[s]; guardar('fc-fotos', elegidas); return; }
+      if (k && k !== im.dataset.k) poner(im, k);
+    });
+
+    var IMG = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5.2-5.2L6 19"/></svg>';
+    var btn = doc.createElement('button');
+    btn.type = 'button';
+    btn.className = 'fp-btn';
+    btn.setAttribute('aria-expanded', 'false');
+    btn.innerHTML = IMG + '<span>Probar fotos</span>';
+    var panel = doc.createElement('div');
+    panel.className = 'fp-panel';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-label', 'Probar fotos del banner');
+    panel.hidden = true;
+    root.appendChild(btn);
+    root.appendChild(panel);
+    var ultimo = '';
+    var pintar = function () {
+      var im = activa();
+      if (!im) return;
+      var s = slot(im), lista = candidatas(im), h = hermanas(im), pos = h.indexOf(im);
+      ultimo = s;
+      panel.innerHTML = '<div class="fp-h"><div><b>Fotos para «' + ETQ[clave(im)] + '»</b><small>' + NOMBRE_BANNER[hv] +
+        (h.length > 1 ? ' · foto ' + (pos + 1) + ' de ' + h.length : '') + '. Toca una para verla en el banner.</small></div>' +
+        '<button type="button" class="fp-x" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
+        '<div class="fp-grid">' + lista.map(function (k) {
+          var f = FOTOS_B[k], mini = f.u ? urlU(f.u, 260) : f.src;
+          return '<button type="button" class="fp-op' + (k === im.dataset.k ? ' is-sel' : '') + '" data-foto="' + k + '" aria-pressed="' +
+            (k === im.dataset.k) + '"><img src="' + mini + '" alt="" loading="lazy" style="object-position:' + (f.pos || '50% 40%') + '">' +
+            '<span>' + f.n + '</span>' + (f.nueva ? '<em>Nueva</em>' : '') + (k === inicial[s] ? '<i>Predeterminada</i>' : '') + '</button>';
+        }).join('') + '</div>' +
+        '<button type="button" class="fp-reset">Volver a las predeterminadas en todo el banner</button>';
+    };
+    var abrir = function (v) {
+      panel.hidden = !v;
+      btn.setAttribute('aria-expanded', v ? 'true' : 'false');
+      heroF.dispatchEvent(new CustomEvent('fc-pausa', { detail: v }));
+      if (v) pintar();
+    };
+    btn.addEventListener('click', function () { abrir(panel.hidden); });
+    panel.addEventListener('click', function (e) {
+      if (e.target.closest('.fp-x')) { abrir(false); btn.focus(); return; }
+      if (e.target.closest('.fp-reset')) {
+        fotos().forEach(function (im) { var k = inicial[slot(im)]; if (k && k !== im.dataset.k) poner(im, k); });
+        elegidas = {};
+        try { localStorage.removeItem('fc-fotos'); } catch (er) { /* */ }
+        pintar();
+        return;
+      }
+      var op = e.target.closest('[data-foto]');
+      if (!op) return;
+      var im = activa();
+      poner(im, op.dataset.foto);
+      elegidas[slot(im)] = op.dataset.foto;
+      guardar('fc-fotos', elegidas);
+      pintar();
+    });
+    doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { abrir(false); btn.focus(); } });
+    /* si cambia la diapositiva o la pestaña con el panel abierto, el panel muestra las candidatas de la nueva */
+    new MutationObserver(function () { if (!panel.hidden) { var im = activa(); if (im && slot(im) !== ultimo) pintar(); } })
+      .observe(heroF, { subtree: true, attributes: true, attributeFilter: ['class'] });
+    /* el botón solo se muestra mientras el banner está a la vista */
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        var ve = es[0].isIntersecting;
+        btn.classList.toggle('is-off', !ve);
+        if (!ve && !panel.hidden) abrir(false);
+      }, { threshold: 0.2 }).observe(heroF);
+    }
+  })();
 
   /* ================================================================ carrusel de noticias */
   $$('[data-rail]', root).forEach(function (rail) {

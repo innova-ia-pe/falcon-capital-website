@@ -613,3 +613,87 @@ html:not([data-p="b"]) .pbar-hv{display:none!important}
   .pb .b-sol:has(.b-sol-pin.is-h){padding-top:0}
   .pb .b-sol-pin.is-h .b-sol-sticky{justify-content:flex-start;padding-top:calc(84px + clamp(14px,3vh,36px))}
 }
+
+/* ==========================================================================
+   «Probar fotos» (herramienta del prototipo): elegir la foto de cada diapositiva o pestaña del banner
+   ========================================================================== */
+.fp-btn{position:fixed;z-index:70;left:16px;bottom:16px;display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px 0 13px;
+  border-radius:999px;font:700 13.5px/1 "Manrope",system-ui,sans-serif;color:#E6ECEE;background:#0B1012;border:1px solid rgba(111,230,173,.45);
+  box-shadow:0 14px 34px -10px rgba(0,0,0,.6);transition:opacity .3s,transform .4s var(--e-out),background .2s}
+.fp-btn:hover,.fp-btn[aria-expanded="true"]{background:#13201F}
+.fp-btn svg{width:18px;height:18px;fill:none;stroke:#6FE6AD;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fp-btn.is-off{opacity:0;pointer-events:none;transform:translate3d(0,12px,0)}
+.fp-panel{position:fixed;z-index:71;left:16px;bottom:68px;width:min(440px,calc(100vw - 32px));max-height:min(560px,calc(100svh - 140px));overflow:auto;
+  padding:16px;border-radius:18px;color:#E6ECEE;background:#0B1012;border:1px solid rgba(255,255,255,.1);box-shadow:0 30px 70px -20px rgba(0,0,0,.75);
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,.2) transparent;animation:fpIn .35s var(--e-out) both}
+.fp-panel[hidden]{display:none}
+@keyframes fpIn{from{opacity:0;transform:translate3d(0,10px,0)}}
+.fp-h{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.fp-h b{display:block;font-size:15px}
+.fp-h small{display:block;margin-top:3px;font-size:12px;line-height:1.4;color:rgba(230,236,238,.6)}
+.fp-x{display:grid;place-items:center;flex:none;width:32px;height:32px;border-radius:50%;border:1px solid rgba(255,255,255,.14);color:#E6ECEE}
+.fp-x svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round}
+.fp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:14px}
+.fp-op{position:relative;display:flex;flex-direction:column;gap:6px;padding:0;text-align:left;color:rgba(230,236,238,.8);font-size:12px;line-height:1.3}
+.fp-op img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:10px;border:2px solid transparent;transition:border-color .2s,transform .3s var(--e-out)}
+.fp-op:hover img{transform:translateY(-2px)}
+.fp-op.is-sel img{border-color:#6FE6AD}
+.fp-op.is-sel span{color:#6FE6AD;font-weight:700}
+.fp-op em,.fp-op i{position:absolute;top:6px;padding:2px 7px;border-radius:999px;font-size:10px;font-weight:800;font-style:normal;letter-spacing:.04em}
+.fp-op em{left:6px;color:#05191C;background:#6FE6AD}
+.fp-op i{right:6px;color:#E6ECEE;background:rgba(11,16,18,.8)}
+.fp-reset{margin-top:14px;font-size:12.5px;font-weight:700;color:rgba(230,236,238,.7);text-decoration:underline;text-underline-offset:3px}
+.fp-reset:hover{color:#fff}
+@media (max-width:760px){
+  .fp-btn{bottom:86px;left:12px;height:38px;font-size:12.5px}
+  .fp-panel{left:12px;bottom:132px;width:calc(100vw - 24px)}
+  .fp-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* «Predeterminada» va como texto bajo el nombre (no choca con la etiqueta «Nueva») */
+.fp-op i{position:static;align-self:flex-start;margin-top:-2px;padding:0;background:none;color:#6FE6AD;font-size:10.5px;letter-spacing:.02em}
+
+/* ==========================================================================
+   Seguimiento 13/10 (noche) · encuadre por caras y reflejo desenfocado en los tres banners
+   propuestas.js (encuadreB) coloca cada foto para que las caras queden a la vista; donde la foto no llega
+   al borde, su reflejo desenfocado (.bh-amb) continúa la escena, así ningún lado del banner queda vacío.
+   ========================================================================== */
+.bh-amb{display:none}
+@media (min-width:981px){
+  .pb .b-hero.encuadre .b-hero-bg img.enc,.bh2.encuadre .bh2-photo.enc,.bh3.encuadre .bh3-photo.enc{inset:auto;max-width:none;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 var(--mL,0px),#000 calc(100% - var(--mR,0px)),transparent),
+      linear-gradient(180deg,transparent,#000 var(--mT,0px),#000 calc(100% - var(--mB,0px)),transparent);
+    -webkit-mask-composite:source-in;
+    mask-image:linear-gradient(90deg,transparent,#000 var(--mL,0px),#000 calc(100% - var(--mR,0px)),transparent),
+      linear-gradient(180deg,transparent,#000 var(--mT,0px),#000 calc(100% - var(--mB,0px)),transparent);
+    mask-composite:intersect}
+  .bh3.encuadre .bh3-photo.enc.is-on{animation:kenV 10s linear both}
+  /* reflejo: tres copias (espejo · foto · espejo) desenfocadas juntas, debajo de la foto nítida */
+  .bh-amb{position:absolute;z-index:-1;display:flex;pointer-events:none;opacity:0;visibility:hidden;
+    filter:blur(40px) saturate(1.05);transition:opacity .7s var(--e-io),visibility 0s .7s}
+  .bh-amb[hidden]{display:none}
+  .bh-amb i{flex:1 1 0;background:center/100% 100% no-repeat}
+  .bh-amb i:nth-child(odd){transform:scaleX(-1)}
+  img.is-on+.bh-amb{opacity:1;visibility:visible;transition:opacity 1.1s .4s var(--e-io),visibility 0s;animation:kenV 10s linear both}
+  .pb .b-hero.encuadre .b-hero-bg::before,.bh2.encuadre .bh2-bg::before{z-index:-2}
+
+  /* banner 1: el lado del texto ya no es negro; se oscurece lo justo para leer */
+  .pb .b-hero.encuadre .b-hero-bg::after{background:linear-gradient(90deg,rgba(4,22,25,.7) 0%,rgba(4,22,25,.8) calc(var(--g1,40%) - 24%),
+    rgba(4,22,25,.74) calc(var(--g1,40%) - 8%),rgba(4,22,25,.14) var(--g1,40%),rgba(4,22,25,0) calc(var(--g1,40%) + 6%),
+    rgba(4,22,25,0) calc(var(--g2,66%) - 4%),rgba(4,22,25,.42) calc(var(--g2,66%) + 10%),rgba(4,22,25,.55) 100%)}
+
+  /* banner 2: el velo y el desenfoque siguen a la columna del texto (no al ancho de la pantalla) */
+  .bh2.encuadre .bh2-tint{background:radial-gradient(38% 48% at 16% 74%,rgba(0,227,165,.14),rgba(0,227,165,0) 72%),
+    linear-gradient(90deg,rgba(4,22,25,.62) 0%,rgba(4,22,25,.76) var(--c0,8%),rgba(4,22,25,.74) calc(var(--c1,46%) - 10%),
+      rgba(4,22,25,.36) var(--c1,46%),rgba(4,22,25,.06) calc(var(--c1,46%) + 12%),rgba(4,22,25,.12) 100%),
+    linear-gradient(180deg,rgba(4,22,25,.6) 0%,rgba(4,22,25,0) 24%),linear-gradient(0deg,rgba(4,22,25,.7) 0%,rgba(4,22,25,0) 26%)}
+  .bh2.encuadre .bh2-b1{-webkit-mask-image:linear-gradient(90deg,#000 calc(var(--c1,46%) - 12%),transparent calc(var(--c1,46%) + 8%));
+    mask-image:linear-gradient(90deg,#000 calc(var(--c1,46%) - 12%),transparent calc(var(--c1,46%) + 8%))}
+  .bh2.encuadre .bh2-b2{-webkit-mask-image:linear-gradient(90deg,#000 calc(var(--c1,46%) - 20%),transparent var(--c1,46%));
+    mask-image:linear-gradient(90deg,#000 calc(var(--c1,46%) - 20%),transparent var(--c1,46%))}
+  .bh2.encuadre .bh2-b3{-webkit-mask-image:linear-gradient(90deg,#000 var(--c0,8%),transparent calc(var(--c1,46%) - 10%));
+    mask-image:linear-gradient(90deg,#000 var(--c0,8%),transparent calc(var(--c1,46%) - 10%))}
+}
+/* celular: la foto de arriba se funde con el fondo (sin línea donde termina) */
+@media (max-width:980px){
+  .bh2-bg,.bh3-bg{-webkit-mask-image:linear-gradient(180deg,#000 72%,transparent);mask-image:linear-gradient(180deg,#000 72%,transparent)}
+}
