@@ -314,7 +314,9 @@
     var amt = $('[data-amt]', sim), curBtn = $('[data-cur]', sim), range = $('[data-range]', sim);
     var expand = $('[data-expand]', sim), panel = $('[data-panel]', sim);
     var estado = { cur: 'PEN', monto: 100000, dias: 30 }, ultimo = null, raf = 0;
-    var heroSim = sim.closest('.b-hero');
+    /* B: el simulador es una tarjeta vertical junto al texto del banner; al abrir la evaluación
+       el banner ya no se oculta (antes la barra horizontal necesitaba ese espacio) */
+    var heroSim = null;
 
     function anchoAuto(i) {
       if (!i) return;
@@ -350,6 +352,11 @@
       if (ok && !panel) ok.hidden = n !== 'ok';
       var hw = $('[data-hola-wrap]', sim);
       if (hw) hw.hidden = n === 'datos';
+      /* corregir datos: el botón lo dice y aparece una salida sin cambios */
+      var editando = n === 'datos' && !!(lead && lead.nombre);
+      sim.classList.toggle('editando', editando);
+      var gs = gate && $('button[type="submit"] span', gate);
+      if (gs) gs.textContent = editando ? 'Guardar y ver mi simulación' : 'Ver mi simulación';
       var visible = n === 'datos' ? gate : n === 'simula' ? calc : panel ? calc : n === 'evalua' ? evalf : ok;
       if (visible && antes && antes !== n && !reduce) {
         visible.classList.remove('is-entering'); void visible.offsetWidth; visible.classList.add('is-entering');
@@ -360,6 +367,15 @@
       var n = primerNombre(lead && lead.nombre);
       $$('[data-hola]', sim).forEach(function (e) { e.textContent = n ? 'Hola, ' + n : 'Hola'; });
       $$('[data-nombre1]', sim).forEach(function (e) { e.textContent = n || 'listo'; });
+      /* fila «Tus datos» (B): nombre, RUC y celular, con botón Editar */
+      var w = lead || {}, partes = (w.nombre || '').trim().split(/\s+/).filter(Boolean);
+      $$('[data-who-name]', sim).forEach(function (e) { e.textContent = w.nombre || 'Tus datos'; });
+      $$('[data-who-meta]', sim).forEach(function (e) {
+        e.textContent = [w.ruc ? 'RUC ' + w.ruc : '', w.celular ? '+51 ' + w.celular : ''].filter(Boolean).join(' · ');
+      });
+      $$('[data-who-ini]', sim).forEach(function (e) {
+        e.textContent = ((partes[0] || '?').charAt(0) + (partes.length > 1 ? partes[partes.length - 1].charAt(0) : '')).toUpperCase();
+      });
     }
 
     /* --- paso 1: datos */
@@ -571,6 +587,15 @@
         if (sim.dataset.step !== 'datos') paso('simula');
       }
     }
+    var desg = $('[data-desglose]', sim);
+    if (desg) {
+      desg.addEventListener('click', function () {
+        var on = !sim.classList.contains('ver-desglose');
+        sim.classList.toggle('ver-desglose', on);
+        desg.setAttribute('aria-expanded', on ? 'true' : 'false');
+        $('span', desg).textContent = on ? 'Ocultar desglose' : 'Ver desglose del cálculo';
+      });
+    }
     if (expand && panel) {
       expand.addEventListener('click', function () { abrirPanel(panel.hidden); });
       $('[data-collapse]', panel).addEventListener('click', function () { abrirPanel(false); expand.focus(); });
@@ -668,6 +693,7 @@
         if (el.matches('.b-dots button')) { if (on) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current'); return; }
         if (el.tagName !== 'IMG') { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
       });
+      if (typeof fondoB === 'function') fondoB();
     };
     var programar = function () {
       clearTimeout(timer);
@@ -696,6 +722,70 @@
       });
     });
     programar();
+
+    /* --- encuadre (escritorio): cada foto se escala y se centra en el espacio libre entre el texto y la
+       tarjeta del simulador, para que la tarjeta no tape a las personas. x0–x1: ancho de las personas en la
+       foto; y: altura de los rostros (fracciones de la imagen). */
+    var SUJETOS = { factoring: { x0: 0.45, x1: 0.71, y: 0.30 }, confirming: { x0: 0.20, x1: 0.60, y: 0.08 },
+      capital: { x0: 0.27, x1: 0.73, y: 0.36 } };
+    var bgB = $('.b-hero-bg', heroB), copiesB = $('.b-copies', heroB), cardB = $('[data-sim]', heroB);
+    /* fondo desenfocado con la foto del banner visible */
+    var fondoB = function () {
+      var im = $('img.is-on', bgB) || $('img', bgB);
+      if (im) heroB.style.setProperty('--fondo', 'url("' + im.src + '")');
+    };
+    /* borde derecho real del texto de cada banner (título, bajada y enlaces) */
+    var textoDerecho = function (prod, left) {
+      var copy = $('.b-copy[data-prod="' + prod + '"]', heroB), max = 0;
+      if (!copy) return 0;
+      $$('.b-h1, p, .b-copy-acts', copy).forEach(function (el) {
+        var r = doc.createRange();
+        r.selectNodeContents(el);
+        [].forEach.call(r.getClientRects(), function (q) { if (q.width) max = Math.max(max, q.right); });
+      });
+      return max - left;
+    };
+    var encuadrar = function () {
+      var imgs = $$('img', bgB);
+      if (innerWidth < 981 || !cardB || !copiesB) {
+        heroB.classList.remove('encuadre');
+        imgs.forEach(function (im) { ['left', 'top', 'width', 'height', 'transform-origin'].forEach(function (k) { im.style.removeProperty(k); }); });
+        return;
+      }
+      heroB.classList.add('encuadre');
+      var box = bgB.getBoundingClientRect(), W = box.width, H = box.height;
+      var cardL = cardB.getBoundingClientRect().left - box.left, maxCopy = 0;
+      imgs.forEach(function (im) {
+        var su = SUJETOS[im.dataset.prod] || { x0: 0.4, x1: 0.6, y: 0.3 };
+        var w = im.naturalWidth || 2000, h = im.naturalHeight || 1300;
+        var copyR = Math.max(textoDerecho(im.dataset.prod, box.left), 200) + 24;
+        maxCopy = Math.max(maxCopy, copyR);
+        var G = (copyR + cardL) / 2, hueco = Math.max(cardL - copyR, 180);
+        /* la escala cubre el alto, salvo que las personas no quepan en el hueco: entonces se reduce (hasta 55 %)
+           y la foto se apoya abajo, fundida arriba con el fondo */
+        var cubre = H / h, cabe = hueco / (w * (su.x1 - su.x0));
+        var k = Math.max(Math.min(cubre, cabe), cubre * 0.55);
+        var iw = w * k, ih = h * k;
+        var x = G - iw * (su.x0 + su.x1) / 2;
+        /* rostros a la altura del 24 % del banner; si la foto es más baja que el banner, lo que queda se
+           rellena con la misma foto desenfocada (ver .b-hero-bg::before), nunca con una franja vacía */
+        var y = H * 0.24 - ih * su.y;
+        y = ih >= H ? Math.min(0, Math.max(H - ih, y)) : Math.min(H - ih, Math.max(0, y));
+        im.style.left = Math.round(x) + 'px';
+        im.style.top = Math.round(y) + 'px';
+        im.style.width = Math.round(iw) + 'px';
+        im.style.height = Math.round(ih) + 'px';
+        im.style.transformOrigin = ((su.x0 + su.x1) / 2 * 100).toFixed(1) + '% ' + (su.y * 100).toFixed(1) + '%';
+      });
+      fondoB();
+      heroB.style.setProperty('--g1', (maxCopy / W * 100).toFixed(1) + '%');
+      heroB.style.setProperty('--g2', (cardL / W * 100).toFixed(1) + '%');
+    };
+    encuadrar();
+    addEventListener('resize', encuadrar);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(encuadrar);
+    $$('img', bgB).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadrar); });
+    if ('ResizeObserver' in window) new ResizeObserver(encuadrar).observe(heroB);
   }
 
   /* ================================================================ carrusel de noticias */

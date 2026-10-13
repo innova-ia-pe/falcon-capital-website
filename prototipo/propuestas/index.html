@@ -520,8 +520,8 @@
       <div class="b-sim-head">
         <span class="b-sim-k">Simula tu factoring</span>
         <ol class="b-steps" aria-label="Pasos del simulador"><li data-s="datos"><button type="button" data-ir="datos"><i>1</i>Tus datos</button></li><li data-s="simula"><button type="button" data-ir="simula"><i>2</i>Mi simulación</button></li><li data-s="evalua"><button type="button" data-ir="evalua"><i>3</i>Mi evaluación</button></li></ol>
-        <span class="b-hola" data-hola-wrap hidden><span data-hola>Hola</span><button type="button" data-ir="datos"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg>Cambiar datos</button></span>
       </div>
+      <div class="b-who" data-hola-wrap hidden><span class="b-who-av" data-who-ini aria-hidden="true">A</span><span class="b-who-t"><b data-who-name>Tus datos</b><small data-who-meta></small></span><button type="button" class="b-who-edit" data-ir="datos" aria-label="Editar mis datos"><svg viewBox="0 0 24 24"><path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16z"/><path d="m13.5 6.5 4 4"/></svg><span>Editar</span></button></div>
       <form class="b-step b-gate" data-gate novalidate>
         <div class="b-bar">
           <label class="b-f"><span class="b-l">Nombre y apellido</span><input name="nombre" autocomplete="name" required placeholder="Ej. Ana Torres"></label>
@@ -530,7 +530,7 @@
           <div class="b-f b-f-lock" aria-hidden="true"><span class="b-l">Recibirías hoy</span><output>S/ ••,•••.••</output><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><circle cx="12" cy="16" r="1.2"/></svg></div>
           <button type="submit" class="b-go"><span>Ver mi simulación</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
         </div>
-        <div class="b-gate-foot"><label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=b&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label><p class="b-gate-err" role="alert" hidden></p></div>
+        <div class="b-gate-foot"><label class="lf-ck"><input type="checkbox" name="acepto" required><span>Acepto la <a href="ver.html?p=b&amp;u=politica-de-privacidad" target="_blank">Política de Privacidad</a> y que Falcon Capital me contacte.</span></label><p class="b-gate-err" role="alert" hidden></p></div><button type="button" class="b-cancel" data-ir="simula"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a mi simulación sin cambios</button>
       </form>
       <div class="b-step b-calc" data-calc hidden>
         <div class="b-bar">
@@ -546,7 +546,7 @@
               <span class="b-l">Recibirías hoy</span>
               <output class="b-panel-net" data-o="neto">S/ 96,696.00</output>
               <div class="b-split" aria-hidden="true"><i data-split="neto"></i><i data-split="costo"></i></div>
-              <p class="b-split-l"><span><i></i><b data-o="pct">96.7 %</b> para ti</span><span><i></i>Descuento <b data-o="costo">S/ 3,304.00</b></span></p>
+              <p class="b-split-l"><span><i></i><b data-o="pct">96.7 %</b> para ti</span><span><i></i>Descuento <b data-o="costo">S/ 3,304.00</b></span></p><button type="button" class="b-desg" data-desglose aria-expanded="false"><span>Ver desglose del cálculo</span><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
             </div>
             <div class="b-panel-brk">
               <span class="b-l">Desglose de tu simulación</span>
@@ -565,7 +565,7 @@
                 <p class="b-panel-p"><span data-nombre1>Ana</span>, solo falta tu correo. La razón social se completa con tu RUC (consulta SUNAT).</p>
                 <label class="lf"><span>Correo</span><input name="email" type="email" placeholder="nombre@empresa.com" autocomplete="email" required><em class="lf-err">Revisa tu correo.</em></label>
                 <button class="lf-send" type="submit"><span>Enviar solicitud</span><svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg></button>
-                <p class="lf-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Sin costo ni compromiso.</p>
+                <p class="lf-safe"><svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg> Sin costo ni compromiso.</p><button type="button" class="b-back" data-ir="simula"><svg viewBox="0 0 24 24"><path d="M19 12H6M11 6l-6 6 6 6"/></svg> Volver a mi simulación</button>
               </form>
               <div class="lead-ok" hidden tabindex="-1">
           <span class="lead-ok-ico"><svg viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></svg></span>

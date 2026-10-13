@@ -832,3 +832,143 @@ a.b-ch:hover .b-ch-v svg{transform:translate(3px,-3px)}
 /* animación de secciones: entrada lateral y más suave en lugar del desplazamiento vertical */
 .js .pb [data-r="up"]:not(.done){transition:opacity 1.1s var(--e-out),transform 1.25s var(--e-out)}
 .js .pb [data-r="up"]:not(.in){transform:translate3d(-34px,0,0)}
+
+/* ==========================================================================
+   SIMULADOR VERTICAL (seguimiento 12/10/2026) — solo propuesta B
+   El simulador pasa de barra horizontal a tarjeta vertical junto al texto del
+   banner. Pasos con barra de progreso, fila «Tus datos» con botón Editar y
+   salida sin cambios al corregir. La evaluación ocurre dentro de la tarjeta.
+   ========================================================================== */
+.pb .b-sim{display:flex;flex-direction:column;gap:16px;width:100%;padding:22px 22px 24px;border-radius:28px;
+  background:linear-gradient(180deg,rgba(8,36,40,.9),rgba(4,22,25,.94));-webkit-backdrop-filter:blur(22px) saturate(1.3);
+  backdrop-filter:blur(22px) saturate(1.3);border:1px solid rgba(234,243,240,.14);box-shadow:0 40px 90px -40px rgba(0,0,0,.85)}
+.pb .b-sim.is-flash{animation:flashV 1.2s var(--e-out)}
+@keyframes flashV{0%{box-shadow:0 0 0 0 rgba(111,230,173,.6)}100%{box-shadow:0 0 0 18px rgba(111,230,173,0)}}
+
+/* encabezado y pasos con barra de progreso */
+.pb .b-sim .b-sim-head{flex-direction:column;align-items:stretch;gap:14px;margin:0}
+.pb .b-sim .b-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.pb .b-sim .b-steps li{min-width:0}
+.pb .b-sim .b-steps button{position:relative;display:flex;align-items:center;gap:5px;width:100%;padding:12px 0 0;border-radius:0;
+  background:none!important;font-size:11.5px;font-weight:700;letter-spacing:-.005em;color:var(--tx3);white-space:nowrap;text-align:left}
+.pb .b-sim .b-steps button::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;border-radius:3px;background:rgba(234,243,240,.12);
+  transition:background .4s}
+.pb .b-sim .b-steps button:not(:disabled):hover{color:var(--tx)}
+.pb .b-sim .b-steps button:disabled{opacity:1;color:rgba(234,243,240,.32)}
+.pb .b-sim .b-steps i{display:none}
+.pb .b-sim .b-steps li.is-done button{color:var(--tx2)}
+.pb .b-sim .b-steps li.is-done button::before{background:rgba(111,230,173,.5)}
+.pb .b-sim .b-steps li.is-done i{display:grid;place-items:center;flex:none;width:16px;height:16px;border-radius:50%;font-size:0;font-style:normal;
+  background:rgba(111,230,173,.25)}
+.pb .b-sim .b-steps li.is-done i::after{content:"";width:4px;height:7px;margin-top:-2px;border:solid var(--mint);border-width:0 2px 2px 0;transform:rotate(45deg)}
+.pb .b-sim[data-step="datos"] [data-s="datos"] button,.pb .b-sim[data-step="simula"] [data-s="simula"] button,
+.pb .b-sim[data-step="evalua"] [data-s="evalua"] button,.pb .b-sim[data-step="ok"] [data-s="evalua"] button{color:var(--mint)}
+.pb .b-sim[data-step="datos"] [data-s="datos"] button::before,.pb .b-sim[data-step="simula"] [data-s="simula"] button::before,
+.pb .b-sim[data-step="evalua"] [data-s="evalua"] button::before,.pb .b-sim[data-step="ok"] [data-s="evalua"] button::before{background:var(--mint)}
+
+
+/* fila «Tus datos» con botón Editar (pasos 2 y 3) */
+.b-who{display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border-radius:18px;background:rgba(111,230,173,.07);
+  border:1px solid rgba(111,230,173,.22)}
+.b-who-av{display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:var(--mint);color:#03201C;font-size:14px;
+  font-weight:800;letter-spacing:.02em}
+.b-who-t{display:flex;flex-direction:column;flex:1;min-width:0;line-height:1.35}
+.b-who-t b{overflow:hidden;font-size:15px;color:var(--tx);white-space:nowrap;text-overflow:ellipsis}
+.b-who-t small{overflow:hidden;font-size:12.5px;color:var(--tx2);white-space:nowrap;text-overflow:ellipsis}
+.b-who-edit{display:inline-flex;align-items:center;gap:6px;flex:none;height:36px;padding:0 14px;border-radius:999px;font-size:13px;font-weight:700;
+  color:var(--mint);background:rgba(111,230,173,.12);border:1px solid rgba(111,230,173,.4);transition:background .25s,color .25s}
+.b-who-edit:hover{background:var(--em);color:#03201C}
+.b-who-edit svg{width:15px;height:15px}
+
+/* pasos: campos apilados */
+.pb .b-sim .b-step{display:flex;flex-direction:column;gap:10px}
+.pb .b-sim .b-bar{display:contents}
+.pb .b-sim .b-f{gap:4px;padding:10px 16px 11px;border-radius:14px;background:rgba(234,243,240,.05);border:1px solid rgba(234,243,240,.12);
+  transition:border-color .2s,background .2s,box-shadow .2s}
+.pb .b-sim .b-f::before{display:none!important}
+.pb .b-sim label.b-f:focus-within{background:rgba(234,243,240,.08);border-color:var(--mint);box-shadow:0 0 0 4px rgba(111,230,173,.14)}
+.pb .b-sim .b-f.bad{border-color:#FF8A8E;background:rgba(255,138,142,.08)}
+.pb .b-sim .b-l{font-size:11px;letter-spacing:.1em}
+.pb .b-sim .b-f input{font-size:17px}
+.pb .b-sim .b-gate .b-f{order:1}
+.pb .b-sim .b-f-lock{order:2;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;background:none;border-style:dashed}
+.pb .b-sim .b-f-lock output{font-size:20px}
+.pb .b-sim .b-f-lock svg{position:static;margin:0}
+.pb .b-sim .b-gate-foot{order:3;margin:0;padding:0 2px}
+.pb .b-sim .b-gate .b-go{order:4}
+.pb .b-sim .b-go{width:100%;min-height:56px;padding:0 22px;border-radius:16px}
+.b-cancel{order:5;display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 0;font-size:13.5px;font-weight:700;color:var(--tx2);
+  transition:color .2s}
+.b-cancel:hover{color:var(--tx)}
+.b-cancel svg{width:15px;height:15px}
+.pb .b-sim:not(.editando) .b-cancel{display:none}
+.pb .b-sim .b-amt input{font-size:24px}
+.pb .b-sim .b-chips button{height:40px}
+.pb .b-sim .b-f-res{padding:14px 18px;background:linear-gradient(135deg,rgba(111,230,173,.16),rgba(111,230,173,.04));border-color:rgba(111,230,173,.32)}
+.pb .b-sim .b-f-res output{font-size:clamp(28px,2.4vw,34px)}
+.pb .b-sim .b-calc-note{margin:0;padding:0 2px}
+
+/* evaluación dentro de la tarjeta: resumen, desglose plegable y correo */
+.pb .b-sim[data-step="evalua"] .b-calc>.b-bar>*,.pb .b-sim[data-step="ok"] .b-calc>.b-bar>*{display:none}
+.pb .b-sim .b-panel{margin:0;background:none;border:0;border-radius:0;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
+.pb .b-sim .b-panel-in{display:flex;flex-direction:column;gap:14px}
+.pb .b-sim .b-panel-sum{padding:16px 18px;border:1px solid rgba(111,230,173,.3);border-radius:18px;
+  background:linear-gradient(135deg,rgba(111,230,173,.14),rgba(111,230,173,.03))}
+.pb .b-sim .b-panel-net{font-size:clamp(34px,3vw,42px)}
+.pb .b-sim .b-split{margin:14px 0 8px}
+.b-desg{display:inline-flex;align-items:center;gap:6px;margin-top:12px;font-size:13px;font-weight:700;color:var(--mint)}
+.b-desg svg{width:15px;height:15px;transition:transform .35s var(--e-out)}
+.b-desg[aria-expanded="true"] svg{transform:rotate(180deg)}
+.pb .b-sim .b-panel-brk{display:none;padding:0;border:0}
+.pb .b-sim.ver-desglose .b-panel-brk{display:block;animation:pasoIn .45s var(--e-out) both}
+.pb .b-sim .b-panel-brk>.b-l{display:none}
+.pb .b-sim .b-panel-brk .brk{margin-top:0}
+.pb .b-sim .b-panel-brk .b-note{margin-top:10px}
+.pb .b-sim .b-panel-form{padding:0;border:0}
+.pb .b-sim .b-panel-form h3{padding-right:0;font-size:20px}
+.pb .b-sim .b-panel-p{margin:6px 0 12px;font-size:14px}
+.pb .b-sim .b-panel-form .lf-send{margin-top:14px}
+.pb .b-sim .b-panel-x{display:none}
+.b-back{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;font-size:13.5px;font-weight:700;color:var(--tx2);
+  transition:color .2s}
+.b-back:hover{color:var(--tx)}
+.b-back svg{width:15px;height:15px}
+
+/* banner del Home: texto a la izquierda, tarjeta a la derecha.
+   propuestas.js encuadra cada foto en el espacio libre entre ambos (sin tapar a las personas). */
+@media (min-width:981px){
+  .pb .b-hero-in{grid-template-columns:minmax(0,1fr) minmax(330px,360px);grid-template-areas:"copy sim" "dots sim";
+    column-gap:clamp(32px,4vw,72px);row-gap:24px;align-items:end}
+  .pb .b-hero .b-copies{grid-area:copy;max-width:480px}
+  .pb .b-hero .b-dots-row{grid-area:dots}
+  .pb .b-hero .b-sim{grid-area:sim;align-self:end}
+  .pb .b-hero .b-copy .b-h1{font-size:clamp(36px,min(3.6vw,6.4vh),52px)}
+  .pb .b-hero .b-copy p{max-width:26em;font-size:clamp(15px,1.15vw,17px)}
+  .pb .b-hero.encuadre .b-hero-bg{left:0}
+  .pb .b-hero.encuadre .b-hero-bg::before{content:"";position:absolute;inset:-60px;background:var(--fondo) 50% 40%/cover no-repeat;
+    filter:blur(30px) saturate(1.05) brightness(.5);opacity:.9;transition:opacity .6s}
+  .pb .b-hero.encuadre .b-hero-bg img{inset:auto;max-width:none;object-fit:fill;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent),linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
+    -webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent),linear-gradient(180deg,transparent,#000 14%,#000 86%,transparent);
+    mask-composite:intersect}
+  .pb .b-hero.encuadre .b-hero-bg img.is-on{animation-name:kenV}
+  .pb .b-hero.encuadre .b-hero-bg::after{background:linear-gradient(90deg,rgba(4,22,25,.94) 0%,rgba(4,22,25,.8) calc(var(--g1,40%) - 14%),
+    rgba(4,22,25,.12) var(--g1,40%),rgba(4,22,25,0) calc(var(--g1,40%) + 6%),rgba(4,22,25,0) calc(var(--g2,66%) - 4%),rgba(4,22,25,.5) calc(var(--g2,66%) + 10%),
+    rgba(4,22,25,.7) 100%)}
+}
+@keyframes kenV{from{transform:scale(1.05)}to{transform:scale(1)}}
+
+/* sección «Simulador de factoring» y página Simulador: texto + tarjeta */
+@media (min-width:981px){
+  .pb .b-simsec .b-wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,400px);gap:clamp(36px,6vw,104px);align-items:center}
+  .pb .b-simsec .b-head{flex-direction:column;align-items:flex-start;gap:20px;margin:0}
+  .pb .b-simpage .b-phero-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,400px);column-gap:clamp(36px,6vw,104px);align-items:end}
+  .pb .b-simpage .b-phero-in>*{grid-column:1}
+  .pb .b-simpage .b-phero-in>.b-sim{grid-column:2;grid-row:1/span 6;align-self:end;margin-top:0}
+}
+@media (max-width:760px){
+  .pb .b-sim{padding:18px 16px 20px;border-radius:24px}
+  .pb .b-sim .b-steps button{font-size:11px}
+  .b-who-edit span{display:none}
+  .b-who-edit{width:36px;padding:0;justify-content:center}
+}

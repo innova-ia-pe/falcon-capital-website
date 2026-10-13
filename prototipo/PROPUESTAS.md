@@ -70,6 +70,18 @@ Falcon Capital prefirió la **opción B**; los cambios se aplicaron solo ahí.
 | Animación de secciones | Las entradas son laterales y más suaves en lugar de subir desde abajo. |
 | Imágenes por servicio | Pendiente: Falcon enviará propuestas e Innova IA propondrá variantes durante el desarrollo. |
 
+## Simulador vertical (12/10/2026) · solo propuesta B
+
+Pedido: el formulario del banner en vertical y más fácil de corregir.
+
+| Cambio | Detalle |
+|---|---|
+| Tarjeta vertical | El simulador pasa de barra horizontal a tarjeta a la derecha del banner, con los campos apilados. En la sección del simulador de Factoring y en la página Simulador va junto al texto. |
+| Encuadre de la foto | Cada foto del banner se escala y se centra en el espacio libre entre el texto y la tarjeta, para que la tarjeta no tape a las personas. Si la foto queda más baja que el banner, el resto se rellena con la misma foto desenfocada (sin franjas vacías). |
+| Pasos con barra de progreso | Tus datos · Mi simulación · Mi evaluación, con marca de completado y clicables. |
+| Corregir datos | Desde el paso 2 se ve la fila «Tus datos» (nombre, RUC y celular) con botón **Editar**. Al editar, el botón dice «Guardar y ver mi simulación» y hay «Volver a mi simulación sin cambios». La simulación (monto, plazo y moneda) se conserva. |
+| Evaluación dentro de la tarjeta | Resumen con lo que recibe, desglose plegable («Ver desglose del cálculo»), correo y «Volver a mi simulación». |
+
 ## Cómo pedir los datos antes del simulador
 
 Las dos propuestas usan la misma lógica, que es la **recomendación**: pedir
