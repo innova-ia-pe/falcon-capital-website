@@ -67,7 +67,7 @@ Falcon Capital prefirió la **opción B**; los cambios se aplicaron solo ahí.
 | Líneas de «Así funciona» | La línea va del centro del primer paso al del último (la calcula `propuestas.js`). |
 | Grupo empresarial | Debajo de las cifras, franja con el logo y el nombre **Grupo ON Empresas** (y APEFAC). En Conócenos se quitaron las etiquetas duplicadas del banner. |
 | Indicadores | Cifras más grandes, en tres tarjetas destacadas; se mantiene el conteo animado. |
-| Animación de secciones | Las entradas son laterales y más suaves en lugar de subir desde abajo. |
+| Animación de secciones | Las entradas son laterales y más suaves en lugar de subir desde abajo. **Soluciones** del Home ya no apila las tarjetas: en escritorio la sección queda fija y, **al bajar, las tarjetas avanzan de lado**; las flechas llevan a la tarjeta siguiente o anterior. En celular es un carrusel que se desliza con el dedo. |
 | Imágenes por servicio | Pendiente: Falcon enviará propuestas e Innova IA propondrá variantes durante el desarrollo. |
 
 ## Cómo pedir los datos antes del simulador
@@ -132,7 +132,7 @@ de Falcon. Hoy todos los tramos usan 1.80 % (minuta 006).
 | Flujo del producto | Recorrido horizontal | Línea de tiempo vertical |
 | Marco normativo | Expediente por temas + sellos + foto del mazo | Índice tipográfico sobre el mazo + Ley N.° 29623 destacada |
 | Por qué elegirnos | Cuatro tarjetas con foto e isotipo | Lista grande que cambia la foto al bajar |
-| Soluciones del Home | Tarjetas a imagen completa | Tarjetas que se apilan al bajar |
+| Soluciones del Home | Tarjetas a imagen completa | Carrusel horizontal de tarjetas |
 
 ## Traslado a Elementor
 
@@ -144,7 +144,7 @@ de Falcon. Hoy todos los tramos usan 1.80 % (minuta 006).
 | Banner con fotos que rotan (B) | Fondo Slideshow con efecto Ken Burns |
 | Simulador en tres pasos | Shortcode `[falcon_simulador]` con el HTML y el JS de esta carpeta; el envío va al CRM por webhook |
 | Flujo que avanza al bajar | Icon List + snippet JS pequeño (sin él, se ve estático y completo) |
-| Tarjetas apiladas (B) | `position: sticky` en CSS personalizado |
+| Soluciones que avanzan de lado al bajar (B) | Contenedor sticky + snippet JS que traduce el scroll vertical a horizontal; en celular, carrusel con snap |
 | Por qué elegirnos (B) | Contenedor sticky + snippet JS; en celular, foto bajo cada ítem |
 | Formulario de contacto | Elementor Form con la solución preseleccionada por página |
 | Razón social desde el RUC | Integración SUNAT de la propuesta de Eduardo |

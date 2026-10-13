@@ -730,6 +730,52 @@
     });
   });
 
+  /* ================================================================ soluciones B: avanzan de lado al bajar
+     En escritorio la sección queda fija y el scroll vertical mueve las tarjetas en horizontal.
+     En celular (o con movimiento reducido) queda como carrusel que se desliza con el dedo. */
+  $$('[data-hscroll]', root).forEach(function (pin) {
+    var rail = $('[data-rail]', pin), sticky = pin.firstElementChild, activo = false;
+    if (!rail || !sticky) return;
+    function dist() { return Math.max(rail.scrollWidth - rail.clientWidth, 0); }
+    function tope() { return parseFloat(getComputedStyle(sticky).top) || 0; }
+    function recorrido() { return Math.max(pin.offsetHeight - sticky.offsetHeight, 1); }
+    function mover() {
+      if (!activo) return;
+      var p = clamp((tope() - pin.getBoundingClientRect().top) / recorrido(), 0, 1);
+      rail.scrollLeft = p * dist();
+    }
+    function medir() {
+      activo = innerWidth > 980 && !reduce;
+      pin.classList.toggle('is-h', activo);
+      pin.style.height = '';
+      if (!activo) return;
+      pin.style.height = (sticky.offsetHeight + dist()) + 'px';
+      mover();
+    }
+    addEventListener('scroll', mover, { passive: true });
+    addEventListener('resize', medir);
+    addEventListener('load', medir);
+    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(medir);
+    medir();
+    /* flechas: en modo lateral llevan la página hasta la tarjeta siguiente o anterior */
+    $$('[data-rail-prev],[data-rail-next]', pin).forEach(function (b) {
+      b.addEventListener('click', function (e) {
+        if (!activo) return;
+        e.stopImmediatePropagation();
+        var cards = rail.children, d = dist();
+        var paso = cards[1] ? cards[1].offsetLeft - cards[0].offsetLeft : rail.clientWidth;
+        var actual = clamp((tope() - pin.getBoundingClientRect().top) / recorrido(), 0, 1) * d;
+        /* va a la tarjeta siguiente/anterior completa, alineada a su inicio */
+        var idx = Math.round(actual / paso) + (b.hasAttribute('data-rail-next') ? 1 : -1);
+        var dest = clamp(idx * paso, 0, d);
+        var y = pin.getBoundingClientRect().top + scrollY - tope() + (d ? dest / d : 0) * recorrido();
+        scrollTo({ top: Math.round(y) + 1, behavior: 'smooth' });
+      }, true);
+    });
+    /* en modo lateral el arrastre con mouse no aplica: lo mueve el scroll */
+    rail.addEventListener('pointerdown', function (e) { if (activo) e.stopImmediatePropagation(); }, true);
+  });
+
   /* ================================================================ formularios de contacto y boletín */
   $$('[data-contacto]', root).forEach(function (form) {
     vigilar(form);
@@ -873,7 +919,7 @@
         if (rc.bottom > 0 && rc.top < vh) cb.style.setProperty('--y', (((rc.top + rc.height / 2) - vh / 2) / vh * -70).toFixed(1) + 'px');
       }
       if (innerWidth > 980) {
-        var cards = $$('.b-stack', root);
+        var cards = $$('[data-stacks] .b-stack', root);   /* solo si las soluciones siguen apiladas; en carrusel horizontal no aplica */
         for (var i = 0; i < cards.length - 1; i++) {
           var sig = cards[i + 1].getBoundingClientRect().top, tope = parseFloat(getComputedStyle(cards[i + 1]).top) || 0;
           var k = clamp((vh - sig) / Math.max(vh - tope, 1), 0, 1), inner = cards[i].firstElementChild;
