@@ -1,16 +1,12 @@
 /* ==========================================================================
    Falcon Capital · sitio en WordPress (tema «falcon-capital»)
-   Es el script del prototipo aprobado (propuestas.js) adaptado a WordPress: sin la barra de presentación, sin
-   cambio de versión ni de banner, sin «Probar fotos», con las imágenes del tema y con envío real de las
+   Es el script del prototipo (prototipo/assets/falcon.js) con lo propio de WordPress: imágenes del tema, tasa
+   desde Ajustes → Falcon Capital, encuadre y simulador según lo que diga cada widget, y envío real de las
    solicitudes a la API del plugin «Falcon Capital – Componentes» (FC_WP.rest).
    --------------------------------------------------------------------------
-   Del prototipo: Propuestas A y B
-   - Cada página trae las dos propuestas; solo se inicializa la visible.
-   - Cambiar de versión recarga la página limpia (sin estados rotos) y vuelve a la
-     misma sección.
+   - Banner del Inicio: carrusel Factoring · Confirming · Capital de Trabajo; el simulador solo en Factoring.
    - Simulador de Factoring en tres pasos: tus datos → simulación → evaluación.
-     Fórmula del instructivo de cálculo de Falcon Capital (factoring y confirming,
-     v1 del 25/09/2026):
+     Fórmula del instructivo de cálculo de Falcon Capital (factoring y confirming, v1 del 25/09/2026):
        factor   = (1 + TEM)^(días/30) − 1
        interés  = monto × factor          comisión = monto × 1 %
        IGV      = 18 % del interés y de la comisión (antes de redondear)
@@ -22,16 +18,14 @@
   'use strict';
 
   var doc = document, html = doc.documentElement;
-  var MODO = html.getAttribute('data-p');
   var PAG = html.getAttribute('data-pag');
-  var VISOR = html.hasAttribute('data-visor');
   var reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
   var WP = window.FC_WP || {};
   var WA_URL = WP.wa || 'https://wa.me/51955447475';
-  var IMG = WP.img || '../img/';
+  var IMG = WP.img || 'img/';
   /* wp_localize_script entrega los números como texto */
   var TASA = +WP.tasa || 1.80;
-  /* envía una solicitud a WordPress; si no hay API (prototipo), simula la espera */
+  /* envía una solicitud a WordPress; sin API (prototipo) simula la espera */
   function enviarWP(tipo, datos) {
     if (!WP.rest) return new Promise(function (r) { setTimeout(r, reduce ? 0 : 900); });
     datos = datos || {};
@@ -80,169 +74,15 @@
     return { monto: M, dias: dias, tem: tm, interes: interes, comision: comision, igv: igv, costo: costo, neto: neto, pct: M > 0 ? neto / M : 0 };
   }
 
-  /* ================================================================ barra */
-  var pbar = $('[data-pbar]') || doc.createElement('div');
-  var tabs = $$('[data-go]', pbar);
-  var ind = $('.pbar-ind', pbar);
-  var frame = $('iframe.actual');
-  var archivo = PAG + '.html';
+  var root = $('.P.pb');
+  if (!root) return;
 
-  function marcarTabs() {
-    tabs.forEach(function (t) { t.setAttribute('aria-selected', !VISOR && t.dataset.go === MODO ? 'true' : 'false'); });
-    var t = $('[data-go="' + MODO + '"]', pbar);
-    if (!t) return;
-    ind.style.width = t.offsetWidth + 'px';
-    ind.style.transform = 'translateX(' + t.offsetLeft + 'px)';
-    ind.classList.toggle('is-dim', VISOR);
-  }
-  function seccionVisible() {
-    var r0 = $('.P[data-prop="' + MODO + '"]');
-    if (!r0) return null;
-    var mid = innerHeight * 0.38, best = null;
-    $$('[data-sec]', r0).forEach(function (s) {
-      var r = s.getBoundingClientRect();
-      if (r.height && r.top <= mid && r.bottom > mid) best = { k: s.dataset.sec, f: (mid - r.top) / r.height };
-    });
-    return best;
-  }
-  /* En archivos locales (file://) Chrome recuerda el zoom por dirección completa, con «?» y «#» incluidos: cada
-     banner o versión quedaba con su propio zoom y el header y el banner cambiaban de tamaño. Ahí se navega a la
-     página sin parámetros y la elección viaja por localStorage (versión y banner, que ya lee el <head>) y
-     sessionStorage (sección o ancla). En la web (GitHub Pages) el zoom es uno por sitio y se conservan las
-     direcciones con parámetros, que sirven para compartir. */
-  var LOCAL = location.protocol === 'file:';
-  function sinParametros(url) {
-    var m = /^([^?#]*)(\?[^#]*)?(#.*)?$/.exec(url);
-    if (!m || /(^\?|&)u=/.test(m[2] || '')) return url;
-    var q = new URLSearchParams((m[2] || '').slice(1));
-    try {
-      if (q.get('p')) localStorage.setItem('fc-prop', q.get('p'));
-      if (q.get('h')) localStorage.setItem('fc-hb', q.get('h'));
-      if (m[3]) sessionStorage.setItem('fc-ir', m[3]); else sessionStorage.removeItem('fc-ir');
-    } catch (e) { return url; }
-    return m[1];
-  }
-  function navegar(url, destino) {
-    if (LOCAL && /\.html/.test(url)) url = sinParametros(url);
-    html.classList.remove('va-a', 'va-b', 'va-actual');
-    if (destino) html.classList.add('va-' + destino);
-    html.classList.add('saliendo');
-    setTimeout(function () { location.href = url; }, reduce ? 0 : 170);
-  }
-  function irVersion(p) {
-    if (VISOR) { navegar('index.html?p=' + p, p); return; }
-    if (p === MODO) {
-      if (p === 'actual' && frame) frame.setAttribute('src', frame.dataset.src);
-      return;
-    }
-    var sec = (MODO === 'a' || MODO === 'b') ? seccionVisible() : null;
-    var hash = sec ? '#ir=' + sec.k + ',' + sec.f.toFixed(3) : '';
-    try { localStorage.setItem('fc-prop', p); } catch (e) { /* */ }
-    navegar(archivo + '?p=' + p + hash, p);
-  }
-  tabs.forEach(function (t) {
-    t.setAttribute('href', (VISOR ? 'index.html' : archivo) + '?p=' + t.dataset.go);
-    t.addEventListener('click', function (e) { e.preventDefault(); irVersion(t.dataset.go); });
-  });
-  /* menú de páginas: conserva la versión elegida */
-  var pages = $('.pbar-pages', pbar);
-  if (pages) {
-    var pgBtn = $('.pbar-pg-btn', pages);
-    $$('.pbar-pg-menu a', pages).forEach(function (a) {
-      var dest = MODO === 'actual' ? 'actual' : (MODO || 'a');
-      a.setAttribute('href', a.dataset.pg + '.html?p=' + dest);
-      a.addEventListener('click', function (e) { e.preventDefault(); navegar(a.getAttribute('href'), dest); });
-    });
-    pgBtn.addEventListener('click', function (e) {
-      e.stopPropagation();
-      var abrir = !pages.classList.contains('open');
-      pages.classList.toggle('open', abrir);
-      pgBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-    });
-    doc.addEventListener('click', function (e) {
-      if (!pages.contains(e.target)) { pages.classList.remove('open'); pgBtn.setAttribute('aria-expanded', 'false'); }
-    });
-  }
-  var notesBtn = $('.pbar-more', pbar) || doc.createElement('button'), notes = $('#pbar-notes') || doc.createElement('div');
-  notes.hidden = true;
-  function cerrarNotas() { notes.hidden = true; notesBtn.setAttribute('aria-expanded', 'false'); }
-  notesBtn.addEventListener('click', function () {
-    var abrir = notes.hidden;
-    notes.hidden = !abrir;
-    notesBtn.setAttribute('aria-expanded', abrir ? 'true' : 'false');
-  });
-  doc.addEventListener('click', function (e) { if (!notes.hidden && !pbar.contains(e.target)) cerrarNotas(); });
-  doc.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && !notes.hidden) cerrarNotas();
-    var t = e.target;
-    if (e.altKey || e.ctrlKey || e.metaKey || /input|textarea|select/i.test(t.tagName) || t.isContentEditable) return;
-    var mapa = { '1': 'actual', '2': 'a', '3': 'b' };
-    if (pbar.isConnected && mapa[e.key]) irVersion(mapa[e.key]);
-  });
-  addEventListener('resize', marcarTabs);
-  if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(marcarTabs);
-  marcarTabs();
-  /* el velo se retira al terminar de pintar; también al volver con «atrás» */
-  addEventListener('pageshow', function (e) { if (e.persisted) { html.classList.remove('saliendo'); html.classList.add('listo'); } });
-
-  /* ================================================================ versión actual y visor */
-  if (VISOR) {
-    var q = new URLSearchParams(location.search);
-    var u = q.get('u') || '';
-    var nombres = window.FC_EXTERNAS || {};
-    if (!Object.prototype.hasOwnProperty.call(nombres, u)) u = 'index';
-    frame.setAttribute('src', '../' + u + '.html');
-    frame.hidden = false;
-    var back = $('[data-back]');
-    var de = q.get('p') === 'b' ? 'b' : 'a';
-    var ref = doc.referrer && /\/propuestas\/[a-z-]+\.html/.test(doc.referrer) ? doc.referrer : 'index.html?p=' + de;
-    back.setAttribute('href', ref);
-    $('[data-back-to]').textContent = 'Volver a la propuesta ' + de.toUpperCase();
-    $('[data-back-page]').textContent = (nombres[u] || 'Página') + ' · diseño actual';
-    back.addEventListener('click', function (e) { e.preventDefault(); navegar(ref, de); });
-    requestAnimationFrame(function () { html.classList.add('listo'); });
-    return;
-  }
-  if (MODO === 'actual') {
-    frame.setAttribute('src', frame.dataset.src);
-    frame.hidden = false;
-    requestAnimationFrame(function () { html.classList.add('listo'); });
-    return;
-  }
-
-  var root = $('.P[data-prop="' + MODO + '"]');
-  if (!root) { html.classList.add('listo'); return; }
-  var X = MODO;
-
-  /* B · tres banners del Home (1 Vidrio, 2 Conversación, 3 Factura): queda solo el elegido.
-     Cambiar de banner recarga la página, igual que cambiar de versión. */
-  var HB = html.getAttribute('data-hb');
-  if (!HB) { try { HB = localStorage.getItem('fc-hb'); } catch (e) { /* */ } }
-  if (!/^[123]$/.test(HB || '')) HB = '1';
-  $$('[data-hv]', root).forEach(function (s) { if (s.dataset.hv !== HB) s.parentNode.removeChild(s); });
-  /* el selector está en todas las páginas de B: fuera del Inicio lleva al Inicio con ese banner */
-  $$('[data-hb]', pbar).forEach(function (b) {
-    b.setAttribute('aria-pressed', b.dataset.hb === HB ? 'true' : 'false');
-    b.addEventListener('click', function () {
-      if (PAG === 'index' && b.dataset.hb === HB) return;
-      try { localStorage.setItem('fc-hb', b.dataset.hb); } catch (e) { /* */ }
-      navegar('index.html?p=b&h=' + b.dataset.hb, 'b');
-    });
-  });
-
-  /* enlaces a otras páginas: salida con el velo, sin perder la versión */
+  /* enlaces a una sección de la misma página: desplazamiento suave */
   root.addEventListener('click', function (e) {
-    var a = e.target.closest ? e.target.closest('a[href]') : null;
-    if (!a || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || a.target === '_blank') return;
-    var h = a.getAttribute('href') || '';
-    if (h.charAt(0) === '#') {
-      var dest = h.length > 1 ? doc.getElementById(h.slice(1)) : null;
-      if (dest) { e.preventDefault(); dest.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
-      return;
-    }
-    if (/^[a-z][a-z0-9+.-]*:/i.test(h) || !/\.html/.test(h)) return;
-    e.preventDefault();
-    navegar(h, X);
+    var a = e.target.closest ? e.target.closest('a[href^="#"]') : null;
+    if (!a || e.defaultPrevented || e.button !== 0) return;
+    var h = a.getAttribute('href'), dest = h.length > 1 ? doc.getElementById(h.slice(1)) : null;
+    if (dest) { e.preventDefault(); dest.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); }
   });
 
   /* ================================================================ aparición al bajar */
@@ -498,78 +338,6 @@
     function enfocar(el, t) {
       setTimeout(function () { var i = el && (el.matches('input') ? el : $('input:not([type="checkbox"])', el)); if (i) i.focus({ preventScroll: true }); }, reduce ? 0 : (t || 380));
     }
-    /* --- B2 · conversación: «Tus datos» se pide una pregunta a la vez; cada respuesta queda como una
-       etiqueta arriba y basta tocarla para corregirla */
-    if (CONV && gate) conv = (function () {
-      var qs = $$('[data-q]', gate), i = 0, prev = $('[data-conv-prev]', gate);
-      var bar = $('[data-conv-bar]', sim), num = $('[data-conv-n]', sim), lbl = $('button[type="submit"] span', gate), hola = $('[data-hola-q]', gate);
-      var claves = qs.map(function (q) { return q.dataset.q; });
-      function chips() {
-        var st = sim.dataset.step;
-        $$('[data-conv-ir]', sim).forEach(function (c) {
-          var k = c.dataset.convIr, x = gate.elements[k], v = (x.value || '').trim(), j = claves.indexOf(k);
-          c.hidden = !(v && valido(x) && (lead || j < i || st !== 'datos'));
-          $('[data-chip]', c).textContent = v;
-          c.classList.toggle('is-on', st === 'datos' && j === i);
-        });
-      }
-      function pintar() {
-        var st = sim.dataset.step, total = esFactoring() ? 5 : 4, edit = st === 'datos' && !!(lead && lead.nombre);
-        var n = st === 'datos' ? i + 1 : st === 'simula' ? 4 : total;
-        /* al corregir no se «retrocede»: la barra queda donde iba y el texto lo dice */
-        if (num) num.textContent = st === 'ok' ? 'Solicitud enviada' : edit ? 'Corrige tus datos' : 'Paso ' + n + ' de ' + total;
-        if (bar) bar.style.transform = 'scaleX(' + (st === 'ok' ? 1 : edit ? (total - 1) / total : n / total) + ')';
-        if (lbl) lbl.textContent = edit ? 'Guardar y volver' : i < qs.length - 1 || !esFactoring() ? 'Continuar' : 'Ver mi simulación';
-        if (prev) prev.classList.toggle('is-off', i === 0 && !edit);
-        if (hola) { var nm = primerNombre(gate.elements.nombre.value); hola.textContent = nm ? 'Gracias, ' + nm + '.' : 'Gracias.'; }
-        chips();
-      }
-      function mostrar(k) {
-        i = Math.max(0, Math.min(qs.length - 1, k));
-        qs.forEach(function (q, j) {
-          q.hidden = j !== i;
-          q.classList.toggle('is-past', j < i);
-          q.classList.toggle('is-future', j > i);
-          if (j === i) q.removeAttribute('inert'); else q.setAttribute('inert', '');
-        });
-        pintar();
-      }
-      function error(x) {
-        qs.forEach(function (q) {
-          var h = $('.bs2-hint', q);
-          if (!h) return;
-          if (!h.dataset.t) h.dataset.t = h.textContent;
-          var mio = !!x && q.contains(x);
-          h.textContent = mio ? (MENSAJES[x.name] || 'Revisa este dato.') : h.dataset.t;
-          h.classList.toggle('is-err', mio);
-        });
-      }
-      if (prev) prev.addEventListener('click', function () {
-        error(null);
-        if (i > 0) { mostrar(i - 1); enfocar(qs[i], 200); } else if (lead) ir('simula');
-      });
-      $$('[data-conv-ir]', sim).forEach(function (c) {
-        c.addEventListener('click', function () {
-          if (sim.dataset.step !== 'datos') { llenarGate(); paso('datos'); }
-          mostrar(claves.indexOf(c.dataset.convIr));
-          enfocar(qs[i], 200);
-        });
-      });
-      $$('input', gate).forEach(function (x) { x.addEventListener('input', function () { error(null); if (x.name === 'nombre') pintar(); }); });
-      return {
-        pintar: pintar, mostrar: mostrar, error: error, ultima: function () { mostrar(qs.length - 1); enfocar(qs[i]); },
-        /* Enter o «Continuar»: con la pregunta bien respondida pasa a la siguiente; la última (o al corregir) envía */
-        antes: function () {
-          if ((lead && lead.nombre) || i === qs.length - 1) return false;
-          var m = $$('input[required]', qs[i]).filter(function (x) { x.dataset.t = '1'; return !marcar(x); });
-          if (m.length) { avisar(m[0]); return true; }
-          mostrar(i + 1);
-          enfocar(qs[i], 200);
-          return true;
-        },
-        irA: function (name) { var k = claves.indexOf(name === 'acepto' ? 'celular' : name); if (k > -1) mostrar(k); }
-      };
-    })();
     if (gate) {
       vigilar(gate);
       gate.addEventListener('submit', function (e) {
@@ -877,7 +645,7 @@
   }
   var sims = $$('[data-sim]', root).map(Simulador);
 
-  /* ================================================================ banner A: pestañas, flechas y deslizar */
+  /* ================================================================ deslizar con el dedo (carruseles) */
   function deslizar(el, fn) {
     if (!el) return;
     var x0 = null, y0 = 0;
@@ -890,75 +658,18 @@
     });
     el.addEventListener('pointercancel', function () { x0 = null; });
   }
-  var heroA = $('.a-hero[data-hero]', root);
-  if (heroA) {
-    var ordenA = $$('.a-tabs [data-prod]', heroA).map(function (b) { return b.dataset.prod; });
-    var actualA = ordenA[0];
-    var mostrarA = function (k) {
-      actualA = k;
-      $$('[data-prod]', heroA).forEach(function (el) {
-        var on = el.dataset.prod === k;
-        if (el.getAttribute('role') === 'tab') { el.setAttribute('aria-selected', on ? 'true' : 'false'); return; }
-        el.classList.toggle('is-on', on);
-        if (el.tagName !== 'IMG') { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
-      });
-      sims.forEach(function (s) { if (heroA.contains(s.el)) s.anchos(); });
-      if (copyBox) altoCopy();
-    };
-    var copyBox = $('.a-copy', heroA);
-    var altoCopy = function () { var act = $('.a-v.is-on', copyBox); if (act) copyBox.style.height = act.offsetHeight + 'px'; };
-    addEventListener('resize', altoCopy);
-    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(altoCopy);
-    altoCopy();
-    var moverA = function (d) { var i = ordenA.indexOf(actualA); mostrarA(ordenA[(i + d + ordenA.length) % ordenA.length]); };
-    $$('.a-tabs [data-prod]', heroA).forEach(function (b) { b.addEventListener('click', function () { mostrarA(b.dataset.prod); }); });
-    $('[data-prev]', heroA).addEventListener('click', function () { moverA(-1); });
-    $('[data-next]', heroA).addEventListener('click', function () { moverA(1); });
-    deslizar($('[data-swipe]', heroA), moverA);
-  }
 
-  /* ================================================================ fotos de los banners de B
-     Registro de todas las fotos candidatas: de dónde salen (Unsplash o el zip del cliente), cómo se llaman en
-     el selector «Probar fotos» y dónde está lo importante, en fracciones de la imagen: c, las caras
-     [x0, y0, x1, y1, peso] (peso menor: de espaldas o secundaria); b, el ancho de las personas; full, la foto
-     no tiene personas y cubre todo el fondo; fondo, sirve de fondo (sin caras) aunque tenga un objeto que se
-     encuadra como si fuera una cara. Lo usan el encuadre de los tres banners y el selector. */
+  /* ================================================================ fotos del banner
+     Dónde está lo importante de cada foto, en fracciones de la imagen: c, las caras [x0, y0, x1, y1, peso]
+     (peso menor: secundaria); b, el ancho de las personas; full, la foto no tiene personas y cubre todo el fondo. */
   var FOTOS_B = {
-    'factoring-ia': { src: IMG + 'b-factoring.jpg', n: 'Equipo revisando una factura', nueva: true, c: [[0.35, 0.12, 0.46, 0.35, 1], [0.555, 0.06, 0.71, 0.39, 1]], b: [0.21, 0.86], pos: '55% 30%' },
-    'confirming-ia': { src: IMG + 'b-confirming.jpg', n: 'Acuerdo en la oficina', nueva: true, c: [[0.245, 0.14, 0.38, 0.4, 1], [0.5, 0.21, 0.625, 0.47, 1], [0.74, 0.03, 0.9, 0.43, 0.4]], b: [0.13, 0.97], pos: '45% 30%' },
-    'capital-ia': { src: IMG + 'b-capital.jpg', n: 'Equipo en su almacén', nueva: true, c: [[0.3, 0.17, 0.42, 0.41, 1], [0.545, 0.09, 0.69, 0.38, 1]], b: [0.23, 0.8], pos: '70% 30%' },
-    mype: { src: IMG + 'b-mype.jpg', n: 'Emprendedor en su tienda', nueva: true, c: [[0.595, 0.1, 0.72, 0.33, 1]], b: [0.51, 0.85], pos: '68% 30%' },
-    cafeteria: { src: IMG + 'b-cafeteria.jpg', n: 'Dueña de un café', nueva: true, c: [[0.355, 0.25, 0.455, 0.48, 1]], b: [0.28, 0.54], pos: '41% 40%' },
-    mesa: { src: IMG + 'b-reunion.jpg', n: 'Reunión con gráficos', nueva: true, full: true, pos: '60% 50%' },
-    escritorio: { src: IMG + 'b-escritorio.jpg', n: 'Escritorio con café y laptop', nueva: true, fondo: true, c: [[0.28, 0.45, 0.52, 0.85, 1]], b: [0.25, 0.95], pos: '40% 75%' },
-    oficina: { u: '1758520144864-fb42371d9e60', n: 'Empresaria al teléfono', c: [[0.32, 0.1, 0.445, 0.4, 1]], b: [0.26, 0.6], pos: '40% 35%' },
-    taller: { u: '1753164597612-5e71b83fda91', n: 'Taller de confección', c: [[0.475, 0.17, 0.59, 0.45, 1]], b: [0.45, 0.7], pos: '64% 30%' },
-    cafe: { u: '1778790508237-3c6cb00f152a', n: 'Pago en el mostrador', c: [[0.13, 0.15, 0.28, 0.34, 0.5], [0.63, 0.07, 0.73, 0.24, 1]], b: [0.07, 0.84], pos: '72% 30%' },
-    celebran: { u: '1758526213729-50208a451702', n: 'Emprendedoras celebran', c: [[0.27, 0.05, 0.42, 0.44, 1], [0.64, 0.12, 0.86, 0.5, 1]], b: [0.2, 0.92], pos: '55% 30%' },
-    llamada: { u: '1758876022836-70b89d3e6944', n: 'Llamada en la oficina', c: [[0.555, 0.08, 0.68, 0.36, 1]], b: [0.41, 0.77], pos: '68% 30%' },
-    billetes: { u: '1765868017186-18a3fc4c2942', n: 'Billetes y factura', full: true, pos: '50% 50%' },
-    manos: { u: '1696861270495-7f35c35c3273', n: 'Apretón de manos', full: true, pos: '50% 50%' },
-    trato: { u: '1638262052630-9c3f7dd449c4', n: 'Acuerdo (tono oscuro)', c: [[0.19, 0.1, 0.3, 0.35, 1], [0.575, 0.07, 0.7, 0.32, 1]], b: [0.1, 0.8], pos: '50% 40%' },
-    acuerdo: { u: '1758519288905-38b7b00c1023', n: 'Apretón de manos en la oficina', c: [[0.25, 0.09, 0.385, 0.39, 1], [0.68, 0.18, 0.83, 0.48, 1]], b: [0.17, 0.92], pos: '50% 30%' },
-    reunion: { u: '1758519288557-9a9dee0a7f58', n: 'Reunión de negocios', c: [[0.24, 0.16, 0.36, 0.47, 1], [0.7, 0.19, 0.8, 0.47, 1]], b: [0.12, 0.95], pos: '60% 40%' },
-    planta: { u: '1685475887169-9c9a84bf740f', n: 'Planta textil', c: [[0.42, 0.19, 0.57, 0.49, 1]], b: [0.33, 0.69], pos: '52% 30%' },
-    obra: { u: '1716037991590-c975184b37df', n: 'Ingeniera con planos', c: [[0.18, 0.1, 0.48, 0.54, 0.6], [0.59, 0.4, 0.75, 0.8, 0.5]], b: [0.08, 0.76], pos: '30% 30%' },
-    equipo: { u: '1753162658547-f017a4d84541', n: 'Equipo de una mype', c: [[0.47, 0.28, 0.64, 0.6, 1], [0.7, 0.02, 0.91, 0.46, 1]], b: [0.4, 0.98], pos: '72% 30%' },
-    lima: { u: '1777198498604-a924324d1eb2', n: 'Lima desde el aire', full: true, pos: '50% 0%' }
+    'factoring-ia': { src: IMG + 'b-factoring.jpg', c: [[0.35, 0.12, 0.46, 0.35, 1], [0.555, 0.06, 0.71, 0.39, 1]], b: [0.21, 0.86] },
+    'confirming-ia': { src: IMG + 'b-confirming.jpg', c: [[0.245, 0.14, 0.38, 0.4, 1], [0.5, 0.21, 0.625, 0.47, 1], [0.74, 0.03, 0.9, 0.43, 0.4]], b: [0.13, 0.97] },
+    'capital-ia': { src: IMG + 'b-capital.jpg', c: [[0.3, 0.17, 0.42, 0.41, 1], [0.545, 0.09, 0.69, 0.38, 1]], b: [0.23, 0.8] }
   };
-  /* candidatas por diapositiva o pestaña (la primera de cada lista es la que se recomienda). En el banner 3 solo
-     van fotos sin personas: el texto y la factura ocupan todo el ancho y no queda dónde poner una cara */
-  var GRUPOS_B = {
-    factoring: ['factoring-ia', 'oficina', 'taller', 'cafe', 'cafeteria', 'celebran', 'llamada'],
-    confirming: ['confirming-ia', 'acuerdo', 'trato', 'manos', 'mesa', 'reunion'],
-    capital: ['capital-ia', 'planta', 'mype', 'obra', 'equipo'],
-    fondo: ['lima', 'escritorio', 'billetes', 'mesa'],
-    fondo2: ['billetes', 'escritorio', 'mesa', 'lima'],
-    fondo3: ['escritorio', 'billetes', 'mesa', 'lima'],
-    respaldo: ['mesa', 'escritorio', 'lima', 'billetes']
-  };
-  /* dónde están las personas de una foto: en WordPress lo dice el widget (data-caras: [x0, y0, x1, y1] en
-     fracciones, o data-full si no hay personas); si no, el registro de fotos del prototipo */
+
+  /* dónde están las personas de una foto: lo dice el widget (data-caras: [x0, y0, x1, y1] en fracciones, o
+     data-full si no hay personas); si no, el registro de fotos */
   function fotoInfo(im) {
     if (im.hasAttribute('data-full')) return { full: true };
     if (im.dataset.caras) {
@@ -969,7 +680,6 @@
     }
     return FOTOS_B[im.dataset.k];
   }
-  function urlU(id, w) { return 'https://images.unsplash.com/photo-' + id + '?auto=format&fit=crop&w=' + w + '&q=78'; }
 
   /* ================================================================ encuadre de las fotos de B (escritorio)
      Cada foto con personas se escala y se mueve para que las caras queden a la vista: fuera del texto, de la
@@ -983,18 +693,6 @@
   function bandaMenu(W) {
     var h = $('.b-hdr');
     return { l: 0, t: 0, r: W, b: (h ? h.offsetHeight : 84) + 24 };
-  }
-  /* centro del tramo libre más ancho a la altura y (para decidir hacia dónde van las caras) */
-  function centroLibre(W, y, tapan, a, z) {
-    var cortes = tapan.filter(function (q) { return q.t <= y && q.b >= y; }).map(function (q) { return [q.l, q.r]; })
-      .sort(function (p, q) { return p[0] - q[0]; });
-    var x = a, mejor = [a, a];
-    cortes.forEach(function (c) {
-      if (c[0] - x > mejor[1] - mejor[0]) mejor = [x, c[0]];
-      x = Math.max(x, c[1]);
-    });
-    if (z - x > mejor[1] - mejor[0]) mejor = [x, z];
-    return (mejor[0] + mejor[1]) / 2;
   }
   function encuadreB(o) {
     var W = o.W, H = o.H, w = o.w, h = o.h, C = o.f.c, B = o.f.b || [0, 1], kc = H / h, mejor = null;
@@ -1120,14 +818,13 @@
   }
 
   /* ================================================================ banner B: rota, flechas y deslizar */
-  /* solo el banner 1 (los banners 2 y 3 tienen su propio control más abajo) */
-  var heroB = $('.b-hero[data-hero]:not(.bh)', root);
+  var heroB = $('.b-hero[data-hero]', root);
   if (heroB && $('.b-dots', heroB) && $('.b-hero-bg', heroB)) {
     var ordenB = $$('.b-dots [data-prod]', heroB).map(function (b) { return b.dataset.prod; });
     /* la primera diapositiva (Factoring, con el simulador) se queda más tiempo (minuta 007, A02) */
     var actualB = ordenB[0], timer = 0, quieto = false, pausa = false;
     var DUR = (+heroB.dataset.dur || 7) * 1000, DUR1 = (+heroB.dataset.dur1 || 12) * 1000;
-    /* en qué diapositivas va el simulador: las marcadas con data-con-sim (WordPress); si ninguna lo está, Factoring */
+    /* en qué diapositivas va el simulador: las marcadas con data-con-sim; si ninguna lo está, Factoring */
     var marcadasB = $$('.b-copy[data-con-sim]', heroB).length > 0;
     var conSimB = function (k) {
       if (!marcadasB) return k === 'factoring';
@@ -1153,16 +850,13 @@
       clearTimeout(timer);
       heroB.classList.remove('is-playing');
       /* en celular no rota sola: la tarjeta va debajo y al ocultarse movería la página */
-      if (quieto || pausa || probando || reduce || innerWidth < 981) return;
+      if (quieto || pausa || reduce || innerWidth < 981) return;
       heroB.style.setProperty('--dur', durB() / 1000 + 's');
       void heroB.offsetWidth;
       heroB.classList.add('is-playing');
       timer = setTimeout(function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); }, durB());
     };
     var detener = function () { quieto = true; clearTimeout(timer); heroB.classList.remove('is-playing'); };
-    /* «Probar fotos» abierto: el banner no rota */
-    var probando = false;
-    heroB.addEventListener('fc-pausa', function (e) { probando = !!e.detail; programar(); });
     var moverB = function (d) { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + d + ordenB.length) % ordenB.length]); detener(); };
     $$('.b-dots [data-prod]', heroB).forEach(function (b) { b.addEventListener('click', function () { mostrarB(b.dataset.prod); detener(); }); });
     $('[data-prev]', heroB).addEventListener('click', function () { moverB(-1); });
@@ -1229,303 +923,6 @@
     $$('img', bgB).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadrar); });
     if ('ResizeObserver' in window) new ResizeObserver(encuadrar).observe(heroB);
   }
-
-  /* ================================================================ rotación de fotos (banners 2 y 3)
-     Avanza sola cada «dur» ms; se pausa mientras se escribe en el formulario o se lee el texto y se puede
-     elegir a mano con el indicador. Sin movimiento si la persona lo prefiere (prefers-reduced-motion). */
-  function Rotador(o) {
-    var i = 0, t = 0, pausas = {};
-    function marcar() {
-      o.barras.forEach(function (b, j) {
-        var on = j === i;
-        b.classList.toggle('is-on', on);
-        if (on) b.setAttribute('aria-current', 'true'); else b.removeAttribute('aria-current');
-        b.hidden = j >= o.n;
-      });
-    }
-    function programar() {
-      clearTimeout(t);
-      o.hero.classList.remove('rota');
-      if (reduce || o.n < 2 || Object.keys(pausas).some(function (k) { return pausas[k]; })) return;
-      void o.hero.offsetWidth;
-      o.hero.classList.add('rota');
-      t = setTimeout(function () { ir(i + 1); }, o.dur);
-    }
-    function ir(k) { i = (k + o.n) % o.n; o.mostrar(i); marcar(); programar(); }
-    function pausa(k, v) { pausas[k] = v; programar(); }
-    o.barras.forEach(function (b, j) { b.addEventListener('click', function () { ir(j); }); });
-    if (o.form) {
-      o.form.addEventListener('focusin', function () { pausa('form', true); });
-      o.form.addEventListener('focusout', function () { setTimeout(function () { pausa('form', o.form.contains(doc.activeElement)); }, 0); });
-    }
-    if (o.texto) {
-      o.texto.addEventListener('mouseenter', function () { pausa('texto', true); });
-      o.texto.addEventListener('mouseleave', function () { pausa('texto', false); });
-    }
-    doc.addEventListener('visibilitychange', function () { pausa('oculta', doc.hidden); });
-    o.hero.addEventListener('fc-pausa', function (e) { pausa('fotos', !!e.detail); });
-    o.hero.style.setProperty('--rot', o.dur / 1000 + 's');
-    marcar();
-    programar();
-    return { ir: ir, actual: function () { return i; }, reiniciar: function (n) { o.n = n; i = 0; o.mostrar(0); marcar(); programar(); } };
-  }
-
-  /* ================================================================ banner 2 (Conversación): soluciones en pestañas
-     Factoring, Confirming y Capital de Trabajo cambian fotos, texto y conversación sin salir del banner;
-     cada solución rota entre tres fotos. En escritorio cada foto se encuadra en el espacio libre a la derecha
-     del texto (con la misma foto desenfocada de fondo), así la persona no queda tapada ni recortada en
-     pantallas anchas o bajas. */
-  var hero2 = $('.bh2[data-hero]', root);
-  if (hero2) {
-    var tabs2 = $$('.bh2-tabs [role="tab"]', hero2), ind2 = $('.bh2-tabs-ind', hero2);
-    var bg2 = $('.bh2-bg', hero2), col2 = $('.bh2-col', hero2), pings2 = $('.bh2-pings', hero2);
-    var sim2 = sims.filter(function (x) { return hero2.contains(x.el); })[0];
-    var mas2 = $('[data-mas]', hero2);
-    var MAS2 = { factoring: ['factoring.html?p=b', 'el Factoring'], confirming: ['confirming.html?p=b', 'el Confirming'],
-      capital: ['capital-de-trabajo.html?p=b', 'el Capital de Trabajo'] };
-    var actual2 = 'factoring', PW = 250, rot2 = null;
-    var fotos2 = function (k) { return $$('img.bh2-photo', bg2).filter(function (im) { return im.dataset.prod === (k || actual2); }); };
-    var marcar2 = function () {
-      var t = tabs2.filter(function (b) { return b.getAttribute('aria-selected') === 'true'; })[0];
-      if (t && ind2) { ind2.style.width = t.offsetWidth + 'px'; ind2.style.transform = 'translateX(' + t.offsetLeft + 'px)'; }
-    };
-    var encuadre2 = function () {
-      var imgs = $$('img.bh2-photo', bg2);
-      if (innerWidth < 981) {
-        hero2.classList.remove('encuadre');
-        imgs.forEach(soltarFoto);
-        return;
-      }
-      hero2.classList.add('encuadre');
-      var box = bg2.getBoundingClientRect(), W = box.width, H = box.height;
-      var col = rectRel(col2, box, 0), ini = col.r + 56;
-      var tapan = [{ l: -1e4, t: -1e4, r: ini, b: 1e4, texto: 1 }, bandaMenu(W)];
-      encuadrarFotos(imgs, box, { idealY: 0.34, kMin: 0.8, zonas: function () { return { tapan: tapan, idealX: (ini + W - 32) / 2 }; } });
-      hero2.style.setProperty('--c0', (col.l / W * 100).toFixed(1) + '%');
-      hero2.style.setProperty('--c1', (col.r / W * 100).toFixed(1) + '%');
-      var activo = $('img.bh2-photo.is-on', bg2);
-      if (!activo) return;
-      hero2.style.setProperty('--fondo', 'url("' + (activo.dataset.blur || activo.currentSrc || activo.src) + '")');
-      /* el aviso va junto a las caras, nunca encima: a su derecha si cabe, si no a su izquierda y, si tampoco,
-         debajo de ellas (sobre las manos o la mesa) */
-      if (pings2) {
-        var f = fotoInfo(activo), r = activo._enc, px = null, py = Math.round(H * 0.58);
-        if (f && f.c && r) {
-          var fL = 1, fR = 0, fB = 0;
-          f.c.forEach(function (c) { if (c[4] < 0.9) return; fL = Math.min(fL, c[0]); fR = Math.max(fR, c[2]); fB = Math.max(fB, c[3]); });
-          fL = r.x + fL * r.iw; fR = r.x + fR * r.iw; fB = r.y + fB * r.ih;
-          if (W - 24 - PW >= fR + 28) px = Math.min(fR + 40, W - 24 - PW);
-          else if (fL - 28 - PW >= ini) px = fL - 40 - PW;
-          py = Math.round(Math.min(H - 150, Math.max(150, fB + 36)));
-          if (px === null && fB + 36 <= H - 150) px = Math.max(ini, Math.min(W - 24 - PW, fR - PW * 0.7));
-        } else if (f && f.full) px = W - PW - Math.max(40, W * 0.05);
-        pings2.classList.toggle('is-off', px === null);
-        if (px !== null) { pings2.style.left = Math.round(px) + 'px'; pings2.style.top = py + 'px'; }
-      }
-    };
-    var mostrarFoto2 = function (n) {
-      var lista = fotos2();
-      $$('img.bh2-photo', bg2).forEach(function (im) { im.classList.toggle('is-on', im === lista[n]); });
-      encuadre2();
-    };
-    var producto2 = function (k, foco) {
-      if (k === actual2) return;
-      actual2 = k;
-      $$('[data-prod]', hero2).forEach(function (el) {
-        if (el.closest('[data-sim]') || el.tagName === 'IMG') return;
-        var on = el.dataset.prod === k;
-        if (el.getAttribute('role') === 'tab') {
-          el.setAttribute('aria-selected', on ? 'true' : 'false');
-          el.tabIndex = on ? 0 : -1;
-          if (on && foco) el.focus();
-          return;
-        }
-        el.classList.toggle('is-on', on);
-        if (!el.closest('.bh2-bg')) { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
-      });
-      if (mas2) { mas2.setAttribute('href', MAS2[k][0]); $('[data-mas-n]', mas2).textContent = MAS2[k][1]; }
-      marcar2();
-      if (rot2) rot2.reiniciar(fotos2().length); else mostrarFoto2(0);
-      if (sim2) sim2.producto(k);
-    };
-    tabs2.forEach(function (b, n) {
-      b.addEventListener('click', function () { producto2(b.dataset.prod); });
-      b.addEventListener('keydown', function (e) {
-        var d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
-        if (!d) return;
-        e.preventDefault();
-        producto2(tabs2[(n + d + tabs2.length) % tabs2.length].dataset.prod, true);
-      });
-    });
-    rot2 = Rotador({ hero: hero2, n: fotos2().length, dur: 6500, barras: $$('[data-rot]', hero2), mostrar: mostrarFoto2,
-      form: sim2 && sim2.el });
-    marcar2();
-    encuadre2();
-    addEventListener('resize', function () { marcar2(); encuadre2(); });
-    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(function () { marcar2(); encuadre2(); });
-    $$('img', bg2).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadre2); });
-    if ('ResizeObserver' in window) new ResizeObserver(encuadre2).observe(hero2);
-  }
-
-  /* ================================================================ banner 3 (Factura): cuatro diapositivas */
-  var hero3 = $('.bh3[data-hero]', root);
-  if (hero3) {
-    var slides3 = $$('.bh3-dots [data-slide]', hero3).map(function (b) { return b.dataset.slide; });
-    var sim3 = sims.filter(function (x) { return hero3.contains(x.el); })[0];
-    var mostrar3 = function (n) {
-      var k = slides3[n];
-      $$('[data-slide]', hero3).forEach(function (el) {
-        var on = el.dataset.slide === k;
-        el.classList.toggle('is-on', on);
-        if (el.matches('.b-copy')) { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
-      });
-    };
-    var rot3 = Rotador({ hero: hero3, n: slides3.length, dur: 7000, barras: $$('.bh3-dots [data-slide]', hero3), mostrar: mostrar3,
-      form: sim3 && sim3.el, texto: $('.bh3-copies', hero3) });
-    $('[data-prev]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() - 1); });
-    $('[data-next]', hero3).addEventListener('click', function () { rot3.ir(rot3.actual() + 1); });
-    deslizar($('.bh3-copies', hero3), function (d) { rot3.ir(rot3.actual() + d); });
-    /* fotos con personas (elegidas en «Probar fotos»): las caras van entre el texto y la factura o a la
-       derecha de la factura, nunca bajo el título; las fotos sin personas cubren todo el fondo */
-    var bg3 = $('.bh3-bg', hero3), copy3 = $('.bh3-copy', hero3);
-    var encuadre3 = function () {
-      var imgs = $$('img.bh3-photo', bg3);
-      if (innerWidth < 981 || !sim3) {
-        hero3.classList.remove('encuadre');
-        imgs.forEach(soltarFoto);
-        return;
-      }
-      hero3.classList.add('encuadre');
-      var box = bg3.getBoundingClientRect(), W = box.width, H = box.height;
-      var tx = rectRel(copy3, box, 28), cd = rectRel(sim3.el, box, 24);
-      var tapan = [{ l: -1e4, t: -1e4, r: tx.r, b: 1e4, texto: 1 }, cd, bandaMenu(W)];
-      encuadrarFotos(imgs, box, { idealY: 0.3, kMin: 1, zonas: function () { return { tapan: tapan, idealX: centroLibre(W, H * 0.3, tapan, 0, W) }; } });
-    };
-    encuadre3();
-    addEventListener('resize', encuadre3);
-    if (doc.fonts && doc.fonts.ready) doc.fonts.ready.then(encuadre3);
-    $$('img', bg3).forEach(function (im) { if (!im.complete) im.addEventListener('load', encuadre3); });
-    if ('ResizeObserver' in window) new ResizeObserver(encuadre3).observe(hero3);
-  }
-
-  /* ================================================================ «Probar fotos» (solo en el prototipo)
-     Botón abajo a la izquierda mientras se ve el banner: muestra las candidatas de la diapositiva o pestaña
-     visible; al elegir una, la foto cambia al instante y la elección se recuerda (localStorage «fc-fotos»).
-     Mientras el panel está abierto, el banner no rota. */
-  var heroF = $('[data-hero][data-hv]', root);
-  if (heroF && pbar.isConnected) (function () {
-    var hv = heroF.dataset.hv;
-    var ETQ = { factoring: 'Factoring', confirming: 'Confirming', capital: 'Capital de Trabajo',
-      lima: 'Factoring', billetes: 'Liquidez en 48 horas', factura: 'Sin préstamos bancarios', trato: 'Respaldo y asesoría' };
-    var GRUPO_B3 = { lima: 'fondo', billetes: 'fondo2', factura: 'fondo3', trato: 'respaldo' };
-    var NOMBRE_BANNER = { 1: 'Banner 1 · Vidrio', 2: 'Banner 2 · Conversación', 3: 'Banner 3 · Factura' };
-    var fotos = function () { return $$('img[data-k]', heroF).filter(function (i) { return i.closest('.b-hero-bg, .bh2-bg, .bh3-bg'); }); };
-    var clave = function (im) { return im.dataset.prod || im.dataset.slide; };
-    var hermanas = function (im) { return fotos().filter(function (x) { return clave(x) === clave(im); }); };
-    var slot = function (im) { return hv + ':' + clave(im) + ':' + hermanas(im).indexOf(im); };
-    var grupo = function (im) { return im.dataset.slide ? GRUPO_B3[im.dataset.slide] : im.dataset.prod; };
-    var vale = function (k) { return FOTOS_B[k] && (hv !== '3' || FOTOS_B[k].full || FOTOS_B[k].fondo); };
-    var candidatas = function (im) { return (GRUPOS_B[grupo(im)] || []).filter(vale); };
-    var activa = function () { return fotos().filter(function (i) { return i.classList.contains('is-on'); })[0] || fotos()[0]; };
-    var reencuadrar = function () { dispatchEvent(new Event('resize')); };
-    var poner = function (im, k) {
-      var f = FOTOS_B[k];
-      if (!f) return;
-      im.dataset.k = k;
-      if (f.u) {
-        im.setAttribute('srcset', [800, 1400, 2000, 2600].map(function (w) { return urlU(f.u, w) + ' ' + w + 'w'; }).join(', '));
-        im.setAttribute('sizes', '100vw');
-        im.src = urlU(f.u, 2000);
-        im.dataset.blur = urlU(f.u, 480);
-      } else {
-        im.removeAttribute('srcset');
-        im.src = f.src;
-        im.dataset.blur = f.src;
-      }
-      im.removeAttribute('loading');
-      im.style.objectPosition = f.pos || '50% 40%';
-      im.addEventListener('load', reencuadrar, { once: true });
-      reencuadrar();
-    };
-    var inicial = {};
-    fotos().forEach(function (im) { inicial[slot(im)] = im.dataset.k; });
-    var elegidas = leer('fc-fotos') || {};
-    fotos().forEach(function (im) {
-      var s = slot(im), k = elegidas[s];
-      /* una elección guardada que ya no es candidata de su diapositiva se descarta */
-      if (k && candidatas(im).indexOf(k) < 0 && k !== inicial[s]) { delete elegidas[s]; guardar('fc-fotos', elegidas); return; }
-      if (k && k !== im.dataset.k) poner(im, k);
-    });
-
-    var IMG = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5.2-5.2L6 19"/></svg>';
-    var btn = doc.createElement('button');
-    btn.type = 'button';
-    btn.className = 'fp-btn pbar-more';
-    btn.title = 'Probar fotos del banner';
-    btn.setAttribute('aria-expanded', 'false');
-    btn.innerHTML = IMG + '<span>Probar fotos</span>';
-    var panel = doc.createElement('div');
-    panel.className = 'fp-panel';
-    panel.setAttribute('role', 'dialog');
-    panel.setAttribute('aria-label', 'Probar fotos del banner');
-    panel.hidden = true;
-    /* el botón va en la barra superior (junto a «¿Qué cambia?»): así no tapa el indicador del banner */
-    var mas = $('.pbar-more', pbar);
-    if (mas) mas.parentNode.insertBefore(btn, mas); else root.appendChild(btn);
-    root.appendChild(panel);
-    var ultimo = '';
-    var pintar = function () {
-      var im = activa();
-      if (!im) return;
-      var s = slot(im), lista = candidatas(im), h = hermanas(im), pos = h.indexOf(im);
-      ultimo = s;
-      panel.innerHTML = '<div class="fp-h"><div><b>Fotos para «' + ETQ[clave(im)] + '»</b><small>' + NOMBRE_BANNER[hv] +
-        (h.length > 1 ? ' · foto ' + (pos + 1) + ' de ' + h.length : '') + '. Toca una para verla en el banner.</small></div>' +
-        '<button type="button" class="fp-x" aria-label="Cerrar"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
-        '<div class="fp-grid">' + lista.map(function (k) {
-          var f = FOTOS_B[k], mini = f.u ? urlU(f.u, 260) : f.src;
-          return '<button type="button" class="fp-op' + (k === im.dataset.k ? ' is-sel' : '') + '" data-foto="' + k + '" aria-pressed="' +
-            (k === im.dataset.k) + '"><img src="' + mini + '" alt="" loading="lazy" style="object-position:' + (f.pos || '50% 40%') + '">' +
-            '<span>' + f.n + '</span>' + (f.nueva ? '<em>Nueva</em>' : '') + (k === inicial[s] ? '<i>Predeterminada</i>' : '') + '</button>';
-        }).join('') + '</div>' +
-        '<button type="button" class="fp-reset">Volver a las predeterminadas en todo el banner</button>';
-    };
-    var abrir = function (v) {
-      panel.hidden = !v;
-      btn.setAttribute('aria-expanded', v ? 'true' : 'false');
-      heroF.dispatchEvent(new CustomEvent('fc-pausa', { detail: v }));
-      if (v) pintar();
-    };
-    btn.addEventListener('click', function () {
-      if (panel.hidden && heroF.getBoundingClientRect().bottom < 120) scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-      abrir(panel.hidden);
-    });
-    panel.addEventListener('click', function (e) {
-      if (e.target.closest('.fp-x')) { abrir(false); btn.focus(); return; }
-      if (e.target.closest('.fp-reset')) {
-        fotos().forEach(function (im) { var k = inicial[slot(im)]; if (k && k !== im.dataset.k) poner(im, k); });
-        elegidas = {};
-        try { localStorage.removeItem('fc-fotos'); } catch (er) { /* */ }
-        pintar();
-        return;
-      }
-      var op = e.target.closest('[data-foto]');
-      if (!op) return;
-      var im = activa();
-      poner(im, op.dataset.foto);
-      elegidas[slot(im)] = op.dataset.foto;
-      guardar('fc-fotos', elegidas);
-      pintar();
-    });
-    doc.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !panel.hidden) { abrir(false); btn.focus(); } });
-    /* si cambia la diapositiva o la pestaña con el panel abierto, el panel muestra las candidatas de la nueva */
-    new MutationObserver(function () { if (!panel.hidden) { var im = activa(); if (im && slot(im) !== ultimo) pintar(); } })
-      .observe(heroF, { subtree: true, attributes: true, attributeFilter: ['class'] });
-    /* si se baja y el banner deja de verse, el panel se cierra */
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) { if (!es[0].isIntersecting && !panel.hidden) abrir(false); }, { threshold: 0.2 }).observe(heroF);
-    }
-  })();
 
   /* ================================================================ carrusel de noticias */
   $$('[data-rail]', root).forEach(function (rail) {
@@ -1647,6 +1044,17 @@
     });
   });
 
+  $$('[data-demo]', root).forEach(function (form) {
+    vigilar(form);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var malos = revisar(form);
+      if (malos.length) { malos[0].focus(); return; }
+      var n = $('[data-demo-ok]', form);
+      if (n) n.hidden = false;
+    });
+  });
+
   /* ================================================================ blog: filtros */
   var filtros = $('[data-filtros]', root);
   if (filtros) {
@@ -1664,11 +1072,13 @@
   /* ================================================================ video, horario */
   var vm = $('[data-vmodal]'), vFoco = null;
   function cerrarVideo() { vm.hidden = true; html.classList.remove('lock'); if (vFoco) vFoco.focus({ preventScroll: true }); }
-  $$('[data-video]', root).forEach(function (b) {
-    b.addEventListener('click', function () { vFoco = b; vm.hidden = false; html.classList.add('lock'); $('.vmodal-x', vm).focus({ preventScroll: true }); });
-  });
-  $$('[data-close]', vm).forEach(function (c) { c.addEventListener('click', cerrarVideo); });
-  vm.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarVideo(); });
+  if (vm) {
+    $$('[data-video]', root).forEach(function (b) {
+      b.addEventListener('click', function () { vFoco = b; vm.hidden = false; html.classList.add('lock'); $('.vmodal-x', vm).focus({ preventScroll: true }); });
+    });
+    $$('[data-close]', vm).forEach(function (c) { c.addEventListener('click', cerrarVideo); });
+    vm.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarVideo(); });
+  }
   function horario() {
     var o = {};
     try {
@@ -1693,7 +1103,7 @@
   }
 
   /* botón flotante y barra móvil: aparecen al dejar atrás el primer bloque */
-  /* en WordPress las secciones están dentro de los contenedores de Elementor: el primer bloque es la primera sección */
+  /* en WordPress las secciones están dentro de los contenedores de Elementor */
   var primero = $('main > section', root) || $('.fc-main section', root);
   if (primero && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (es) { es.forEach(function (e) { root.classList.toggle('is-past', !e.isIntersecting); }); },
@@ -1726,7 +1136,7 @@
     pend = false;
     var y = scrollY, vh = innerHeight;
     if (hdr) hdr.classList.toggle('is-scrolled', y > 8);
-    if (X === 'b' && hdr) {
+    if (hdr) {
       var menuAbierto = mmenu && !mmenu.hidden;
       if (!menuAbierto) {
         if (y > 500 && y > lastY + 6) hdr.classList.add('is-hidden');
@@ -1746,7 +1156,7 @@
       cand.forEach(function (li, i) { li.classList.toggle('is-on', i === act); });
       $$('.b-why-frame > img', why).forEach(function (im) { im.classList.toggle('is-on', +im.dataset.w === act); });
     }
-    if (X === 'b' && !reduce) {
+    if (!reduce) {
       var vw = $('[data-scrub="video"]', root);
       if (vw) {
         var rv = vw.getBoundingClientRect(), t = clamp((vh - rv.top) / (vh * 0.8), 0, 1), e = 1 - Math.pow(1 - t, 3);
@@ -1777,25 +1187,14 @@
   addEventListener('scroll', function () { if (!pend) { pend = true; requestAnimationFrame(efectos); } }, { passive: true });
   addEventListener('resize', function () { if (!pend) { pend = true; requestAnimationFrame(efectos); } });
 
-  /* ================================================================ llegada: misma sección que en la otra versión */
+  /* ================================================================ llegada: con ancla, a esa sección */
   function llegar() {
-    var hs = location.hash;
-    if (!hs) { try { hs = sessionStorage.getItem('fc-ir') || ''; sessionStorage.removeItem('fc-ir'); } catch (e) { hs = ''; } }
-    var m = /^#ir=([a-z-]+),([0-9.]+)$/.exec(hs);
-    if (m) {
-      try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* file:// */ }
-      var t = $('[data-sec="' + m[1] + '"]', root);
-      if (t) {
-        var r = t.getBoundingClientRect();
-        scrollTo(0, Math.max(0, scrollY + r.top + r.height * parseFloat(m[2]) - innerHeight * 0.38));
-      }
-    } else if (hs.length > 1) {
-      var d = doc.getElementById(hs.slice(1));
+    if (location.hash.length > 1) {
+      var d = doc.getElementById(location.hash.slice(1));
       if (d) d.scrollIntoView({ block: 'start' });
     }
     revelarHasta(innerHeight * 0.92);
     efectos();
-    requestAnimationFrame(function () { html.classList.add('listo'); });
   }
   var fontsListas = doc.fonts && doc.fonts.ready ? doc.fonts.ready : Promise.resolve();
   var tope = new Promise(function (r) { setTimeout(r, 900); });

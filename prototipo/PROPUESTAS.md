@@ -1,4 +1,12 @@
-# Propuestas A «Claridad» y B «Impulso»
+# Historial del diseño · propuestas A y B
+
+> **17/10/2026 · decisión final:** el cliente se quedó con **B «Impulso»** y el banner **1 «Vidrio»**. El
+> prototipo quedó solo con ese diseño (ver `README.md`): se retiraron la barra de presentación, la propuesta A, la
+> versión actual, los banners 2 «Conversación» y 3 «Factura» y la herramienta «Probar fotos». Las páginas sin
+> rediseño (acceso, legales, preguntas frecuentes, reclamaciones) se rehicieron con el diseño B. Este documento
+> queda como registro de cómo se llegó ahí; las referencias a A, a los banners 2 y 3 y a la barra son históricas.
+
+## Propuestas A «Claridad» y B «Impulso» (registro)
 
 Abrir **`propuestas/index.html`**. La dirección anterior, `propuestas.html`, redirige ahí.
 
