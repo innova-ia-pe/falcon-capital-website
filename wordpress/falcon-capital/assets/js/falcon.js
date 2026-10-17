@@ -846,17 +846,39 @@
       heroB.classList.toggle('sin-sim', !conSimB(k));
       if (typeof fondoB === 'function') fondoB();
     };
+    /* avance automático: la barra de la diapositiva activa se llena en «dur»; al pausar (leer el texto o cambiar
+       de pestaña) la barra y el tiempo se congelan donde iban y siguen desde ahí, sin reiniciarse ni saltar */
+    var restante = 0, t0 = 0, enPausa = false;
+    var avanzar = function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); };
     var programar = function () {
       clearTimeout(timer);
-      heroB.classList.remove('is-playing');
+      heroB.classList.remove('is-playing', 'en-pausa');
+      enPausa = false;
       /* en celular no rota sola: la tarjeta va debajo y al ocultarse movería la página */
-      if (quieto || pausa || reduce || innerWidth < 981) return;
-      heroB.style.setProperty('--dur', durB() / 1000 + 's');
+      if (quieto || reduce || innerWidth < 981) return;
+      restante = durB();
+      heroB.style.setProperty('--dur', restante / 1000 + 's');
       void heroB.offsetWidth;
       heroB.classList.add('is-playing');
-      timer = setTimeout(function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); }, durB());
+      if (pausa || doc.hidden) { enPausa = true; heroB.classList.add('en-pausa'); return; }
+      t0 = performance.now();
+      timer = setTimeout(avanzar, restante);
     };
-    var detener = function () { quieto = true; clearTimeout(timer); heroB.classList.remove('is-playing'); };
+    var pausar = function () {
+      if (enPausa || quieto || !heroB.classList.contains('is-playing')) return;
+      clearTimeout(timer);
+      restante = Math.max(0, restante - (performance.now() - t0));
+      enPausa = true;
+      heroB.classList.add('en-pausa');
+    };
+    var reanudar = function () {
+      if (!enPausa || quieto || pausa || doc.hidden) return;
+      enPausa = false;
+      heroB.classList.remove('en-pausa');
+      t0 = performance.now();
+      timer = setTimeout(avanzar, restante);
+    };
+    var detener = function () { quieto = true; enPausa = false; clearTimeout(timer); heroB.classList.remove('is-playing', 'en-pausa'); };
     var moverB = function (d) { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + d + ordenB.length) % ordenB.length]); detener(); };
     $$('.b-dots [data-prod]', heroB).forEach(function (b) { b.addEventListener('click', function () { mostrarB(b.dataset.prod); detener(); }); });
     $('[data-prev]', heroB).addEventListener('click', function () { moverB(-1); });
@@ -866,9 +888,9 @@
     if (simB) { simB.addEventListener('focusin', detener); simB.addEventListener('pointerdown', detener); }
     /* se pausa mientras se lee el texto (no al pasar por cualquier parte del banner) */
     var copiasB = $('.b-copies', heroB);
-    copiasB.addEventListener('mouseenter', function () { if (!quieto) { pausa = true; programar(); } });
-    copiasB.addEventListener('mouseleave', function () { if (!quieto) { pausa = false; programar(); } });
-    doc.addEventListener('visibilitychange', function () { if (doc.hidden) { clearTimeout(timer); heroB.classList.remove('is-playing'); } else programar(); });
+    copiasB.addEventListener('mouseenter', function () { pausa = true; pausar(); });
+    copiasB.addEventListener('mouseleave', function () { pausa = false; reanudar(); });
+    doc.addEventListener('visibilitychange', function () { if (doc.hidden) pausar(); else reanudar(); });
     $$('[data-focus-sim]', heroB).forEach(function (a) {
       a.addEventListener('click', function (e) {
         e.preventDefault(); e.stopPropagation(); detener();
