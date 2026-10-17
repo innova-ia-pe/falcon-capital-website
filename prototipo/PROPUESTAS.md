@@ -82,6 +82,26 @@ Pedido: el formulario del banner en vertical y más fácil de corregir.
 | Corregir datos | Desde el paso 2 se ve la fila «Tus datos» (nombre, RUC y celular) con botón **Editar**. Al editar, el botón dice «Guardar y ver mi simulación» y hay «Volver a mi simulación sin cambios». La simulación (monto, plazo y moneda) se conserva. |
 | Evaluación dentro de la tarjeta | Resumen con lo que recibe, desglose plegable («Ver desglose del cálculo»), correo y «Volver a mi simulación». |
 
+## Ajustes de la minuta 007 (13/10/2026) · banner 1 «Vidrio»
+
+El cliente revisó el banner 1 (Vidrio) y lo da por bueno; los banners 2 y 3 siguen disponibles en el prototipo pero
+no se le muestran. Compromiso C01 de la minuta:
+
+| Acuerdo | Qué se hizo |
+|---|---|
+| A02 · retirar «48 horas» y «MYPE» del hero | El carrusel queda con tres diapositivas: Factoring, Confirming y Capital de Trabajo. En Soluciones, Factoring ya no promete «menos de 48 horas» |
+| A02 · simulador solo en Factoring | En Confirming y Capital la tarjeta se desvanece y la foto usa el espacio libre; vuelve al regresar a Factoring. En celular el carrusel no rota solo (la tarjeta va debajo y movería la página) |
+| A02 · más tiempo en el primer slide | Factoring se queda 12 s; las demás, 7 s |
+| A03 · rótulo redundante y texto de Soluciones | Sin el rótulo «Factoring / Confirming / Capital» sobre el título (ya lo dicen el indicador y la tarjeta). En Soluciones se quitó la bajada lateral |
+| A04 · cortes con escala de Windows al 150 % | 1920 × 1080 al 150 % es 1280 × 720: la tarjeta medía 580 px y se salía de la pantalla junto con el indicador. En pantallas de hasta 780 px de alto la tarjeta se compacta (543 px) y todo cabe en la primera pantalla. Revisado también a 1366 × 768 |
+| A05 · encuadre de las fotos | Ya resuelto con el encuadre por caras (ver más abajo) |
+
+«Probar fotos» pasó a la barra superior (ícono de imagen junto a «¿Qué cambia?»): en pantallas bajas tapaba el
+indicador de diapositivas.
+
+Quedan con «48 horas» o «mypes», a la espera de la validación comercial y legal de Falcon: las cifras de la sección
+de datos («+147 mypes atendidas»), la página de Factoring («Liquidez en menos de 48 horas») y Conócenos.
+
 ## Tres banners para B y fotos nuevas (13/10/2026) · solo propuesta B
 
 Pedido: fotos que representen el factoring (no más almacenes), que el formulario no mueva la página al cambiar
