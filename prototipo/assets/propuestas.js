@@ -84,7 +84,25 @@
     });
     return best;
   }
+  /* En archivos locales (file://) Chrome recuerda el zoom por dirección completa, con «?» y «#» incluidos: cada
+     banner o versión quedaba con su propio zoom y el header y el banner cambiaban de tamaño. Ahí se navega a la
+     página sin parámetros y la elección viaja por localStorage (versión y banner, que ya lee el <head>) y
+     sessionStorage (sección o ancla). En la web (GitHub Pages) el zoom es uno por sitio y se conservan las
+     direcciones con parámetros, que sirven para compartir. */
+  var LOCAL = location.protocol === 'file:';
+  function sinParametros(url) {
+    var m = /^([^?#]*)(\?[^#]*)?(#.*)?$/.exec(url);
+    if (!m || /(^\?|&)u=/.test(m[2] || '')) return url;
+    var q = new URLSearchParams((m[2] || '').slice(1));
+    try {
+      if (q.get('p')) localStorage.setItem('fc-prop', q.get('p'));
+      if (q.get('h')) localStorage.setItem('fc-hb', q.get('h'));
+      if (m[3]) sessionStorage.setItem('fc-ir', m[3]); else sessionStorage.removeItem('fc-ir');
+    } catch (e) { return url; }
+    return m[1];
+  }
   function navegar(url, destino) {
+    if (LOCAL && /\.html/.test(url)) url = sinParametros(url);
     html.classList.remove('va-a', 'va-b', 'va-actual');
     if (destino) html.classList.add('va-' + destino);
     html.classList.add('saliendo');
@@ -902,8 +920,6 @@
      van fotos sin personas: el texto y la factura ocupan todo el ancho y no queda dónde poner una cara */
   var GRUPOS_B = {
     factoring: ['factoring-ia', 'oficina', 'taller', 'cafe', 'cafeteria', 'celebran', 'llamada'],
-    liquidez: ['billetes', 'escritorio', 'mesa', 'cafe'],
-    mypes: ['mype', 'cafe', 'cafeteria', 'taller', 'celebran'],
     confirming: ['confirming-ia', 'acuerdo', 'trato', 'manos', 'mesa', 'reunion'],
     capital: ['capital-ia', 'planta', 'mype', 'obra', 'equipo'],
     fondo: ['lima', 'escritorio', 'billetes', 'mesa'],
@@ -1066,8 +1082,10 @@
   var heroB = $('.b-hero[data-hero]:not(.bh)', root);
   if (heroB && $('.b-dots', heroB) && $('.b-hero-bg', heroB)) {
     var ordenB = $$('.b-dots [data-prod]', heroB).map(function (b) { return b.dataset.prod; });
-    var actualB = ordenB[0], timer = 0, quieto = false, pausa = false, DUR = 7000;
-    heroB.style.setProperty('--dur', DUR / 1000 + 's');
+    /* la primera diapositiva (Factoring, con el simulador) se queda más tiempo (minuta 007, A02) */
+    var actualB = ordenB[0], timer = 0, quieto = false, pausa = false, DUR = 7000, DUR1 = 12000;
+    var durB = function () { return actualB === ordenB[0] ? DUR1 : DUR; };
+    heroB.style.setProperty('--dur', durB() / 1000 + 's');
     var mostrarB = function (k) {
       actualB = k;
       $$('[data-prod]', heroB).forEach(function (el) {
@@ -1076,15 +1094,19 @@
         if (el.matches('.b-dots button')) { if (on) el.setAttribute('aria-current', 'true'); else el.removeAttribute('aria-current'); return; }
         if (el.tagName !== 'IMG') { if (on) el.removeAttribute('aria-hidden'); else el.setAttribute('aria-hidden', 'true'); }
       });
+      /* el simulador es de Factoring: en las demás diapositivas se oculta para no confundir (minuta 007, A02) */
+      heroB.classList.toggle('sin-sim', k !== 'factoring');
       if (typeof fondoB === 'function') fondoB();
     };
     var programar = function () {
       clearTimeout(timer);
       heroB.classList.remove('is-playing');
-      if (quieto || pausa || probando || reduce) return;
+      /* en celular no rota sola: la tarjeta va debajo y al ocultarse movería la página */
+      if (quieto || pausa || probando || reduce || innerWidth < 981) return;
+      heroB.style.setProperty('--dur', durB() / 1000 + 's');
       void heroB.offsetWidth;
       heroB.classList.add('is-playing');
-      timer = setTimeout(function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); }, DUR);
+      timer = setTimeout(function () { var i = ordenB.indexOf(actualB); mostrarB(ordenB[(i + 1) % ordenB.length]); programar(); }, durB());
     };
     var detener = function () { quieto = true; clearTimeout(timer); heroB.classList.remove('is-playing'); };
     /* «Probar fotos» abierto: el banner no rota */
@@ -1142,6 +1164,8 @@
       encuadrarFotos(imgs, box, { idealY: 0.3, kMin: 0.62, zonas: function (im) {
         var copyR = Math.max(textoDerecho(im.dataset.prod, box.left), 200) + 36;
         maxCopy = Math.max(maxCopy, copyR);
+        /* sin tarjeta (Confirming, Capital) la foto usa todo el espacio a la derecha del texto */
+        if (im.dataset.prod !== 'factoring') return { tapan: [{ l: -1e4, t: -1e4, r: copyR, b: 1e4, texto: 1 }, menu], idealX: (copyR + W) / 2 };
         return { tapan: [{ l: -1e4, t: -1e4, r: copyR, b: 1e4, texto: 1 }, { l: card.l, t: -1e4, r: 1e4, b: 1e4 }, menu], idealX: (copyR + card.l) / 2 };
       } });
       fondoB();
@@ -1340,7 +1364,7 @@
   var heroF = $('[data-hero][data-hv]', root);
   if (heroF) (function () {
     var hv = heroF.dataset.hv;
-    var ETQ = { factoring: 'Factoring', liquidez: 'En 48 horas', mypes: 'Para mypes', confirming: 'Confirming', capital: 'Capital de Trabajo',
+    var ETQ = { factoring: 'Factoring', confirming: 'Confirming', capital: 'Capital de Trabajo',
       lima: 'Factoring', billetes: 'Liquidez en 48 horas', factura: 'Sin préstamos bancarios', trato: 'Respaldo y asesoría' };
     var GRUPO_B3 = { lima: 'fondo', billetes: 'fondo2', factura: 'fondo3', trato: 'respaldo' };
     var NOMBRE_BANNER = { 1: 'Banner 1 · Vidrio', 2: 'Banner 2 · Conversación', 3: 'Banner 3 · Factura' };
@@ -1385,7 +1409,8 @@
     var IMG = '<svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="m21 16-5.2-5.2L6 19"/></svg>';
     var btn = doc.createElement('button');
     btn.type = 'button';
-    btn.className = 'fp-btn';
+    btn.className = 'fp-btn pbar-more';
+    btn.title = 'Probar fotos del banner';
     btn.setAttribute('aria-expanded', 'false');
     btn.innerHTML = IMG + '<span>Probar fotos</span>';
     var panel = doc.createElement('div');
@@ -1393,7 +1418,9 @@
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-label', 'Probar fotos del banner');
     panel.hidden = true;
-    root.appendChild(btn);
+    /* el botón va en la barra superior (junto a «¿Qué cambia?»): así no tapa el indicador del banner */
+    var mas = $('.pbar-more', pbar);
+    if (mas) mas.parentNode.insertBefore(btn, mas); else root.appendChild(btn);
     root.appendChild(panel);
     var ultimo = '';
     var pintar = function () {
@@ -1418,7 +1445,10 @@
       heroF.dispatchEvent(new CustomEvent('fc-pausa', { detail: v }));
       if (v) pintar();
     };
-    btn.addEventListener('click', function () { abrir(panel.hidden); });
+    btn.addEventListener('click', function () {
+      if (panel.hidden && heroF.getBoundingClientRect().bottom < 120) scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      abrir(panel.hidden);
+    });
     panel.addEventListener('click', function (e) {
       if (e.target.closest('.fp-x')) { abrir(false); btn.focus(); return; }
       if (e.target.closest('.fp-reset')) {
@@ -1440,13 +1470,9 @@
     /* si cambia la diapositiva o la pestaña con el panel abierto, el panel muestra las candidatas de la nueva */
     new MutationObserver(function () { if (!panel.hidden) { var im = activa(); if (im && slot(im) !== ultimo) pintar(); } })
       .observe(heroF, { subtree: true, attributes: true, attributeFilter: ['class'] });
-    /* el botón solo se muestra mientras el banner está a la vista */
+    /* si se baja y el banner deja de verse, el panel se cierra */
     if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (es) {
-        var ve = es[0].isIntersecting;
-        btn.classList.toggle('is-off', !ve);
-        if (!ve && !panel.hidden) abrir(false);
-      }, { threshold: 0.2 }).observe(heroF);
+      new IntersectionObserver(function (es) { if (!es[0].isIntersecting && !panel.hidden) abrir(false); }, { threshold: 0.2 }).observe(heroF);
     }
   })();
 
@@ -1693,7 +1719,9 @@
 
   /* ================================================================ llegada: misma sección que en la otra versión */
   function llegar() {
-    var m = /^#ir=([a-z-]+),([0-9.]+)$/.exec(location.hash);
+    var hs = location.hash;
+    if (!hs) { try { hs = sessionStorage.getItem('fc-ir') || ''; sessionStorage.removeItem('fc-ir'); } catch (e) { hs = ''; } }
+    var m = /^#ir=([a-z-]+),([0-9.]+)$/.exec(hs);
     if (m) {
       try { history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* file:// */ }
       var t = $('[data-sec="' + m[1] + '"]', root);
@@ -1701,8 +1729,8 @@
         var r = t.getBoundingClientRect();
         scrollTo(0, Math.max(0, scrollY + r.top + r.height * parseFloat(m[2]) - innerHeight * 0.38));
       }
-    } else if (location.hash.length > 1) {
-      var d = doc.getElementById(location.hash.slice(1));
+    } else if (hs.length > 1) {
+      var d = doc.getElementById(hs.slice(1));
       if (d) d.scrollIntoView({ block: 'start' });
     }
     revelarHasta(innerHeight * 0.92);
