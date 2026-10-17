@@ -833,7 +833,7 @@
     /* fondo desenfocado con la foto del banner visible */
     var fondoB = function () {
       var im = $('img.is-on', bgB) || $('img', bgB);
-      if (im) heroB.style.setProperty('--fondo', 'url("' + (im.dataset.blur || im.currentSrc || im.src) + '")');
+      if (im) heroB.style.setProperty('--fondo', 'url("' + new URL(im.dataset.blur || im.currentSrc || im.src, location.href).href + '")');
     };
     /* borde derecho real del texto de cada banner (título, bajada y enlaces) */
     var textoDerecho = function (prod, left) {
