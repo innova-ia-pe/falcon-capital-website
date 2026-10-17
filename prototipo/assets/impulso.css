@@ -114,6 +114,7 @@
 .b-dots button.is-on{color:var(--tx)}
 .b-dots button.is-on .b-prog{transform:scaleX(1);transition:transform .5s var(--e-out)}
 .b-hero.is-playing .b-dots button.is-on .b-prog{animation:barFill var(--dur,7s) linear both}
+.b-hero.en-pausa .b-dots button.is-on .b-prog{animation-play-state:paused}
 @keyframes barFill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
 .b-hero.is-open .b-copies,.b-hero.is-open .b-dots-row{opacity:0;pointer-events:none}
 .b-hero.is-open .b-copies.gone,.b-hero.is-open .b-dots-row.gone{display:none}
