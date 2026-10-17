@@ -126,7 +126,6 @@ ul,ol{margin:0}
 .nl button:hover{background:#2CF0B9}
 .nl-ok{position:absolute;left:20px;top:calc(100% + 8px);font-size:13.5px;font-weight:600;color:#6FE6AD}
 @media (max-width:760px){
-  html{--pbar:52px}
   .lf-grid{grid-template-columns:1fr}
   .nl{width:100%;flex-direction:column}
   .nl input,.nl button{width:100%}
