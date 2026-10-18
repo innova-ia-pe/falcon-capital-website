@@ -34,7 +34,7 @@ class FCC_Cumplimiento extends FCC_Widget {
 		$this->abrir( 'sec_idx', 'Marco normativo' );
 		$this->texto( 'idx_t', 'Título del índice', 'Marco normativo clave' );
 		$r = new Repeater();
-		$r->add_control( 'titulo', array( 'label' => 'Grupo', 'type' => Controls_Manager::TEXT, 'default' => '', 'label_block' => true ) );
+		$r->add_control( 'titulo', array( 'label' => 'Grupo', 'type' => Controls_Manager::TEXT, 'default' => 'Nuevo grupo de normas', 'label_block' => true ) );
 		$r->add_control( 'normas', array( 'label' => 'Normas (una por línea: «Código | Descripción»)', 'type' => Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => '' ) );
 		$this->add_control( 'grupos', array( 'label' => 'Grupos', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ titulo }}}', 'default' => array(
 			array( 'titulo' => 'Prevención de lavado de activos', 'normas' => "DS 008-2025-JUS | Sujeto obligado UIF\nRes. SBS 789-2018 y 02351-2023 | Norma SPLAFT\nLey 27693 | Crea la UIF-Perú" ),

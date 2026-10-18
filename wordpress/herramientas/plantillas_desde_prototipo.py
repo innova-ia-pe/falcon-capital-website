@@ -7,6 +7,7 @@ se mantiene aparte.
 
 uso: python wordpress/herramientas/plantillas_desde_prototipo.py   (requiere beautifulsoup4)
 """
+import glob
 import hashlib
 import io
 import json
@@ -271,7 +272,7 @@ def w_corta(sec):
 
 def w_faq(sec):
     items = [{'_id': _id('faq', i), 'pregunta': plano(d.find('summary')), 'respuesta': plano(d.find('p'))} for i, d in enumerate(sec.select('details'))]
-    pend = sec.select_one('.b-pending')
+    pend = sec.select_one('.b-pending, .b-doc-nota')
     cta = sec.select_one('.b-art-cta')
     return 'fc-preguntas', {'items': items, 'abierta': 'yes', 'pendiente': txt(pend) if pend else '',
                             'cta_t': plano(cta.find('b')), 'cta_b': plano(cta.find('a')), 'cta_url': u('whatsapp:')}
@@ -319,6 +320,16 @@ def widget(sec):
     raise ValueError('sección sin widget: %s %s' % (clases, k))
 
 
+# nombre de cada sección en el panel «Estructura» de Elementor: el título de su widget
+TITULOS = {}
+for _f in glob.glob(os.path.join(R, 'wordpress', 'falcon-capital-componentes', 'widgets', '*.php')):
+    _t = io.open(_f, encoding='utf-8').read()
+    _n = re.search(r"get_name\(\)\s*\{\s*return '([^']+)'", _t)
+    _ti = re.search(r"get_title\(\)\s*\{\s*return '([^']+)'", _t)
+    if _n and _ti:
+        TITULOS[_n.group(1)] = _ti.group(1)
+TITULOS['fc-hero'] = 'Banner con simulador'
+
 CONT = {'content_width': 'full', 'padding': {'unit': 'px', 'top': '0', 'right': '0', 'bottom': '0', 'left': '0', 'isLinked': True},
         'flex_gap': {'unit': 'px', 'size': 0, 'column': '0', 'row': '0', 'isLinked': True}}
 
@@ -333,7 +344,7 @@ def pagina(archivo, ruta, titulo=''):
         ult = sec.select('.b-crumbs > b')
         if 'miga' in s and ult and plano(ult[-1]) != titulo:
             s['miga'] = plano(ult[-1])
-        data.append({'id': _id(ruta, 'c', i), 'elType': 'container', 'isInner': False, 'settings': dict(CONT),
+        data.append({'id': _id(ruta, 'c', i), 'elType': 'container', 'isInner': False, 'settings': dict(CONT, _title=TITULOS.get(nombre, nombre)),
                      'elements': [{'id': _id(ruta, 'w', i), 'elType': 'widget', 'widgetType': nombre, 'settings': s, 'elements': []}]})
     return data
 
@@ -362,23 +373,36 @@ LEGALES = [
 ]
 
 
-PREFERENCIAS = ('\n<h2>Tus preferencias</h2>\n<p>El aviso de cookies aparece la primera vez que entras a la web y guarda tu elección en este navegador. '
-                'Puedes volver a mostrarlo para cambiarla.</p>\n<p><a href="#cookies">Cambiar mis preferencias de cookies</a></p>')
+def enlaces_wp(html):
+    """Enlaces del prototipo (pagina.html) a rutas de WordPress (/pagina/)."""
+    return re.sub(r'href="([\w-]+\.html(?:#[\w-]*)?)"', lambda m: 'href="%s"' % url(m.group(1)), html)
 
 
-def entradas():
-    """Las cinco entradas del blog del prototipo; el artículo de confirming lleva el texto del prototipo."""
-    soup = BeautifulSoup(io.open(os.path.join(PROTO, 'blog.html'), encoding='utf-8').read(), 'html.parser')
-    art = BeautifulSoup(io.open(os.path.join(PROTO, 'articulo.html'), encoding='utf-8').read(), 'html.parser')
+def documento(archivo):
+    """Contenido de una página de texto del prototipo (legales), sin los botones del final."""
+    doc = BeautifulSoup(io.open(os.path.join(PROTO, archivo), encoding='utf-8').read(), 'html.parser').select_one('.b-doc')
+    for x in doc.select('.b-doc-acts'):
+        x.decompose()
+    return enlaces_wp(re.sub(r'\s+\n', '\n', doc.decode_contents()).strip())
+
+
+def articulo(archivo):
+    """Bajada y contenido de la página de un artículo del prototipo (sin la llamada final ni las anclas del índice)."""
+    art = BeautifulSoup(io.open(os.path.join(PROTO, archivo), encoding='utf-8').read(), 'html.parser')
     cuerpo = art.select_one('.b-art-body')
     for x in cuerpo.select('.b-art-cta'):
         x.decompose()
     for h in cuerpo.find_all('h2'):
         if h.has_attr('id'):
             del h['id']
-    html_conf = re.sub(r'\s+\n', '\n', cuerpo.decode_contents()).strip()
-    html_conf = html_conf.replace('class="b-pending"', 'class="b-pending"')
-    sub_conf = plano(art.select_one('.b-phero-sub'))
+    return plano(art.select_one('.b-phero-sub')), enlaces_wp(re.sub(r'\s+\n', '\n', cuerpo.decode_contents()).strip())
+
+
+def entradas():
+    """Las entradas del blog del prototipo, cada una con el texto de su página (articulo*.html)."""
+    soup = BeautifulSoup(io.open(os.path.join(PROTO, 'blog.html'), encoding='utf-8').read(), 'html.parser')
+    destacado = soup.select_one('.b-feat')
+    destacado = destacado.get('href') if destacado else ''
     # las que el diseño muestra en el blog del Inicio, en ese orden
     ini = BeautifulSoup(io.open(os.path.join(PROTO, 'index.html'), encoding='utf-8').read(), 'html.parser')
     del_inicio = [plano(h) for h in ini.select('[data-sec="blog"] .b-post h3')]
@@ -387,13 +411,8 @@ def entradas():
         titulo = plano(a.find('h3'))
         cat = plano(a.select_one('.b-tag'))
         foto = a.find('img').get('src').replace('img/', '')
-        if 'confirming para empresas con alta rotación' in titulo:
-            contenido, extracto, fijo = html_conf, sub_conf, True
-        else:
-            extracto = ''
-            contenido = ('<p>' + titulo + '. Este artículo está en preparación.</p>'
-                         '<div class="b-pending"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo.</div>')
-            fijo = False
+        extracto, contenido = articulo(a.get('href'))
+        fijo = a.get('href') == destacado
         e = {'titulo': titulo, 'categoria': cat, 'foto': foto, 'extracto': extracto, 'contenido': contenido, 'fijo': fijo, 'orden': i}
         if titulo in del_inicio:
             e['inicio'] = del_inicio.index(titulo)
@@ -410,9 +429,7 @@ if __name__ == '__main__':
         manifiesto['paginas'].append({'ruta': ruta, 'titulo': titulo, 'plantilla': ruta + '.json'})
         print('%-24s %s' % (ruta, ' · '.join(e['elements'][0]['widgetType'] for e in data)))
     for ruta, titulo, lead, pend in LEGALES:
-        manifiesto['textos'].append({'ruta': ruta, 'titulo': titulo, 'extracto': lead, 'rotulo': 'Legal',
-                                     'contenido': '<div class="b-pending"><b>Pendiente de contenido.</b> ' + pend + ' Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>'
-                                     + (PREFERENCIAS if ruta == 'politica-de-cookies' else '')})
+        manifiesto['textos'].append({'ruta': ruta, 'titulo': titulo, 'extracto': lead, 'rotulo': 'Legal', 'contenido': documento(ruta + '.html')})
     io.open(os.path.join(SAL, 'sitio.json'), 'w', encoding='utf-8').write(json.dumps(manifiesto, ensure_ascii=False, indent=1))
     print('entradas', len(manifiesto['entradas']), '· textos', len(manifiesto['textos']))
     if FALTAN:

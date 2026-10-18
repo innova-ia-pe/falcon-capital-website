@@ -27,7 +27,7 @@ class FCC_Simulador extends FCC_Widget {
 			'fields' => ( function () {
 				$r = new \Elementor\Repeater();
 				$r->add_control( 'icono', array( 'label' => 'Ícono', 'type' => \Elementor\Controls_Manager::SELECT, 'options' => fcc_iconos(), 'default' => 'check' ) );
-				$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => \Elementor\Controls_Manager::TEXT, 'default' => '' ) );
+				$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => \Elementor\Controls_Manager::TEXT, 'default' => 'Nuevo dato' ) );
 				return $r->get_controls();
 			} )() ) );
 		$this->texto( 'alt', 'Nota bajo la tarjeta', '¿Buscas Confirming o Capital de Trabajo? Se evalúan a la medida:', 'text', array( 'condition' => array( 'modo' => 'pagina' ) ) );

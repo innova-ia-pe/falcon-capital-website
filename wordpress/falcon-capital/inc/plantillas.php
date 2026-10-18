@@ -62,7 +62,7 @@ function fc_indice( string $html ): array {
 		$texto = trim( wp_strip_all_tags( $m[3] ) );
 		if ( $m[1] === '3' ) {
 			if ( $items && $texto !== '' ) {
-				$items[ count( $items ) - 1 ]['sub'][] = $texto;
+				$items[ count( $items ) - 1 ]['sub'][] = preg_replace( '/^\d+\.\s*/u', '', $texto );
 			}
 			return $m[0];
 		}

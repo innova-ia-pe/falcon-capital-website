@@ -32,8 +32,8 @@ class FCC_Que extends FCC_Widget {
 			'options' => array( 'icono' => 'Ícono', 'falcon' => 'Isotipo de Falcon Capital', 'logo' => 'Logo (imagen)' ) ) );
 		$r->add_control( 'icono', array( 'label' => 'Ícono', 'type' => Controls_Manager::SELECT, 'options' => fcc_iconos(), 'default' => 'subir', 'condition' => array( 'marca' => 'icono' ) ) );
 		$r->add_control( 'logo', array( 'label' => 'Logo', 'type' => Controls_Manager::MEDIA, 'condition' => array( 'marca' => 'logo' ) ) );
-		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => '', 'label_block' => true ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXT, 'default' => '', 'label_block' => true ) );
+		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => 'Nuevo paso', 'label_block' => true ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXT, 'default' => 'Descripción del paso.', 'label_block' => true ) );
 		$this->add_control( 'pasos', array( 'label' => 'Pasos', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ titulo }}}', 'default' => array() ) );
 		$this->cerrar();
 	}

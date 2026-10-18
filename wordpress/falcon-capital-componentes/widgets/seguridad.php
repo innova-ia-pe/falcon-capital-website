@@ -19,9 +19,9 @@ class FCC_Seguridad extends FCC_Widget {
 		$this->texto( 'titulo', 'Título', 'Operamos con *respaldo* y *seguridad financiera* en Perú', 'textarea' );
 		$this->texto( 'texto', 'Texto', 'En Falcon Capital garantizamos operaciones seguras y confiables, cumpliendo con todas las normativas financieras vigentes aplicables al factoring y descuento de facturas. Somos participantes oficiales en Cavali y estamos debidamente registrados ante la Superintendencia de Banca, Seguros y AFP (SBS), lo que respalda la transparencia y solidez de nuestras operaciones.', 'textarea', array( 'rows' => 6 ) );
 		$r = new Repeater();
-		$r->add_control( 'logo', array( 'label' => 'Logo', 'type' => Controls_Manager::MEDIA ) );
-		$r->add_control( 'alt', array( 'label' => 'Nombre de la entidad', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto bajo el sello', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
+		$r->add_control( 'logo', array( 'label' => 'Logo', 'type' => Controls_Manager::MEDIA, 'default' => fcc_media_nueva() ) );
+		$r->add_control( 'alt', array( 'label' => 'Nombre de la entidad', 'type' => Controls_Manager::TEXT, 'default' => 'Entidad' ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto bajo el sello', 'type' => Controls_Manager::TEXT, 'default' => 'Texto bajo el sello' ) );
 		$this->add_control( 'sellos', array( 'label' => 'Sellos', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ texto }}}',
 			'default' => array(
 				array( 'logo' => fcc_media_tema( 'logo-sbs.png' ), 'alt' => 'Superintendencia de Banca, Seguros y AFP', 'texto' => 'Registrados ante la SBS' ),

@@ -19,7 +19,7 @@ class FCC_Preguntas extends FCC_Widget {
 			array( 'pregunta' => '¿Qué es el factoring?', 'respuesta' => 'Es una solución financiera ágil en la que tu empresa cede facturas por cobrar a Falcon Capital para obtener liquidez.' ),
 		), '{{{ pregunta }}}' );
 		$this->interruptor( 'abierta', 'La primera pregunta se muestra abierta' );
-		$this->texto( 'pendiente', 'Aviso de contenido pendiente (vacío para quitarlo)', '', 'textarea' );
+		$this->texto( 'pendiente', 'Nota al pie de las preguntas (vacío para quitarla)', '', 'textarea' );
 		$this->cerrar();
 
 		$this->abrir( 'sec_cta', 'Recuadro final' );
@@ -35,8 +35,8 @@ class FCC_Preguntas extends FCC_Widget {
 <section class="b-sec b-art" data-sec="preguntas">
 	<div class="b-wrap b-faq-wrap">
 		<div class="b-faq" data-r="up"><?php foreach ( (array) $s['items'] as $i => $it ) : ?><details<?php echo ( $i === 0 && $s['abierta'] === 'yes' ) ? ' open' : ''; ?>><summary><?php echo esc_html( $it['pregunta'] ); ?><i aria-hidden="true"></i></summary><p><?php echo fcc_txt( nl2br( $it['respuesta'], false ) ); ?></p></details><?php endforeach; ?></div>
-		<?php if ( $s['pendiente'] ) : ?><div class="b-pending"><?php echo fcc_txt( $s['pendiente'] ); ?></div><?php endif; ?>
-		<?php if ( $s['cta_t'] ) : ?><div class="b-art-cta"><b><?php echo esc_html( $s['cta_t'] ); ?></b><?php if ( $s['cta_b'] ) : ?><a class="b-btn b-btn-em" <?php echo fcc_href( $s['cta_url'] ); ?>><?php echo esc_html( $s['cta_b'] ); ?> <?php echo fcc_icono( 'flecha' ); ?></a><?php endif; ?></div><?php endif; ?>
+		<?php if ( $s['pendiente'] ) : ?><p class="b-doc-nota"><?php echo fcc_txt( wp_strip_all_tags( preg_replace( '#<b>Pendiente de contenido\.</b>\s*#u', '', $s['pendiente'] ) ) ); ?></p><?php endif; ?>
+		<?php if ( $s['cta_t'] ) : ?><div class="b-art-cta"><b><?php echo esc_html( $s['cta_t'] ); ?></b><?php if ( $s['cta_b'] ) : ?><a class="b-btn b-btn-em" <?php echo fcc_href( $s['cta_url'] ); ?>><?php echo esc_html( $s['cta_b'] ); ?> <?php echo fcc_icono( 'flecha' ); ?></a><?php endif; ?><button type="button" class="b-btn b-bot-lanzar" data-bot-abrir>Pregúntale al asistente</button></div><?php endif; ?>
 	</div>
 </section>
 		<?php

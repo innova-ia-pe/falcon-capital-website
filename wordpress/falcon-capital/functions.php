@@ -84,15 +84,17 @@ add_action( 'wp_head', function () {
 }, 1 );
 
 add_action( 'wp_enqueue_scripts', function () {
-	$v = FC_TEMA_VER;
+	/* versión = fecha del archivo: cada cambio llega al navegador sin esperar a que caduque la caché */
+	$v = fn( $f ) => FC_TEMA_VER . '.' . (int) @filemtime( FC_TEMA_DIR . '/assets/' . $f );
 	wp_enqueue_style( 'fc-manrope', 'https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap', array(), null );
-	wp_enqueue_style( 'fc-base', FC_TEMA_URI . '/assets/css/base.css', array(), $v );
-	wp_enqueue_style( 'fc-impulso', FC_TEMA_URI . '/assets/css/impulso.css', array( 'fc-base' ), $v );
-	wp_enqueue_style( 'fc-banner', FC_TEMA_URI . '/assets/css/banner.css', array( 'fc-impulso' ), $v );
-	wp_enqueue_style( 'fc-paginas', FC_TEMA_URI . '/assets/css/paginas.css', array( 'fc-banner' ), $v );
-	wp_enqueue_style( 'fc-wp', FC_TEMA_URI . '/assets/css/wp.css', array( 'fc-paginas' ), $v );
-	wp_enqueue_script( 'fc-falcon', FC_TEMA_URI . '/assets/js/falcon.js', array(), $v, array( 'in_footer' => true ) );
-	wp_localize_script( 'fc-falcon', 'FC_WP', array(
+	wp_enqueue_style( 'fc-base', FC_TEMA_URI . '/assets/css/base.css', array(), $v( 'css/base.css' ) );
+	wp_enqueue_style( 'fc-impulso', FC_TEMA_URI . '/assets/css/impulso.css', array( 'fc-base' ), $v( 'css/impulso.css' ) );
+	wp_enqueue_style( 'fc-banner', FC_TEMA_URI . '/assets/css/banner.css', array( 'fc-impulso' ), $v( 'css/banner.css' ) );
+	wp_enqueue_style( 'fc-paginas', FC_TEMA_URI . '/assets/css/paginas.css', array( 'fc-banner' ), $v( 'css/paginas.css' ) );
+	wp_enqueue_style( 'fc-wp', FC_TEMA_URI . '/assets/css/wp.css', array( 'fc-paginas' ), $v( 'css/wp.css' ) );
+	wp_enqueue_script( 'fc-falcon', FC_TEMA_URI . '/assets/js/falcon.js', array(), $v( 'js/falcon.js' ), array( 'in_footer' => true ) );
+	/* el plugin agrega lo suyo (p. ej. FC_WP.bot, el asistente virtual) con el filtro fc_wp_datos */
+	wp_localize_script( 'fc-falcon', 'FC_WP', apply_filters( 'fc_wp_datos', array(
 		'img'   => trailingslashit( FC_TEMA_URI . '/assets/img' ),
 		'wa'    => fc_wa(),
 		'rest'  => esc_url_raw( rest_url( 'falcon/v1/' ) ),
@@ -104,7 +106,7 @@ add_action( 'wp_enqueue_scripts', function () {
 			'texto'  => fc_dato( 'cookies_texto' ),
 			'url'    => fc_pagina( 'politica-de-cookies' ),
 		) : '',
-	) );
+	) ) );
 }, 100 ); /* después de los estilos de Elementor, para que el diseño gane en empates */
 
 /* Personalizar: datos de contacto que usan la cabecera, el pie y los botones de WhatsApp */

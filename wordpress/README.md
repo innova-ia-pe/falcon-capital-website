@@ -19,6 +19,17 @@ páginas legales con el editor de WordPress, y los datos generales en *Personali
 | WhatsApp, teléfono, correo, dirección, redes, enlaces de «Iniciar sesión» y «Crea tu cuenta» | *Apariencia → Personalizar → Falcon Capital · datos de contacto* |
 | Aviso de cookies (encendido, título y texto) | *Apariencia → Personalizar → Falcon Capital · aviso de cookies* |
 | Tasa del simulador y correo que recibe las solicitudes | *Ajustes → Falcon Capital* |
+| Asistente virtual: lo que sabe, lo que puede y no puede responder, modelos y claves | *Asistente → Conocimiento* y *Asistente → Ajustes* |
+
+### Cómo se edita una página en Elementor
+
+1. En la página, *Editar con Elementor*. El panel *Estructura* muestra cada sección con su nombre (Banner con
+   simulador, Noticias, Testimonios…).
+2. Clic en la sección: a la izquierda aparecen sus campos. Los cambios se ven al instante en la vista previa.
+3. Las listas (noticias, cifras, beneficios, pasos, testimonios, logos, preguntas…) permiten agregar, duplicar,
+   borrar y arrastrar para cambiar el orden. Una tarjeta nueva llega con texto e imagen de ejemplo para reemplazar.
+4. Las fotos se eligen o se suben en la biblioteca de medios, que ya trae las fotos y logos del diseño.
+5. *Publicar*.
 
 En los títulos de los widgets, `*texto*` se resalta en verde. Los enlaces aceptan una URL, una ruta del sitio
 (`/simulador/`, `#b-contacto`) o `whatsapp:` (abre el WhatsApp de Personalizar).
@@ -50,6 +61,31 @@ El simulador, los formularios de contacto, el boletín y el Libro de Reclamacion
   hay que negarlo en la configuración del servidor), van adjuntos en el correo de aviso y se descargan desde la
   solicitud solo con permiso para editarla. Al borrar la solicitud para siempre, se borra el archivo.
 
+## Asistente virtual
+
+Chat del sitio que responde con IA usando **solo** lo que Falcon carga en WordPress. El botón flotante («Pregúntale
+a Falcon») y el de la barra móvil lo abren; apagado o sin clave, siguen abriendo WhatsApp.
+
+- **Asistente → Conocimiento:** una ficha por tema (título + texto). Cada ficha tiene el interruptor «El asistente
+  puede usar este tema». `{tasa}` se reemplaza por la tasa de *Ajustes → Falcon Capital*. El instalador carga 28
+  temas iniciales (`plantillas/kba.json`, armados con el brief y el prototipo) que Falcon debe revisar y completar.
+  Opcional: usar también los artículos publicados del blog.
+- **Asistente → Ajustes:** encendido, nombre, saludo, preguntas sugeridas, tono, temas permitidos, reglas («lo que
+  nunca debe hacer»), modelo principal y respaldo, claves, límites por visitante y por día, e historial. Botón
+  «Probar la conexión con los dos modelos».
+- **Modelos:** Claude (`claude-haiku-5-5`) como principal y Gemini (`gemini-3.5-flash-lite`) de respaldo: si uno
+  falla, responde el otro. Las claves pueden ir en `wp-config.php` (`FCC_ANTHROPIC_KEY`, `FCC_GOOGLE_KEY`) en vez
+  de guardarse en la base de datos.
+- **Reglas firmes en código**, además de las instrucciones: ninguna tasa distinta de la referencial (ni otro
+  porcentaje que la comisión de 1 % y el IGV), nada de aprobaciones garantizadas y solo enlaces del propio sitio,
+  WhatsApp o el correo de Falcon. Si el visitante quiere un ejecutivo o el asistente no sabe, ofrece WhatsApp y el
+  formulario de contacto.
+- **Asistente → Conversaciones:** lo que preguntan los visitantes y lo que se respondió (con el modelo que lo hizo).
+- API: `POST /wp-json/falcon/v1/bot` con `{ clave, mensaje, pagina }`. El historial de cada conversación se guarda en
+  el servidor (no se confía en el que mande el navegador).
+- En el prototipo (GitHub Pages) el asistente funciona en **modo demostración**, sin IA: elige la ficha con más
+  coincidencias en `prototipo/assets/bot-demo.js`, que se genera desde `kba.json`.
+
 ## Aviso de cookies
 
 Aparece la primera vez y guarda la elección en el navegador (`localStorage` «fc-cookies»: `todas` o `necesarias`).
@@ -61,11 +97,13 @@ activarse solo si la elección es `todas`. En la Política de Cookies, un enlace
 1. Subir en este orden: tema **Hello Elementor**, plugins **Elementor** y **Elementor Pro**, tema **Falcon Capital**
    y plugin **Falcon Capital – Componentes** (zips de `falcon-capital` y `falcon-capital-componentes`).
 2. Activar Elementor, Elementor Pro, el plugin y el tema Falcon Capital.
-3. *Ajustes → Falcon Capital → Crear lo que falta*: crea las páginas con el diseño aprobado, las páginas legales y
-   las entradas de ejemplo del blog, y deja Inicio como portada. No toca lo que ya existe.
+3. *Ajustes → Falcon Capital → Crear lo que falta*: crea las páginas con el diseño aprobado, las páginas legales
+   (borradores sujetos a revisión legal), los cinco artículos del blog y los temas iniciales del asistente, y deja
+   Inicio como portada. No toca lo que ya existe.
    «Restablecer las páginas al diseño original» vuelve las páginas de Elementor a la versión del diseño (se
    pierden los cambios hechos en ellas); los textos legales ya cargados no se pisan.
 4. *Ajustes → Enlaces permanentes*: «Nombre de la entrada».
+5. *Asistente → Ajustes*: pegar las claves de Anthropic y Google, encender el asistente y probar la conexión.
 
 ## Cómo se arma el tema
 
@@ -77,17 +115,19 @@ del aviso de cookies. Un cambio de diseño se hace en el prototipo y se pasa al 
 
 ```bash
 python wordpress/herramientas/tema_desde_prototipo.py        # estilos y script del tema
-python wordpress/herramientas/plantillas_desde_prototipo.py  # plantillas de Elementor de las páginas internas (beautifulsoup4)
+python wordpress/herramientas/plantillas_desde_prototipo.py  # plantillas, artículos y legales (beautifulsoup4)
+python wordpress/herramientas/bot_demo_desde_kba.py          # base de ejemplo del asistente para el prototipo
 ```
 
 Las plantillas (`falcon-capital-componentes/plantillas/`) son las que usa el instalador; la del Inicio
-(`inicio.json`) se mantiene aparte.
+(`inicio.json`) y la base del asistente (`kba.json`) se mantienen aparte. Los artículos y los textos legales salen de
+sus páginas del prototipo (`articulo*.html`, `politica-*.html`, `terminos-y-condiciones.html`).
 
 ## WordPress local (Docker)
 
 ```bash
 docker compose up -d                      # http://localhost:8088  (admin / admin-local-123, solo local)
-./sincronizar.sh                          # copia el tema y el plugin al contenedor después de cada cambio
+./sincronizar.sh                          # copia el tema y el plugin al contenedor (y sube el límite de fotos a 64 MB)
 ./wp.sh plugin list                       # WP-CLI
 ```
 
