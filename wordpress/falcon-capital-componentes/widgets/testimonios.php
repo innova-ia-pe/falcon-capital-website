@@ -17,9 +17,9 @@ class FCC_Testimonios extends FCC_Widget {
 		$this->abrir( 'sec', 'Contenido' );
 		$this->texto( 'kicker', 'Rótulo', 'Testimonios' );
 		$r = new Repeater();
-		$r->add_control( 'texto', array( 'label' => 'Testimonio', 'type' => Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => '', 'description' => 'Sin comillas: se agregan solas.' ) );
-		$r->add_control( 'nombre', array( 'label' => 'Nombre', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'cargo', array( 'label' => 'Cargo · Empresa', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
+		$r->add_control( 'texto', array( 'label' => 'Testimonio', 'type' => Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => 'Escribe aquí el testimonio del cliente.', 'description' => 'Sin comillas: se agregan solas.' ) );
+		$r->add_control( 'nombre', array( 'label' => 'Nombre', 'type' => Controls_Manager::TEXT, 'default' => 'Nombre del cliente' ) );
+		$r->add_control( 'cargo', array( 'label' => 'Cargo · Empresa', 'type' => Controls_Manager::TEXT, 'default' => 'Cargo · Empresa' ) );
 		$r->add_control( 'foto', array( 'label' => 'Foto (opcional)', 'type' => Controls_Manager::MEDIA ) );
 		$ej = 'Nombre del cliente';
 		$this->add_control( 'items', array( 'label' => 'Testimonios', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ nombre }}}',

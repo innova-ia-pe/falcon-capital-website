@@ -32,13 +32,16 @@ body.admin-bar{--pbar:32px}
 @media (max-width:980px){.pb .elementor .b-why-mob{height:220px;border-radius:20px}}
 /* en el editor de Elementor las secciones se ven completas aunque el script de animaciones no haya corrido */
 .elementor-editor-active .pb [data-r]{opacity:1!important;transform:none!important}
+.elementor-editor-active .b-ck,.elementor-editor-active .b-bot{display:none!important}
 
 /* contenido del editor de WordPress dentro del documento claro (artículos y páginas de texto) */
 .b-wp>*+*{margin-top:18px}
 .b-wp h2{margin:44px 0 16px;font-size:clamp(24px,2.2vw,32px);line-height:1.15;letter-spacing:-.03em;color:var(--ink)}
 .b-wp h3{margin:32px 0 12px;font-size:clamp(19px,1.6vw,23px);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
 .b-wp h4{margin:26px 0 10px;font-size:18px;color:var(--ink)}
+.b-wp h2+*,.b-wp h3+*{margin-top:0}
 .b-wp ul,.b-wp ol{margin-top:12px;padding-left:22px}
+.b-wp ul{list-style:disc}
 .b-wp li+li{margin-top:6px}
 .b-wp a:not(.b-btn){color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .b-wp strong,.b-wp b{color:var(--ink)}
@@ -46,11 +49,10 @@ body.admin-bar{--pbar:32px}
 .b-wp figure{margin:28px 0}
 .b-wp img{height:auto;border-radius:18px}
 .b-wp figcaption{margin-top:8px;font-size:13.5px;color:var(--ink2)}
-.b-wp table{width:100%;border-collapse:collapse;font-size:15px}
-.b-wp th,.b-wp td{padding:10px 12px;border-bottom:1px solid rgba(6,42,47,.12);text-align:left}
+/* las tablas toman el estilo de .b-art-body (impulso.css), igual que en el prototipo */
 .b-wp .b-pending{margin-top:28px}
 .b-wp .b-pending b{color:inherit}
-.b-wp>.b-art-cta{margin-top:40px}
+.b-wp>.b-art-cta{margin-top:32px}
 .b-wp>.b-doc-acts{margin-top:36px}
 
 /* paginación del archivo del blog */

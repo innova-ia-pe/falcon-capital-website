@@ -12,10 +12,15 @@
 /* documento (legales) */
 .b-doc{max-width:46em}
 .b-doc>.b-pending:first-child{margin-top:0}
-.b-doc .b-pending,.b-faq-wrap .b-pending{margin-top:28px}
+.b-doc .b-pending,.b-faq-wrap .b-pending,.b-faq-wrap .b-doc-nota{margin-top:28px}
 .b-doc h2{margin-top:44px}
 .b-doc-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
-.b-doc p a,.b-art-body p a{color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.b-doc p a{color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+/* textos legales en borrador: nota discreta y datos que Falcon Capital debe completar */
+.b-doc-nota{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:12px;background:rgba(6,42,47,.05);font-size:13.5px;line-height:1.5;color:var(--ink2)}
+.b-doc-nota::before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:#E0A21B}
+.b-falta{padding:1px 6px;border-radius:6px;background:rgba(224,162,27,.16);font-size:.88em;font-weight:600;color:#8A5A00;white-space:nowrap}
+.b-doc ul{list-style:disc}
 .b-btn-line-d{border:1px solid rgba(6,42,47,.2);color:var(--ink)}
 .b-btn-line-d:hover{border-color:rgba(6,42,47,.45)}
 

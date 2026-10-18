@@ -21,8 +21,8 @@ class FCC_Beneficios extends FCC_Widget {
 		$this->texto( 'titulo', 'Título', 'Por qué Falcon Capital' );
 		$r = new Repeater();
 		$r->add_control( 'icono', array( 'label' => 'Ícono', 'type' => Controls_Manager::SELECT, 'options' => self::ICONOS, 'default' => 'escudo' ) );
-		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
+		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => 'Nuevo beneficio' ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXT, 'default' => 'Descripción breve del beneficio.' ) );
 		$this->add_control( 'items', array( 'label' => 'Beneficios', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ titulo }}}',
 			'default' => array(
 				array( 'icono' => 'escudo', 'titulo' => 'Respaldo financiero', 'texto' => 'Solidez para seguir creciendo.' ),

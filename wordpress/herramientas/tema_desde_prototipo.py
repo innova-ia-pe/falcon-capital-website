@@ -4,6 +4,7 @@
 uso: python wordpress/herramientas/tema_desde_prototipo.py
 """
 import io
+import re
 import os
 import shutil
 
@@ -209,6 +210,11 @@ reps = [
 for a, b in reps:
     assert s.count(a) == 1, a[:80]
     s = s.replace(a, b)
+# asistente virtual: en WordPress responde la IA del plugin (FC_WP.bot); sin él, el botón sigue abriendo WhatsApp
+s, nbot = re.subn(r"  var BOT = window\.FC_BOT_DEMO \? \{.*?\} : null;",
+                  lambda m: "  /* asistente: lo entrega el plugin (Asistente → Ajustes); si está apagado, no hay chat */\n  var BOT = WP.bot || null;",
+                  s, count=1, flags=re.S)
+assert nbot == 1, 'asistente'
 n = s.count("src: 'img/")
 s = s.replace("src: 'img/", "src: IMG + '")
 io.open(os.path.join(T, 'js', 'falcon.js'), 'w', encoding='utf-8', newline='\n').write(s)

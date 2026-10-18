@@ -25,11 +25,11 @@ class FCC_Actualidad extends FCC_Widget {
 
 		$this->abrir( 'sec_items', 'Noticias' );
 		$r = new Repeater();
-		$r->add_control( 'foto', array( 'label' => 'Foto', 'type' => Controls_Manager::MEDIA ) );
-		$r->add_control( 'tag', array( 'label' => 'Etiqueta', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'sub', array( 'label' => 'Antetítulo', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => '' ) );
+		$r->add_control( 'foto', array( 'label' => 'Foto', 'type' => Controls_Manager::MEDIA, 'default' => fcc_media_nueva() ) );
+		$r->add_control( 'tag', array( 'label' => 'Etiqueta', 'type' => Controls_Manager::TEXT, 'default' => 'Evento' ) );
+		$r->add_control( 'sub', array( 'label' => 'Antetítulo', 'type' => Controls_Manager::TEXT, 'default' => 'Antetítulo de la noticia' ) );
+		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => 'Título de la noticia' ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'rows' => 4, 'default' => 'Escribe aquí el resumen de la noticia.' ) );
 		$this->add_control( 'items', array( 'label' => 'Noticias', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ titulo }}}',
 			'default' => array(
 				self::n( 'act-1.jpg', 'APEFAC', 'Asociación importante como compañía', 'Ahora formamos parte del APEFAC', 'Desde el 2025 somos parte de la Asociación Peruana de Empresas de Factoring (APEFAC), fortaleciendo nuestros procesos internos para brindar un servicio más seguro, ágil y eficiente a nuestros clientes.' ),
@@ -54,7 +54,7 @@ class FCC_Actualidad extends FCC_Widget {
 	<div class="b-rail" data-rail tabindex="0" aria-label="Noticias de Falcon Capital">
 		<?php foreach ( (array) $s['items'] as $it ) : ?>
 		<article class="b-news">
-			<img src="<?php echo esc_url( fcc_img( $it['foto'] ) ); ?>" alt="" loading="lazy">
+			<?php $foto = fcc_img( $it['foto'] ?? array() ); if ( $foto ) : ?><img src="<?php echo esc_url( $foto ); ?>" alt="" loading="lazy"><?php endif; ?>
 			<div class="b-news-body"><?php if ( $it['tag'] ) : ?><span class="b-tag"><?php echo esc_html( $it['tag'] ); ?></span><?php endif; ?><?php if ( $it['sub'] ) : ?><small><?php echo esc_html( $it['sub'] ); ?></small><?php endif; ?><h3><?php echo esc_html( $it['titulo'] ); ?></h3><p><?php echo esc_html( $it['texto'] ); ?></p></div>
 		</article>
 		<?php endforeach; ?>

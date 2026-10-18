@@ -37,9 +37,9 @@ add_action( 'admin_menu', function () {
 
 			<h2>Páginas del sitio</h2>
 			<?php if ( isset( $_GET['fcc_ok'] ) ) : $n = array_map( 'intval', explode( ',', sanitize_text_field( wp_unslash( $_GET['fcc_ok'] ) ) ) ); ?>
-				<div class="notice notice-success"><p>Listo: <?php echo (int) ( $n[0] ?? 0 ); ?> páginas creadas, <?php echo (int) ( $n[1] ?? 0 ); ?> restablecidas y <?php echo (int) ( $n[2] ?? 0 ); ?> entradas del blog. <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Ver el sitio</a></p></div>
+				<div class="notice notice-success"><p>Listo: <?php echo (int) ( $n[0] ?? 0 ); ?> páginas creadas, <?php echo (int) ( $n[1] ?? 0 ); ?> restablecidas, <?php echo (int) ( $n[2] ?? 0 ); ?> entradas del blog y <?php echo (int) ( $n[3] ?? 0 ); ?> temas del asistente. <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Ver el sitio</a></p></div>
 			<?php endif; ?>
-			<p>Crea las páginas con el diseño aprobado: Inicio, Factoring, Confirming, Capital de Trabajo, Simulador, Conócenos, Blog, Contáctanos, Preguntas frecuentes, Iniciar sesión, Crea tu cuenta, Libro de Reclamaciones, Gracias y las páginas legales; además, las entradas de ejemplo del blog.</p>
+			<p>Crea las páginas con el diseño aprobado: Inicio, Factoring, Confirming, Capital de Trabajo, Simulador, Conócenos, Blog, Contáctanos, Preguntas frecuentes, Iniciar sesión, Crea tu cuenta, Libro de Reclamaciones, Gracias y las páginas legales; además, las entradas del blog y los temas iniciales del asistente virtual.</p>
 			<p>Las páginas se editan con Elementor (secciones en la categoría «Falcon Capital»); las legales, con el editor de WordPress.</p>
 			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
 				<input type="hidden" name="action" value="fcc_instalar">

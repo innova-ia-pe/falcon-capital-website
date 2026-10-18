@@ -70,12 +70,17 @@ abstract class FCC_Widget extends \Elementor\Widget_Base {
 			if ( $tipo === 'icono' ) {
 				$r->add_control( $k, array( 'label' => $e, 'type' => Controls_Manager::SELECT, 'options' => fcc_iconos(), 'default' => $d ?: 'check' ) );
 			} elseif ( $tipo === 'media' ) {
-				$r->add_control( $k, array( 'label' => $e, 'type' => Controls_Manager::MEDIA, 'default' => is_array( $d ) ? $d : array() ) );
+				$r->add_control( $k, array( 'label' => $e, 'type' => Controls_Manager::MEDIA, 'default' => is_array( $d ) && $d ? $d : fcc_media_nueva() ) );
 			} elseif ( $tipo === 'url' ) {
 				$r->add_control( $k, array( 'label' => $e, 'type' => Controls_Manager::URL, 'default' => fcc_url( (string) $d ) ) );
 			} elseif ( $tipo === 'switch' ) {
 				$r->add_control( $k, array( 'label' => $e, 'type' => Controls_Manager::SWITCHER, 'default' => $d ) );
 			} else {
+				/* tarjeta nueva: los campos principales vacíos muestran un ejemplo para reemplazar */
+				$ejemplo = array( 'titulo' => 'Título', 'texto' => 'Texto', 'pregunta' => 'Nueva pregunta', 'respuesta' => 'Respuesta.' );
+				if ( $d === '' && isset( $ejemplo[ $k ] ) ) {
+					$d = $k === 'texto' && $e !== 'Texto' ? $e : $ejemplo[ $k ];
+				}
 				$r->add_control( $k, array( 'label' => $e, 'type' => $tipo === 'textarea' ? Controls_Manager::TEXTAREA : Controls_Manager::TEXT, 'default' => $d, 'label_block' => true ) );
 			}
 		}

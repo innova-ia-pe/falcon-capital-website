@@ -20,8 +20,8 @@ class FCC_Confirming_Partes extends FCC_Widget {
 		$r = new Repeater();
 		$r->add_control( 'marca', array( 'label' => 'Marca', 'type' => Controls_Manager::SELECT, 'default' => 'icono', 'options' => array( 'icono' => 'Ícono', 'falcon' => 'Isotipo de Falcon Capital' ) ) );
 		$r->add_control( 'icono', array( 'label' => 'Ícono', 'type' => Controls_Manager::SELECT, 'options' => fcc_iconos(), 'default' => 'fabrica', 'condition' => array( 'marca' => 'icono' ) ) );
-		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'default' => '' ) );
+		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => 'Título' ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'default' => 'Descripción.' ) );
 		$this->add_control( 'partes', array( 'label' => 'Partes', 'type' => Controls_Manager::REPEATER, 'fields' => $r->get_controls(), 'title_field' => '{{{ titulo }}}', 'default' => array() ) );
 		$this->cerrar();
 

@@ -98,7 +98,7 @@ function fcc_blog_inicio( array $m ): void {
 
 function fcc_instalar( bool $restablecer ): array {
 	$m   = fcc_sitio();
-	$log = array( 'creadas' => 0, 'restablecidas' => 0, 'entradas' => 0 );
+	$log = array( 'creadas' => 0, 'restablecidas' => 0, 'entradas' => 0, 'conocimiento' => 0 );
 
 	foreach ( (array) ( $m['paginas'] ?? array() ) as $p ) {
 		$pag = get_page_by_path( $p['ruta'] );
@@ -150,6 +150,12 @@ function fcc_instalar( bool $restablecer ): array {
 	foreach ( (array) ( $m['entradas'] ?? array() ) as $e ) {
 		$ya = get_posts( array( 'post_type' => 'post', 'title' => $e['titulo'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) );
 		if ( $ya ) {
+			/* si la entrada sigue con el texto provisional de una versión anterior, recibe el artículo completo */
+			$p = get_post( $ya[0] );
+			if ( $p && ( str_contains( $p->post_content, 'b-pending' ) || str_contains( $p->post_content, 'en preparación' ) ) ) {
+				wp_update_post( array( 'ID' => $p->ID, 'post_content' => $e['contenido'], 'post_excerpt' => $p->post_excerpt ?: $e['extracto'] ) );
+				$log['entradas']++;
+			}
 			continue;
 		}
 		$cat = get_category_by_slug( sanitize_title( $e['categoria'] ) );
@@ -176,8 +182,29 @@ function fcc_instalar( bool $restablecer ): array {
 		$log['entradas']++;
 	}
 
+	/* conocimiento inicial del asistente (plantillas/kba.json): solo los temas que aún no existen */
+	$kba = json_decode( (string) file_get_contents( FCC_DIR . 'plantillas/kba.json' ), true );
+	foreach ( (array) $kba as $i => $k ) {
+		if ( get_posts( array( 'post_type' => 'fc_kba', 'title' => $k['titulo'], 'post_status' => 'any', 'numberposts' => 1, 'fields' => 'ids' ) ) ) {
+			continue;
+		}
+		$id = wp_insert_post( array( 'post_type' => 'fc_kba', 'post_status' => 'publish', 'post_title' => $k['titulo'], 'post_content' => $k['contenido'], 'menu_order' => $i ) );
+		if ( $id && ! is_wp_error( $id ) ) {
+			update_post_meta( $id, '_fckba_activo', '1' );
+			$log['conocimiento']++;
+		}
+	}
+
 	/* el blog del Inicio muestra las entradas del diseño (si nadie eligió otras) */
 	fcc_blog_inicio( $m );
+
+	/* fotos y logos del diseño en la biblioteca de medios: así se pueden volver a elegir al editar en Elementor */
+	foreach ( glob( get_stylesheet_directory() . '/assets/img/*' ) ?: array() as $f ) {
+		$n = basename( $f );
+		if ( preg_match( '/\.(jpe?g|png|webp)$/i', $n ) && ! preg_match( '/^(isotipo|logo-light|logo-dark|favicon)/', $n ) ) {
+			fcc_adjuntar_imagen( $n );
+		}
+	}
 
 	/* «Hola, mundo» de la instalación de WordPress, fuera */
 	$hola = get_page_by_path( 'hello-world', OBJECT, 'post' ) ?: get_page_by_path( 'hola-mundo', OBJECT, 'post' );

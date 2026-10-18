@@ -15,6 +15,11 @@ function fcc_txt( $s ): string {
 }
 
 /** URL de una imagen elegida en un control MEDIA; si está vacía, la del tema con ese nombre de archivo. */
+/** Imagen de muestra de Elementor para las tarjetas nuevas de una lista (se reemplaza desde la biblioteca). */
+function fcc_media_nueva(): array {
+	return array( 'url' => class_exists( '\\Elementor\\Utils' ) ? \Elementor\Utils::get_placeholder_image_src() : '', 'id' => '' );
+}
+
 function fcc_img( $media, string $archivo = '' ): string {
 	if ( is_array( $media ) && ! empty( $media['url'] ) ) {
 		return $media['url'];

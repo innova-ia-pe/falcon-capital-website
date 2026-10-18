@@ -23,10 +23,10 @@ class FCC_Soluciones extends FCC_Widget {
 		$r = new Repeater();
 		$r->add_control( 'icono', array( 'label' => 'Ícono', 'type' => Controls_Manager::SELECT, 'default' => 'factoring',
 			'options' => array( 'factoring' => 'Factura', 'confirming' => 'Flechas', 'capital' => 'Gráfico', 'escudo' => 'Escudo', 'rayo' => 'Rayo' ) ) );
-		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => '' ) );
-		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'rows' => 3, 'default' => '' ) );
+		$r->add_control( 'titulo', array( 'label' => 'Título', 'type' => Controls_Manager::TEXT, 'default' => 'Nueva solución' ) );
+		$r->add_control( 'texto', array( 'label' => 'Texto', 'type' => Controls_Manager::TEXTAREA, 'rows' => 3, 'default' => 'Descripción de la solución.' ) );
 		$r->add_control( 'puntos', array( 'label' => 'Puntos (uno por línea)', 'type' => Controls_Manager::TEXTAREA, 'rows' => 3, 'default' => '' ) );
-		$r->add_control( 'foto', array( 'label' => 'Foto', 'type' => Controls_Manager::MEDIA ) );
+		$r->add_control( 'foto', array( 'label' => 'Foto', 'type' => Controls_Manager::MEDIA, 'default' => fcc_media_nueva() ) );
 		$r->add_control( 'foto_pos', array( 'label' => 'Recorte (posición)', 'type' => Controls_Manager::TEXT, 'default' => '60% 40%' ) );
 		$r->add_control( 'cta1', array( 'label' => 'Botón', 'type' => Controls_Manager::TEXT, 'default' => 'Solicita tu evaluación' ) );
 		$r->add_control( 'cta1_url', array( 'label' => 'Destino del botón', 'type' => Controls_Manager::URL, 'default' => fcc_url( '/contactanos/' ) ) );

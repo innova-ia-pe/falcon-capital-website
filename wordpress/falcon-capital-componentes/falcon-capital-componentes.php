@@ -20,6 +20,7 @@ require_once FCC_DIR . 'includes/ayudas.php';
 require_once FCC_DIR . 'includes/solicitudes.php';
 require_once FCC_DIR . 'includes/ajustes.php';
 require_once FCC_DIR . 'includes/instalador.php';
+require_once FCC_DIR . 'includes/bot.php';
 
 /* Widgets de Elementor: categoría propia «Falcon Capital» y una clase por sección */
 add_action( 'elementor/elements/categories_registered', function ( $m ) {
