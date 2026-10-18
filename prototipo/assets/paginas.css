@@ -15,6 +15,7 @@
 .b-doc .b-pending,.b-faq-wrap .b-pending{margin-top:28px}
 .b-doc h2{margin-top:44px}
 .b-doc-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.b-doc p a,.b-art-body p a{color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
 .b-btn-line-d{border:1px solid rgba(6,42,47,.2);color:var(--ink)}
 .b-btn-line-d:hover{border-color:rgba(6,42,47,.45)}
 

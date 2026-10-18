@@ -230,11 +230,21 @@
 <section class="b-sec b-testis" data-sec="testimonios">
   <div class="b-wrap b-testi">
     <span class="b-kicker" data-r="up">Testimonios</span>
-    <figure data-r="up">
-      <blockquote>“Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.”</blockquote>
-      <figcaption><span class="b-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
-    </figure>
-    <div class="b-testi-nav"><span class="is-on"></span><span></span><span></span></div>
+    <div class="b-testi-track" data-r="up" aria-live="polite">
+      <figure class="is-on">
+        <blockquote>“Aquí irá el testimonio de un cliente: qué necesitaba su empresa y cómo Falcon Capital le ayudó con su liquidez.”</blockquote>
+        <figcaption><span class="b-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure>
+      <figure aria-hidden="true">
+        <blockquote>“Aquí irá un segundo testimonio: cuánto tardó el desembolso y cómo fue el acompañamiento del equipo.”</blockquote>
+        <figcaption><span class="b-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure>
+      <figure aria-hidden="true">
+        <blockquote>“Aquí irá un tercer testimonio: qué cambió en el flujo de caja de su empresa después de trabajar con Falcon Capital.”</blockquote>
+        <figcaption><span class="b-testi-av"></span><span><b>Nombre del cliente</b><small>Cargo · Empresa</small></span></figcaption>
+      </figure>
+    </div>
+    <div class="b-testi-nav"><button type="button" class="is-on" aria-current="true" aria-label="Testimonio 1"></button><button type="button" aria-label="Testimonio 2"></button><button type="button" aria-label="Testimonio 3"></button></div>
     <p class="b-pend">Formato de ejemplo · Falcon Capital debe entregar los testimonios</p>
   </div>
 </section>
