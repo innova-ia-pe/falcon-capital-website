@@ -32,7 +32,10 @@ Las direcciones anteriores (`propuestas/index.html?p=b&h=1`, `propuestas/ver.htm
 | `assets/impulso.css` | Diseño «Impulso»: cabecera, secciones y pie |
 | `assets/banner.css` | Banner «Vidrio», tarjeta del simulador y encuadre de fotos |
 | `assets/paginas.css` | Páginas secundarias (legales, preguntas, acceso, reclamaciones, estados) |
-| `assets/falcon.js` | Carrusel del banner, encuadre por caras, simulador, formularios y animaciones |
+| `assets/falcon.js` | Carrusel del banner, encuadre por caras, simulador, formularios, testimonios, aviso de cookies y animaciones |
+
+El tema de WordPress usa estas mismas hojas y este script: después de un cambio aquí, se pasan al tema con
+`python wordpress/herramientas/tema_desde_prototipo.py`.
 
 ## Simulador de Factoring
 
@@ -42,5 +45,6 @@ Tres pasos: tus datos → simulación → evaluación. Fórmula del instructivo 
 
 ## Pendiente de Falcon Capital
 
-Textos legales, testimonios, video institucional, artículos del blog, cifras validadas («+150 mypes», «S/ 300 M»,
-«48 horas» en Factoring y Conócenos) y la definición de Mi Portal Falcon (acceso y registro).
+Textos legales, testimonios (los tres actuales son formato de ejemplo), detalle de las cookies que use la web,
+video institucional, artículos del blog, cifras validadas («+150 mypes», «S/ 300 M», «48 horas» en Factoring y
+Conócenos), destino y plazos del Libro de Reclamaciones y la definición de Mi Portal Falcon (acceso y registro).

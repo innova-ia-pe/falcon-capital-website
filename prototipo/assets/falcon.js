@@ -133,10 +133,19 @@
   });
 
   /* ================================================================ validación compartida */
+  /* adjuntos: PDF, JPG o PNG de hasta 5 MB */
+  function archivoOk(i) {
+    var f = i.files && i.files[0];
+    if (!f) return !i.required;
+    return f.size <= 5 * 1024 * 1024 && (/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type) || /\.(pdf|jpe?g|png)$/i.test(f.name));
+  }
   function valido(i) {
     var v = (i.value || '').trim();
     if (i.type === 'checkbox') return i.checked;
+    if (i.type === 'radio') return true;   /* los grupos de opciones se revisan aparte */
+    if (i.type === 'file') return archivoOk(i);
     if (i.tagName === 'SELECT') return !!v;
+    if (i.required && !v) return false;
     if (i.name === 'nombre') return v.length >= 3 && /\s/.test(v);
     if (i.name === 'ruc') return /^(10|15|17|20)\d{9}$/.test(v);
     if (i.name === 'celular') return /^9\d{8}$/.test(v.replace(/\D/g, ''));
@@ -166,15 +175,16 @@
     return bien;
   }
   function vigilar(form) {
-    $$('input, select', form).forEach(function (i) {
+    $$('input, select, textarea', form).forEach(function (i) {
+      if (i.type === 'radio') return;
       formatear(i);
       i.addEventListener('blur', function () { if (i.value || i.type === 'checkbox') i.dataset.t = '1'; if (i.dataset.t) marcar(i); });
       i.addEventListener('input', function () { if (i.dataset.t) marcar(i); });
-      i.addEventListener('change', function () { if (i.type === 'checkbox' || i.tagName === 'SELECT') marcar(i); });
+      i.addEventListener('change', function () { if (i.type === 'checkbox' || i.type === 'file' || i.tagName === 'SELECT') { i.dataset.t = '1'; marcar(i); } });
     });
   }
   function revisar(form) {
-    return $$('input[required], select[required]', form).filter(function (i) { i.dataset.t = '1'; return !marcar(i); });
+    return $$('input[required], select[required], textarea[required], input[type="file"]', form).filter(function (i) { i.dataset.t = '1'; return !marcar(i); });
   }
   function ocupado(btn, si) {
     var lbl = $('span', btn);
@@ -928,6 +938,28 @@
     });
   });
 
+  /* ================================================================ testimonios: uno a la vez
+     Los puntos cambian de testimonio; rotan solos cada 8 s, se detienen con el cursor encima o con el foco
+     dentro, y en celular se pasan con el dedo. */
+  $$('.b-testi', root).forEach(function (t) {
+    var figs = $$('.b-testi-track > figure', t), dots = $$('.b-testi-nav button', t);
+    if (figs.length < 2) return;
+    var i = 0, timer = 0, quieto = false;
+    function ir(n) {
+      i = (n + figs.length) % figs.length;
+      figs.forEach(function (f, k) { f.classList.toggle('is-on', k === i); if (k === i) f.removeAttribute('aria-hidden'); else f.setAttribute('aria-hidden', 'true'); });
+      dots.forEach(function (d, k) { d.classList.toggle('is-on', k === i); if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+    }
+    function seguir() { clearInterval(timer); if (!reduce && !quieto) timer = setInterval(function () { ir(i + 1); }, 8000); }
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { ir(k); seguir(); }); });
+    t.addEventListener('mouseenter', function () { quieto = true; clearInterval(timer); });
+    t.addEventListener('mouseleave', function () { quieto = false; seguir(); });
+    t.addEventListener('focusin', function () { quieto = true; clearInterval(timer); });
+    t.addEventListener('focusout', function (e) { if (!t.contains(e.relatedTarget)) { quieto = false; seguir(); } });
+    deslizar($('.b-testi-track', t), function (d) { ir(i + d); seguir(); });
+    seguir();
+  });
+
   /* ================================================================ soluciones B: avanzan de lado al bajar
      En escritorio la sección queda fija y el scroll vertical mueve las tarjetas en horizontal.
      En celular (o con movimiento reducido) queda como carrusel que se desliza con el dedo. */
@@ -1065,6 +1097,53 @@
     palabras = $$('.w', cita);
     if (reduce) palabras.forEach(function (w) { w.classList.add('on'); });
   }
+
+  /* ================================================================ aviso de cookies
+     Aparece la primera vez y guarda la elección en este navegador (localStorage «fc-cookies»: «todas» o
+     «necesarias»). Avisa con el evento «fc:cookies» en document, para que una herramienta de medición se active
+     solo si se aceptan. Los enlaces a «#cookies» (Política de Cookies) lo vuelven a mostrar. */
+  var CK = { titulo: 'Usamos cookies', texto: 'Usamos cookies propias y de terceros para que la web funcione y, si lo aceptas, para medir cómo se usa y mejorarla.', url: 'politica-de-cookies.html' };
+  function eleccionCk() { try { return localStorage.getItem('fc-cookies'); } catch (e) { return 'sin-almacenamiento'; } }
+  function avisoCookies(forzar) {
+    if (!CK) return;
+    var box = $('.b-ck', root);
+    if (!box) {
+      if (!forzar && eleccionCk()) return;
+      box = doc.createElement('div');
+      box.className = 'b-ck';
+      box.setAttribute('role', 'region');
+      box.setAttribute('aria-label', 'Aviso de cookies');
+      var t = doc.createElement('b'), p = doc.createElement('p'), a = doc.createElement('a'), acts = doc.createElement('div');
+      t.textContent = CK.titulo;
+      p.textContent = CK.texto + ' ';
+      a.href = CK.url;
+      a.textContent = 'Política de Cookies';
+      p.appendChild(a);
+      acts.className = 'b-ck-acts';
+      [['todas', 'Aceptar', 'b-btn b-btn-em'], ['necesarias', 'Solo necesarias', 'b-btn b-ck-no']].forEach(function (o) {
+        var b = doc.createElement('button');
+        b.type = 'button';
+        b.className = o[2];
+        b.textContent = o[1];
+        b.addEventListener('click', function () {
+          try { localStorage.setItem('fc-cookies', o[0]); } catch (e) { /* sin almacenamiento */ }
+          box.classList.remove('is-on');
+          doc.dispatchEvent(new CustomEvent('fc:cookies', { detail: o[0] }));
+        });
+        acts.appendChild(b);
+      });
+      box.appendChild(t); box.appendChild(p); box.appendChild(acts);
+      root.appendChild(box);
+      box.getBoundingClientRect();
+    }
+    box.classList.add('is-on');
+    if (forzar) $('button', box).focus({ preventScroll: true });
+  }
+  setTimeout(function () { avisoCookies(false); }, reduce ? 0 : 1400);
+  root.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href$="#cookies"], [data-cookies-abrir]');
+    if (a) { e.preventDefault(); avisoCookies(true); }
+  });
 
   /* botón flotante y barra móvil: aparecen al dejar atrás el primer bloque */
   var primero = $('main > section', root);
