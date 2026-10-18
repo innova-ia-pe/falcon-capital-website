@@ -1145,6 +1145,192 @@
     if (a) { e.preventDefault(); avisoCookies(true); }
   });
 
+  /* ================================================================ asistente virtual
+     En WordPress responde con IA desde el plugin (FC_WP.bot: Claude con Gemini de respaldo y solo la base de
+     conocimiento de Falcon). En el prototipo responde en modo demostración, sin IA, con la base de conocimiento
+     de ejemplo (assets/bot-demo.js). El botón flotante y el de la barra móvil abren el chat; sin asistente, siguen
+     abriendo WhatsApp. La conversación se guarda en sessionStorage («fc-bot») mientras dure la visita. */
+  var BOT = window.FC_BOT_DEMO ? {
+    demo: true, nombre: 'Asistente Falcon',
+    saludo: '¡Hola! Soy el asistente virtual de Falcon Capital. Te ayudo con factoring, confirming, capital de trabajo, requisitos y el simulador. ¿Qué te gustaría saber?',
+    sugerencias: ['¿Qué es el factoring?', '¿Qué requisitos necesito?', '¿Cuánto cuesta?', 'Quiero hablar con un ejecutivo'],
+    contacto: 'contactanos.html#b-contacto', privacidad: 'politica-de-privacidad.html'
+  } : null;
+  if (BOT) (function () {
+    var ICO_CHAT = '<svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 11h7M8.5 14.5h4.5"/></svg>';
+    var ICO_X = '<svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+    var ICO_ENV = '<svg viewBox="0 0 24 24"><path d="M5 12h13M13 6l6 6-6 6"/></svg>';
+    var waIco = $('.b-fab svg', root) ? $('.b-fab svg', root).outerHTML : '';
+    var iso = (typeof IMG !== 'undefined' ? IMG : 'img/') + 'isotipo-falcon.png';
+    var waTexto = WA_URL + (WA_URL.indexOf('?') < 0 ? '?' : '&') + 'text=' + encodeURIComponent('Hola, vengo del asistente de la web y quiero hablar con un ejecutivo.');
+    var estado = (function () { try { return JSON.parse(sessionStorage.getItem('fc-bot') || 'null'); } catch (e) { return null; } })();
+    if (!estado || !estado.clave) estado = { clave: (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2), mensajes: [] };
+    var panel = null, log, sug, form, campo, btnEnv, ocupadoBot = false, origen = null;
+
+    function guardarBot() { try { sessionStorage.setItem('fc-bot', JSON.stringify(estado)); } catch (e) { /* sin almacenamiento */ } }
+    function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+    function enlaceOk(u) { return /^(\/|#|https:\/\/wa\.me\/|mailto:[^@\s]+@falconcapital\.pe$)/i.test(u) || u.indexOf(location.origin + '/') === 0 || /^[\w-]+\.html(#[\w-]*)?$/.test(u); }
+    /* formato mínimo: **negritas**, [enlaces](permitidos), listas y párrafos; todo lo demás va escapado */
+    function formato(t) {
+      var lineas = esc(t).split('\n'), out = [], lista = '';
+      lineas.forEach(function (l) {
+        l = l.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>').replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function (m, txt, u) {
+          u = u.replace(/&amp;/g, '&');
+          if (!enlaceOk(u)) return txt;
+          return '<a href="' + esc(u) + '"' + (/^https?:/.test(u) && u.indexOf(location.origin) !== 0 ? ' target="_blank" rel="noopener"' : '') + '>' + txt + '</a>';
+        });
+        var m = l.match(/^\s*(?:([-•*])|(\d+)[.)])\s+(.*)$/), tipo = m ? (m[2] ? 'ol' : 'ul') : '';
+        if (lista && tipo !== lista) { out.push('</' + lista + '>'); lista = ''; }
+        if (tipo) { if (!lista) { out.push('<' + tipo + '>'); lista = tipo; } out.push('<li>' + m[3] + '</li>'); }
+        else if (l.trim()) out.push('<p>' + l + '</p>');
+      });
+      if (lista) out.push('</' + lista + '>');
+      return out.join('');
+    }
+
+    /* modo demostración: elige el tema de la base de conocimiento con más coincidencias */
+    function sinTildes(s) { return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+    var VACIAS = { de: 1, la: 1, el: 1, que: 1, los: 1, las: 1, por: 1, con: 1, para: 1, una: 1, mis: 1, tus: 1 };
+    var GENERICAS = { falcon: 1, capital: 1, empresa: 1, empresas: 1 };   /* suman poco: aparecen en casi todo */
+    function demoResponder(q) {
+      var t = ' ' + sinTildes(q).replace(/[^a-z0-9ñ ]/g, ' ') + ' ';
+      if (/ (ejecutivo|asesor|persona|humano|whatsapp|llamen|llamar|contacten) /.test(t)) return { texto: 'Claro. Un ejecutivo de Falcon Capital puede ayudarte: escríbenos por WhatsApp o déjanos tus datos y te contactamos.', derivar: true };
+      if (/^ (hola|buenas|buenos dias|buenas tardes|buenas noches|que tal) $/.test(t.replace(/\s+/g, ' '))) return { texto: '¡Hola! ¿En qué te puedo ayudar? Puedes preguntarme por factoring, confirming, capital de trabajo, requisitos o el simulador.' };
+      var mejor = null, max = 0;
+      window.FC_BOT_DEMO.forEach(function (k) {
+        var pts = 0, vistas = {};
+        sinTildes(k.claves + ' ' + k.titulo).split(/[^a-z0-9ñ]+/).forEach(function (w) {
+          if (w.length < 3 || VACIAS[w] || vistas[w]) return;
+          vistas[w] = 1;
+          if (t.indexOf(' ' + w) >= 0) pts += GENERICAS[w] || w.length <= 5 ? 1 : 2;
+        });
+        if (pts > max) { max = pts; mejor = k; }
+      });
+      if (!mejor || max < 2) return { texto: 'No tengo esa información en esta demostración. Un ejecutivo de Falcon Capital puede ayudarte.', derivar: true };
+      return { texto: mejor.contenido.replace(/\{tasa\}/g, (typeof TASA !== 'undefined' ? +TASA : 1.8).toFixed(2)), derivar: /evaluaci|ordenes|deudas/i.test(mejor.titulo) };
+    }
+
+    function burbuja(m) {
+      var d = doc.createElement('div');
+      d.className = 'b-bot-m ' + (m.rol === 'usuario' ? 'b-bot-u' : 'b-bot-a');
+      if (m.rol === 'usuario') d.textContent = m.texto; else d.innerHTML = formato(m.texto);
+      log.appendChild(d);
+      if (m.derivar) {
+        var a = doc.createElement('div');
+        a.className = 'b-bot-acts';
+        a.innerHTML = '<a class="b-btn b-btn-em" href="' + esc(waTexto) + '" target="_blank" rel="noopener">' + waIco + 'Escribir por WhatsApp</a><a class="b-btn b-bot-alt" href="' + esc(BOT.contacto) + '">Dejar mis datos</a>';
+        log.appendChild(a);
+      }
+    }
+    function bajar() { log.scrollTop = log.scrollHeight; }
+    function pintar() {
+      log.innerHTML = '';
+      burbuja({ rol: 'asistente', texto: BOT.saludo });
+      estado.mensajes.forEach(burbuja);
+      sug.hidden = estado.mensajes.length > 0;
+      bajar();
+    }
+    function agregar(m) {
+      estado.mensajes.push(m);
+      if (estado.mensajes.length > 40) estado.mensajes = estado.mensajes.slice(-40);
+      guardarBot();
+      burbuja(m);
+      sug.hidden = true;
+      bajar();
+    }
+    function alto() { campo.style.height = 'auto'; campo.style.height = Math.min(campo.scrollHeight, 120) + 'px'; btnEnv.disabled = !campo.value.trim() || ocupadoBot; }
+
+    function enviarBot(texto) {
+      texto = (texto || '').trim().slice(0, 1000);
+      if (!texto || ocupadoBot) return;
+      agregar({ rol: 'usuario', texto: texto });
+      campo.value = '';
+      ocupadoBot = true;
+      alto();
+      var puntos = doc.createElement('div');
+      puntos.className = 'b-bot-m b-bot-a b-bot-escribe';
+      puntos.setAttribute('aria-label', 'Escribiendo');
+      puntos.innerHTML = '<i></i><i></i><i></i>';
+      log.appendChild(puntos);
+      bajar();
+      var p = BOT.demo ? new Promise(function (r) { setTimeout(function () { r(demoResponder(texto)); }, reduce ? 0 : 750); })
+        : fetch(BOT.rest, { method: 'POST', credentials: 'same-origin', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ clave: estado.clave, mensaje: texto, pagina: location.pathname }) })
+          .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.message || r.status); return j; }); });
+      p.then(function (j) { puntos.remove(); agregar({ rol: 'asistente', texto: j.texto, derivar: !!j.derivar }); })
+        .catch(function () { puntos.remove(); agregar({ rol: 'asistente', texto: 'No pude responder en este momento. Escríbenos por WhatsApp y un ejecutivo te ayudará.', derivar: true }); })
+        .then(function () { ocupadoBot = false; alto(); if (panel.classList.contains('is-on')) campo.focus({ preventScroll: true }); });
+    }
+
+    function construir() {
+      if (panel) return;
+      panel = doc.createElement('div');
+      panel.className = 'b-bot';
+      panel.hidden = true;
+      panel.setAttribute('role', 'dialog');
+      panel.setAttribute('aria-label', BOT.nombre);
+      panel.innerHTML = '<header class="b-bot-hd"><span class="b-bot-av"><img src="' + esc(iso) + '" alt=""></span>'
+        + '<span class="b-bot-ti"><b>' + esc(BOT.nombre) + '</b><small><i></i>' + (BOT.demo ? 'Demostración' : 'Responde al instante') + '</small></span>'
+        + '<a class="b-bot-wa" href="' + esc(waTexto) + '" target="_blank" rel="noopener" aria-label="Hablar por WhatsApp con un ejecutivo">' + waIco + '</a>'
+        + '<button type="button" class="b-bot-x" aria-label="Cerrar">' + ICO_X + '</button></header>'
+        + '<div class="b-bot-log" aria-live="polite"></div><div class="b-bot-sug"></div>'
+        + '<form class="b-bot-in"><label class="sr-only" for="b-bot-campo">Escribe tu pregunta</label><textarea id="b-bot-campo" rows="1" maxlength="1000" placeholder="Escribe tu pregunta…"></textarea>'
+        + '<button type="submit" aria-label="Enviar" disabled>' + ICO_ENV + '</button></form>'
+        + '<p class="b-bot-pie">' + (BOT.demo ? 'Demostración del prototipo: respuestas de ejemplo, sin IA.' : 'Respuestas automáticas con IA. No compartas datos sensibles.') + ' <a href="' + esc(BOT.privacidad) + '">Privacidad</a></p>';
+      root.appendChild(panel);
+      log = $('.b-bot-log', panel); sug = $('.b-bot-sug', panel); form = $('.b-bot-in', panel); campo = $('textarea', panel); btnEnv = $('button[type=submit]', panel);
+      (BOT.sugerencias || []).forEach(function (s) {
+        var b = doc.createElement('button');
+        b.type = 'button';
+        b.textContent = s;
+        b.addEventListener('click', function () { enviarBot(s); });
+        sug.appendChild(b);
+      });
+      $('.b-bot-x', panel).addEventListener('click', cerrarBot);
+      form.addEventListener('submit', function (e) { e.preventDefault(); enviarBot(campo.value); });
+      campo.addEventListener('input', alto);
+      campo.addEventListener('keydown', function (e) { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); enviarBot(campo.value); } });
+      panel.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarBot(); });
+      pintar();
+    }
+    function abrirBot(e) {
+      if (e) e.preventDefault();
+      origen = doc.activeElement;
+      construir();
+      panel.hidden = false;
+      panel.getBoundingClientRect();
+      panel.classList.add('is-on');
+      html.classList.add('bot-on');
+      if (matchMedia('(max-width:760px)').matches) html.classList.add('lock');
+      bajar();
+      setTimeout(function () { campo.focus({ preventScroll: true }); }, reduce ? 0 : 260);
+    }
+    function cerrarBot() {
+      panel.classList.remove('is-on');
+      html.classList.remove('bot-on', 'lock');
+      setTimeout(function () { if (!panel.classList.contains('is-on')) panel.hidden = true; }, reduce ? 0 : 320);
+      if (origen && origen.focus) origen.focus({ preventScroll: true });
+    }
+
+    /* lanzadores: botón flotante (escritorio) y botón de la barra móvil */
+    var fab = $('.b-fab', root), mwa = $('.b-mbar-wa', root);
+    if (fab) {
+      fab.innerHTML = ICO_CHAT + '<span>Pregúntale a Falcon</span>';
+      fab.removeAttribute('target');
+      fab.setAttribute('aria-haspopup', 'dialog');
+      fab.addEventListener('click', abrirBot);
+    }
+    if (mwa) {
+      mwa.innerHTML = ICO_CHAT;
+      mwa.classList.add('is-bot');
+      mwa.removeAttribute('target');
+      mwa.setAttribute('aria-label', 'Abrir el asistente virtual');
+      mwa.addEventListener('click', abrirBot);
+    }
+    root.addEventListener('click', function (e) { var a = e.target.closest && e.target.closest('[data-bot-abrir], a[href$="#asistente"]'); if (a) abrirBot(e); });
+    html.classList.add('bot-ok');
+  })();
+
   /* botón flotante y barra móvil: aparecen al dejar atrás el primer bloque */
   var primero = $('main > section', root);
   if (primero && 'IntersectionObserver' in window) {

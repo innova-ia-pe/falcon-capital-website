@@ -14,7 +14,7 @@ La versión en WordPress + Elementor está en [`../wordpress/`](../wordpress/REA
 | Factoring · Confirming · Capital de Trabajo | `factoring.html`, `confirming.html`, `capital-de-trabajo.html` |
 | Simulador | `simulador.html` |
 | Conócenos | `conocenos.html` |
-| Blog y artículo | `blog.html`, `articulo.html` |
+| Blog y artículos | `blog.html`; un archivo por artículo: `articulo.html` (confirming, destacado), `articulo-liquidez.html`, `articulo-flujo-de-caja.html`, `articulo-factoring-vs-prestamo.html`, `articulo-confirming.html` |
 | Contáctanos | `contactanos.html` |
 | Iniciar sesión · Crea tu cuenta | `iniciar-sesion.html`, `registro.html` |
 | Preguntas frecuentes | `preguntas-frecuentes.html` |
@@ -32,7 +32,8 @@ Las direcciones anteriores (`propuestas/index.html?p=b&h=1`, `propuestas/ver.htm
 | `assets/impulso.css` | Diseño «Impulso»: cabecera, secciones y pie |
 | `assets/banner.css` | Banner «Vidrio», tarjeta del simulador y encuadre de fotos |
 | `assets/paginas.css` | Páginas secundarias (legales, preguntas, acceso, reclamaciones, estados) |
-| `assets/falcon.js` | Carrusel del banner, encuadre por caras, simulador, formularios, testimonios, aviso de cookies y animaciones |
+| `assets/falcon.js` | Carrusel del banner, encuadre por caras, simulador, formularios, testimonios, aviso de cookies, asistente virtual y animaciones |
+| `assets/bot-demo.js` | Base de conocimiento de ejemplo del asistente (modo demostración, sin IA). Se genera desde el plugin de WordPress |
 
 El tema de WordPress usa estas mismas hojas y este script: después de un cambio aquí, se pasan al tema con
 `python wordpress/herramientas/tema_desde_prototipo.py`.
@@ -43,8 +44,21 @@ Tres pasos: tus datos → simulación → evaluación. Fórmula del instructivo 
 25/09/2026) con la TEM de pizarra de 1.80 % (minuta 006) y comisión de 1 % más IGV. Historial de decisiones en
 `PROPUESTAS.md`.
 
+## Asistente virtual
+
+El botón flotante («Pregúntale a Falcon») y el de la barra móvil abren el chat. Aquí funciona en **modo
+demostración**: responde con la ficha de la base de ejemplo que más coincide, sin IA. En WordPress responde la IA
+(Claude con Gemini de respaldo) con lo que Falcon cargue en *Asistente → Conocimiento*.
+
+## Contenido
+
+Los cinco artículos del blog y las páginas de Privacidad, Términos y Cookies son borradores de Innova IA armados con
+el brief, la maqueta y lo que el sitio hace de verdad; Falcon debe validarlos (los legales, con su área legal).
+
 ## Pendiente de Falcon Capital
 
-Textos legales, testimonios (los tres actuales son formato de ejemplo), detalle de las cookies que use la web,
-video institucional, artículos del blog, cifras validadas («+150 mypes», «S/ 300 M», «48 horas» en Factoring y
-Conócenos), destino y plazos del Libro de Reclamaciones y la definición de Mi Portal Falcon (acceso y registro).
+Validar los artículos y los textos legales (razón social, RUC e inscripción del banco de datos), el Reglamento de
+Factoring y la constancia de la SBS, testimonios reales (los tres actuales son formato de ejemplo), video
+institucional, cifras validadas («+150 mypes», «S/ 300 M», «48 horas» en Factoring y Conócenos), base de
+conocimiento y reglas del asistente, destino y plazos del Libro de Reclamaciones y la definición de Mi Portal Falcon
+(acceso y registro).
