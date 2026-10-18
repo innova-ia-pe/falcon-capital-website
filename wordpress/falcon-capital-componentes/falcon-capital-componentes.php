@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Falcon Capital – Componentes
  * Description:       Secciones del sitio de Falcon Capital como widgets de Elementor (banner con simulador, soluciones, cifras, noticias…) y registro de las solicitudes del simulador y de los formularios.
- * Version:           0.1.0
+ * Version:           0.2.0
  * Author:            Innova IA
  * Requires at least: 6.8
  * Requires PHP:      8.1
@@ -12,13 +12,14 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FCC_VER', '0.1.0' );
+define( 'FCC_VER', '0.2.0' );
 define( 'FCC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'FCC_URL', plugin_dir_url( __FILE__ ) );
 
 require_once FCC_DIR . 'includes/ayudas.php';
 require_once FCC_DIR . 'includes/solicitudes.php';
 require_once FCC_DIR . 'includes/ajustes.php';
+require_once FCC_DIR . 'includes/instalador.php';
 
 /* Widgets de Elementor: categoría propia «Falcon Capital» y una clase por sección */
 add_action( 'elementor/elements/categories_registered', function ( $m ) {
@@ -36,3 +37,12 @@ add_action( 'elementor/widgets/register', function ( $m ) {
 		}
 	}
 } );
+
+/* tipografía de las secciones: «9:00 a. m.» y «S/ 300» no se parten entre dos líneas */
+add_filter( 'elementor/widget/render_content', function ( $html, $widget ) {
+	if ( strpos( $widget->get_name(), 'fc-' ) !== 0 ) {
+		return $html;
+	}
+	$html = preg_replace( '/(\d) ([ap])\. m\./u', "$1\u{00A0}$2.\u{00A0}m.", $html );
+	return preg_replace( '/(S\/|US\$) (?=\d)/u', "$1\u{00A0}", $html );
+}, 10, 2 );

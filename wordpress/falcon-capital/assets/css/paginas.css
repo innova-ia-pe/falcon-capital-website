@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Falcon Capital · páginas secundarias (legales, preguntas frecuentes, acceso, reclamaciones, estados)
+   Mismo lenguaje del diseño «Impulso»: cabecera corta sin foto, documento claro y formularios de la casa.
+   ========================================================================== */
+.b-phero-s{min-height:0;justify-content:flex-start;padding:calc(84px + var(--pbar) + clamp(48px,8vh,96px)) 0 clamp(48px,7vh,84px);
+  background:radial-gradient(55% 90% at 88% 0%,rgba(0,227,165,.13),rgba(0,227,165,0) 70%),radial-gradient(50% 80% at 0% 100%,rgba(0,75,84,.5),rgba(0,75,84,0) 70%),var(--bg)}
+.b-phero-s .b-kicker{margin-bottom:16px}
+.b-phero-s .b-h1{max-width:15em;font-size:clamp(36px,min(4.4vw,8vh),64px)}
+.b-phero-s+.b-sec{padding-top:clamp(44px,6vw,80px)}
+.b-phero-s+.b-sec.b-art{padding-top:clamp(52px,6vw,88px)}
+
+/* documento (legales) */
+.b-doc{max-width:46em}
+.b-doc>.b-pending:first-child{margin-top:0}
+.b-doc .b-pending,.b-faq-wrap .b-pending{margin-top:28px}
+.b-doc h2{margin-top:44px}
+.b-doc-acts{display:flex;flex-wrap:wrap;gap:12px;margin-top:36px}
+.b-doc p a,.b-art-body p a{color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.b-btn-line-d{border:1px solid rgba(6,42,47,.2);color:var(--ink)}
+.b-btn-line-d:hover{border-color:rgba(6,42,47,.45)}
+
+/* preguntas frecuentes */
+.b-faq-wrap{max-width:980px}
+.b-faq{display:grid;gap:12px}
+.b-faq details{border-radius:20px;background:#fff;border:1px solid rgba(6,42,47,.1);transition:border-color .25s,box-shadow .35s var(--e-out)}
+.b-faq details[open]{border-color:rgba(0,192,139,.45);box-shadow:0 22px 44px -30px rgba(6,42,47,.45)}
+.b-faq summary{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 24px;cursor:pointer;list-style:none;
+  font-size:clamp(16px,1.3vw,18px);font-weight:700;color:var(--ink)}
+.b-faq summary::-webkit-details-marker{display:none}
+.b-faq summary i{position:relative;flex:none;width:30px;height:30px;border-radius:50%;background:rgba(0,192,139,.12)}
+.b-faq summary i::before,.b-faq summary i::after{content:"";position:absolute;left:50%;top:50%;width:12px;height:2px;margin:-1px 0 0 -6px;border-radius:2px;
+  background:#0A6E62;transition:transform .35s var(--e-out)}
+.b-faq summary i::after{transform:rotate(90deg)}
+.b-faq details[open] summary i::after{transform:rotate(0)}
+.b-faq details p{padding:0 24px 22px;font-size:16.5px;line-height:1.7;color:var(--ink2)}
+
+/* acceso (iniciar sesión, registro) */
+.b-acc-list{display:grid;gap:12px;margin:26px 0 0;padding:0;list-style:none}
+.b-acc-list li{display:flex;align-items:center;gap:12px;font-size:15.5px;color:var(--tx2)}
+.b-acc-list svg{flex:none;width:22px;height:22px;padding:4px;border-radius:50%;background:rgba(111,230,173,.14);color:var(--mint);stroke-width:2.4}
+.b-contact-side .b-pending{margin-top:28px}
+.b-acc-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px 18px;margin-top:18px;font-size:14px;color:var(--lf-l)}
+.b-acc-links a{color:var(--lf-focus);font-weight:700;text-decoration:underline;text-underline-offset:3px}
+.b-demo-ok{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:13.5px;line-height:1.5;color:var(--lf-tx);background:rgba(0,227,165,.1);border:1px solid rgba(0,192,139,.35)}
+.b-demo-ok b{color:var(--lf-focus)}
+.b-sso{display:grid;gap:10px}
+.b-sso button{display:flex;align-items:center;justify-content:center;gap:12px;height:50px;border-radius:13px;border:1px solid var(--lf-bd);background:var(--lf-bg);
+  font-size:15px;font-weight:600;color:var(--lf-tx);transition:border-color .2s,box-shadow .2s}
+.b-sso button:hover{border-color:var(--lf-focus);box-shadow:0 0 0 4px var(--lf-ring)}
+.b-sso b{display:grid;place-items:center;width:22px;height:22px;border-radius:6px;font-size:13px;font-weight:800;color:#fff}
+.b-sso .g{background:#EA4335}.b-sso .o{background:#0A64D6}
+.b-sso .m{display:grid;grid-template-columns:1fr 1fr;gap:2px;padding:3px;background:none}
+.b-sso .m i{display:block;background:#F25022}.b-sso .m i:nth-child(2){background:#7FBA00}.b-sso .m i:nth-child(3){background:#00A4EF}.b-sso .m i:nth-child(4){background:#FFB900}
+.b-or{display:flex;align-items:center;gap:14px;margin:20px 0 16px;font-size:13px;color:var(--lf-l)}
+.b-or::before,.b-or::after{content:"";flex:1;height:1px;background:var(--lf-bd)}
+
+/* libro de reclamaciones */
+.b-claim-wrap{max-width:1000px}
+.b-claim fieldset{margin:0;padding:0;border:0;min-width:0}
+.b-claim fieldset+fieldset{margin-top:34px;padding-top:30px;border-top:1px solid var(--lf-bd)}
+.b-claim legend{display:flex;align-items:center;gap:12px;margin-bottom:18px;font-size:18px;font-weight:700;color:var(--lf-tx)}
+.b-claim legend i{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:rgba(0,227,165,.16);color:var(--lf-focus);font-style:normal;font-size:14px}
+.b-claim-lbl{margin:22px 0 10px;font-size:13px;font-weight:700;color:var(--lf-l)}
+.b-claim-lbl small{display:block;margin-top:2px;font-weight:500;color:var(--lf-ph)}
+.b-claim-det{margin-top:22px}
+.b-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.b-opts-2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.b-opt{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-radius:16px;border:1px solid var(--lf-bd);background:var(--lf-bg);cursor:pointer;
+  transition:border-color .2s,background .2s}
+.b-opt input{flex:none;width:18px;height:18px;margin:2px 0 0;accent-color:var(--lf-focus)}
+.b-opt b{display:block;font-size:15px;color:var(--lf-tx)}
+.b-opt small{display:block;margin-top:3px;font-size:13px;line-height:1.45;color:var(--lf-l)}
+.b-opt:hover{border-color:var(--lf-focus)}
+.b-opt:has(input:checked){border-color:var(--lf-focus);background:rgba(0,227,165,.1);box-shadow:0 0 0 3px var(--lf-ring)}
+.b-segs{display:flex;flex-wrap:wrap}
+.b-segs .b-opt{align-items:center;padding:11px 16px}
+.lf textarea{width:100%;min-height:110px;padding:13px 15px;border-radius:13px;border:1px solid var(--lf-bd);background:var(--lf-bg);color:var(--lf-tx);
+  font-size:15.5px;font-weight:500;line-height:1.5;resize:vertical;transition:border-color .2s,box-shadow .2s}
+.lf textarea:focus{outline:none;border-color:var(--lf-focus);box-shadow:0 0 0 4px var(--lf-ring)}
+.lf textarea::placeholder{color:var(--lf-ph)}
+.lf input[type="file"]{height:auto;padding:12px 15px;font-size:14px}
+.b-claim-wrap>.b-pending{margin-top:26px}
+
+/* avisos de pendiente sobre fondo oscuro */
+.b-contact-side .b-pending,.b-claim-wrap>.b-pending{background:rgba(234,243,240,.05);border-color:rgba(234,243,240,.22);color:var(--tx2)}
+.b-contact-side .b-pending b,.b-claim-wrap>.b-pending b{color:var(--mint)}
+/* reclamaciones: la tarjeta ocupa todo el ancho y los títulos de grupo no se cruzan con la línea */
+.b-claim-wrap .b-contact-card{width:100%;max-width:none}
+.b-claim legend{float:left;width:100%}
+.b-claim legend+*{clear:both}
+.b-sso .m{place-items:stretch}
+
+/* 404 */
+.b-links404{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.b-links404 a{position:relative;display:flex;flex-direction:column;gap:6px;padding:22px 24px 48px;border-radius:20px;background:#fff;border:1px solid rgba(6,42,47,.1);
+  transition:border-color .25s,transform .35s var(--e-out)}
+.b-links404 a:hover{border-color:rgba(0,192,139,.5);transform:translateY(-3px)}
+.b-links404 b{font-size:19px;color:var(--ink)}
+.b-links404 span{font-size:14.5px;color:var(--ink2)}
+.b-links404 svg{position:absolute;left:24px;bottom:20px;width:18px;height:18px;color:#0A6E62}

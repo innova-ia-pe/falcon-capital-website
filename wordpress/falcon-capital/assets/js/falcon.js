@@ -25,18 +25,38 @@
   var IMG = WP.img || 'img/';
   /* wp_localize_script entrega los números como texto */
   var TASA = +WP.tasa || 1.80;
-  /* envía una solicitud a WordPress; sin API (prototipo) simula la espera */
-  function enviarWP(tipo, datos) {
+  /* envía una solicitud a WordPress; sin API (prototipo) simula la espera. Con archivo adjunto va como formulario
+     (multipart). La ruta es pública: no lleva nonce, así una página guardada en caché no deja de enviar. */
+  function enviarWP(tipo, datos, archivo) {
     if (!WP.rest) return new Promise(function (r) { setTimeout(r, reduce ? 0 : 900); });
     datos = datos || {};
     datos.tipo = tipo;
     datos.pagina = location.pathname;
-    return fetch(WP.rest + 'solicitudes', {
-      method: 'POST', credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json', 'X-WP-Nonce': WP.nonce || '' },
-      body: JSON.stringify(datos)
-    }).then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); });
+    var cuerpo, cab = {};
+    if (archivo) {
+      cuerpo = new FormData();
+      Object.keys(datos).forEach(function (k) { if (datos[k] !== null && datos[k] !== undefined) cuerpo.append(k, datos[k]); });
+      cuerpo.append('adjunto', archivo);
+    } else {
+      cab['Content-Type'] = 'application/json';
+      cuerpo = JSON.stringify(datos);
+    }
+    return fetch(WP.rest + 'solicitudes', { method: 'POST', credentials: 'same-origin', headers: cab, body: cuerpo })
+      .then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (j) {
+          if (!r.ok) { var e = new Error(j.message || 'HTTP ' + r.status); e.status = r.status; throw e; }
+          return j;
+        });
+      });
   }
+  /* aviso de error junto al botón de envío (en vez de una ventana del navegador) */
+  function falla(form, err, porDefecto) {
+    var btn = $('.lf-send', form), p = $('.b-form-err', form);
+    if (!p) { p = doc.createElement('p'); p.className = 'b-form-err'; p.setAttribute('role', 'alert'); btn.insertAdjacentElement('afterend', p); }
+    p.textContent = err && err.status && err.status < 500 && err.message && err.message.indexOf('HTTP') !== 0 ? err.message : porDefecto;
+    p.hidden = false;
+  }
+  function sinFalla(form) { var p = $('.b-form-err', form); if (p) p.hidden = true; }
 
   var TARIFA = {
     comision: 1.0,          /* % sobre el monto, en soles o dólares */
@@ -153,10 +173,19 @@
   });
 
   /* ================================================================ validación compartida */
+  /* adjuntos: PDF, JPG o PNG de hasta 5 MB */
+  function archivoOk(i) {
+    var f = i.files && i.files[0];
+    if (!f) return !i.required;
+    return f.size <= 5 * 1024 * 1024 && (/^(application\/pdf|image\/jpeg|image\/png)$/.test(f.type) || /\.(pdf|jpe?g|png)$/i.test(f.name));
+  }
   function valido(i) {
     var v = (i.value || '').trim();
     if (i.type === 'checkbox') return i.checked;
+    if (i.type === 'radio') return true;   /* los grupos de opciones se revisan aparte */
+    if (i.type === 'file') return archivoOk(i);
     if (i.tagName === 'SELECT') return !!v;
+    if (i.required && !v) return false;
     if (i.name === 'nombre') return v.length >= 3 && /\s/.test(v);
     if (i.name === 'ruc') return /^(10|15|17|20)\d{9}$/.test(v);
     if (i.name === 'celular') return /^9\d{8}$/.test(v.replace(/\D/g, ''));
@@ -186,15 +215,16 @@
     return bien;
   }
   function vigilar(form) {
-    $$('input, select', form).forEach(function (i) {
+    $$('input, select, textarea', form).forEach(function (i) {
+      if (i.type === 'radio') return;
       formatear(i);
       i.addEventListener('blur', function () { if (i.value || i.type === 'checkbox') i.dataset.t = '1'; if (i.dataset.t) marcar(i); });
       i.addEventListener('input', function () { if (i.dataset.t) marcar(i); });
-      i.addEventListener('change', function () { if (i.type === 'checkbox' || i.tagName === 'SELECT') marcar(i); });
+      i.addEventListener('change', function () { if (i.type === 'checkbox' || i.type === 'file' || i.tagName === 'SELECT') { i.dataset.t = '1'; marcar(i); } });
     });
   }
   function revisar(form) {
-    return $$('input[required], select[required]', form).filter(function (i) { i.dataset.t = '1'; return !marcar(i); });
+    return $$('input[required], select[required], textarea[required], input[type="file"]', form).filter(function (i) { i.dataset.t = '1'; return !marcar(i); });
   }
   function ocupado(btn, si) {
     var lbl = $('span', btn);
@@ -596,6 +626,7 @@
         var btn = $('.lf-send', evalf);
         ocupado(btn, true);
         var correo = evalf.elements.email.value.trim();
+        sinFalla(evalf);
         enviarWP('simulador', {
           producto: sim.dataset.prod || 'factoring', nombre: lead && lead.nombre, ruc: lead && lead.ruc, celular: lead && lead.celular,
           email: correo, monto: esFactoring() ? estado.monto : null, moneda: estado.cur, dias: esFactoring() ? estado.dias : null,
@@ -611,9 +642,9 @@
           if (panel && !V2) { evalf.hidden = true; ok.hidden = false; }
           paso('ok');
           ok.focus({ preventScroll: true });
-        }).catch(function () {
+        }).catch(function (err) {
           ocupado(btn, false);
-          alert('No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');
+          falla(evalf, err, 'No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');
         });
       });
     }
@@ -978,6 +1009,28 @@
     });
   });
 
+  /* ================================================================ testimonios: uno a la vez
+     Los puntos cambian de testimonio; rotan solos cada 8 s, se detienen con el cursor encima o con el foco
+     dentro, y en celular se pasan con el dedo. */
+  $$('.b-testi', root).forEach(function (t) {
+    var figs = $$('.b-testi-track > figure', t), dots = $$('.b-testi-nav button', t);
+    if (figs.length < 2) return;
+    var i = 0, timer = 0, quieto = false;
+    function ir(n) {
+      i = (n + figs.length) % figs.length;
+      figs.forEach(function (f, k) { f.classList.toggle('is-on', k === i); if (k === i) f.removeAttribute('aria-hidden'); else f.setAttribute('aria-hidden', 'true'); });
+      dots.forEach(function (d, k) { d.classList.toggle('is-on', k === i); if (k === i) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current'); });
+    }
+    function seguir() { clearInterval(timer); if (!reduce && !quieto) timer = setInterval(function () { ir(i + 1); }, 8000); }
+    dots.forEach(function (d, k) { d.addEventListener('click', function () { ir(k); seguir(); }); });
+    t.addEventListener('mouseenter', function () { quieto = true; clearInterval(timer); });
+    t.addEventListener('mouseleave', function () { quieto = false; seguir(); });
+    t.addEventListener('focusin', function () { quieto = true; clearInterval(timer); });
+    t.addEventListener('focusout', function (e) { if (!t.contains(e.relatedTarget)) { quieto = false; seguir(); } });
+    deslizar($('.b-testi-track', t), function (d) { ir(i + d); seguir(); });
+    seguir();
+  });
+
   /* ================================================================ soluciones B: avanzan de lado al bajar
      En escritorio la sección queda fija y el scroll vertical mueve las tarjetas en horizontal.
      En celular (o con movimiento reducido) queda como carrusel que se desliza con el dedo. */
@@ -1039,7 +1092,9 @@
       ocupado(btn, true);
       var datos = { nombre: form.elements.nombre.value.trim(), ruc: form.elements.ruc.value.trim(), celular: form.elements.celular.value.trim(), email: form.elements.email.value.trim() };
       var selc = form.elements.solucion;
+      sinFalla(form);
       enviarWP('contacto', { nombre: datos.nombre, ruc: datos.ruc, celular: datos.celular, email: datos.email,
+        razon: form.elements.razon ? form.elements.razon.value.trim() : '', web: form.elements.web ? form.elements.web.value : '',
         producto: selc ? selc.value : '', mensaje: form.elements.mensaje ? form.elements.mensaje.value.trim() : '' }).then(function () {
         ocupado(btn, false);
         lead = datos;
@@ -1048,9 +1103,9 @@
         $('[data-ok-name]', ok).textContent = primerNombre(lead.nombre) || 'gracias';
         $('[data-ok-prod]', ok).textContent = sel.options[sel.selectedIndex].text;
         form.hidden = true; ok.hidden = false; ok.focus({ preventScroll: true });
-      }).catch(function () {
+      }).catch(function (err) {
         ocupado(btn, false);
-        alert('No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');
+        falla(form, err, 'No pudimos enviar tu solicitud. Inténtalo de nuevo o escríbenos por WhatsApp.');
       });
     });
   });
@@ -1075,6 +1130,40 @@
       var n = $('[data-demo-ok]', form);
       if (n) n.hidden = false;
     });
+  });
+
+  $$('[data-reclamo]', root).forEach(function (form) {
+    vigilar(form);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var malos = revisar(form);
+      if (malos.length) { malos[0].focus(); return; }
+      var faltan = ['tipo_solicitud', 'categoria', 'medio'].filter(function (n) { return form.querySelector('input[name="' + n + '"]') && !form.querySelector('input[name="' + n + '"]:checked'); });
+      if (faltan.length) {
+        var g = form.querySelector('input[name="' + faltan[0] + '"]').closest('.b-opts');
+        g.classList.add('bad');
+        g.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+        return;
+      }
+      var btn = $('.lf-send', form), datos = {}, adj = form.elements.adjunto;
+      [].forEach.call(form.elements, function (el) {
+        if (!el.name || el.type === 'file' || el.type === 'submit') return;
+        if ((el.type === 'radio' || el.type === 'checkbox') && !el.checked) return;
+        datos[el.name] = el.value.trim();
+      });
+      ocupado(btn, true);
+      sinFalla(form);
+      enviarWP('reclamo', datos, adj && adj.files && adj.files[0]).then(function () {
+        ocupado(btn, false);
+        btn.hidden = true;
+        var ok = $('[data-reclamo-ok]', form);
+        if (ok) { ok.hidden = false; ok.focus({ preventScroll: true }); }
+      }).catch(function (err) {
+        ocupado(btn, false);
+        falla(form, err, 'No pudimos registrar tu reclamo. Inténtalo de nuevo o escríbenos a nuestro correo.');
+      });
+    });
+    form.addEventListener('change', function (e) { var g = e.target.closest && e.target.closest('.b-opts'); if (g) g.classList.remove('bad'); });
   });
 
   /* ================================================================ blog: filtros */
@@ -1123,6 +1212,54 @@
     palabras = $$('.w', cita);
     if (reduce) palabras.forEach(function (w) { w.classList.add('on'); });
   }
+
+  /* ================================================================ aviso de cookies
+     Aparece la primera vez y guarda la elección en este navegador (localStorage «fc-cookies»: «todas» o
+     «necesarias»). Avisa con el evento «fc:cookies» en document, para que una herramienta de medición se active
+     solo si se aceptan. Los enlaces a «#cookies» (Política de Cookies) lo vuelven a mostrar. */
+  /* textos y encendido desde Personalizar → Falcon Capital · aviso de cookies */
+  var CK = WP.cookies || null;
+  function eleccionCk() { try { return localStorage.getItem('fc-cookies'); } catch (e) { return 'sin-almacenamiento'; } }
+  function avisoCookies(forzar) {
+    if (!CK) return;
+    var box = $('.b-ck', root);
+    if (!box) {
+      if (!forzar && eleccionCk()) return;
+      box = doc.createElement('div');
+      box.className = 'b-ck';
+      box.setAttribute('role', 'region');
+      box.setAttribute('aria-label', 'Aviso de cookies');
+      var t = doc.createElement('b'), p = doc.createElement('p'), a = doc.createElement('a'), acts = doc.createElement('div');
+      t.textContent = CK.titulo;
+      p.textContent = CK.texto + ' ';
+      a.href = CK.url;
+      a.textContent = 'Política de Cookies';
+      p.appendChild(a);
+      acts.className = 'b-ck-acts';
+      [['todas', 'Aceptar', 'b-btn b-btn-em'], ['necesarias', 'Solo necesarias', 'b-btn b-ck-no']].forEach(function (o) {
+        var b = doc.createElement('button');
+        b.type = 'button';
+        b.className = o[2];
+        b.textContent = o[1];
+        b.addEventListener('click', function () {
+          try { localStorage.setItem('fc-cookies', o[0]); } catch (e) { /* sin almacenamiento */ }
+          box.classList.remove('is-on');
+          doc.dispatchEvent(new CustomEvent('fc:cookies', { detail: o[0] }));
+        });
+        acts.appendChild(b);
+      });
+      box.appendChild(t); box.appendChild(p); box.appendChild(acts);
+      root.appendChild(box);
+      box.getBoundingClientRect();
+    }
+    box.classList.add('is-on');
+    if (forzar) $('button', box).focus({ preventScroll: true });
+  }
+  setTimeout(function () { avisoCookies(false); }, reduce ? 0 : 1400);
+  root.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href$="#cookies"], [data-cookies-abrir]');
+    if (a) { e.preventDefault(); avisoCookies(true); }
+  });
 
   /* botón flotante y barra móvil: aparecen al dejar atrás el primer bloque */
   /* en WordPress las secciones están dentro de los contenedores de Elementor */

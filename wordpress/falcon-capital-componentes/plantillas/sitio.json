@@ -1,0 +1,157 @@
+{
+ "paginas": [
+  {
+   "ruta": "inicio",
+   "titulo": "Inicio",
+   "plantilla": "inicio.json",
+   "portada": true
+  },
+  {
+   "ruta": "factoring",
+   "titulo": "Factoring",
+   "plantilla": "factoring.json"
+  },
+  {
+   "ruta": "confirming",
+   "titulo": "Confirming",
+   "plantilla": "confirming.json"
+  },
+  {
+   "ruta": "capital-de-trabajo",
+   "titulo": "Capital de Trabajo",
+   "plantilla": "capital-de-trabajo.json"
+  },
+  {
+   "ruta": "simulador",
+   "titulo": "Simulador",
+   "plantilla": "simulador.json"
+  },
+  {
+   "ruta": "conocenos",
+   "titulo": "Conócenos",
+   "plantilla": "conocenos.json"
+  },
+  {
+   "ruta": "blog",
+   "titulo": "Blog",
+   "plantilla": "blog.json"
+  },
+  {
+   "ruta": "contactanos",
+   "titulo": "Contáctanos",
+   "plantilla": "contactanos.json"
+  },
+  {
+   "ruta": "preguntas-frecuentes",
+   "titulo": "Preguntas frecuentes",
+   "plantilla": "preguntas-frecuentes.json"
+  },
+  {
+   "ruta": "iniciar-sesion",
+   "titulo": "Iniciar sesión",
+   "plantilla": "iniciar-sesion.json"
+  },
+  {
+   "ruta": "registro",
+   "titulo": "Crea tu cuenta",
+   "plantilla": "registro.json"
+  },
+  {
+   "ruta": "libro-de-reclamaciones",
+   "titulo": "Libro de Reclamaciones",
+   "plantilla": "libro-de-reclamaciones.json"
+  },
+  {
+   "ruta": "gracias",
+   "titulo": "Gracias",
+   "plantilla": "gracias.json"
+  }
+ ],
+ "textos": [
+  {
+   "ruta": "politica-de-privacidad",
+   "titulo": "Política de Privacidad",
+   "extracto": "Tratamiento de los datos personales que recogemos en los formularios de la web y en Mi Portal Falcon.",
+   "rotulo": "Legal",
+   "contenido": "<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital debe entregar la Política de Privacidad aprobada por el área legal. Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>"
+  },
+  {
+   "ruta": "terminos-y-condiciones",
+   "titulo": "Términos y Condiciones",
+   "extracto": "Condiciones de uso de la web de Falcon Capital y de los servicios que se contratan a través de ella.",
+   "rotulo": "Legal",
+   "contenido": "<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital debe entregar los Términos y Condiciones aprobados por el área legal. Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>"
+  },
+  {
+   "ruta": "politica-de-cookies",
+   "titulo": "Política de Cookies",
+   "extracto": "Qué cookies utilizamos, para qué sirven y cómo puedes cambiar tus preferencias en cualquier momento.",
+   "rotulo": "Legal",
+   "contenido": "<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital debe entregar el detalle de las cookies que finalmente use la web. Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>\n<h2>Tus preferencias</h2>\n<p>El aviso de cookies aparece la primera vez que entras a la web y guarda tu elección en este navegador. Puedes volver a mostrarlo para cambiarla.</p>\n<p><a href=\"#cookies\">Cambiar mis preferencias de cookies</a></p>"
+  },
+  {
+   "ruta": "reglamento-de-factoring",
+   "titulo": "Reglamento de Factoring",
+   "extracto": "Condiciones bajo las que Falcon Capital realiza operaciones de factoring y descuento de facturas.",
+   "rotulo": "Legal",
+   "contenido": "<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital debe entregar el Reglamento de Factoring vigente. Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>"
+  },
+  {
+   "ruta": "constancia-de-registro",
+   "titulo": "Constancia de Registro",
+   "extracto": "Constancia de registro de Falcon Capital ante la Superintendencia de Banca, Seguros y AFP.",
+   "rotulo": "Legal",
+   "contenido": "<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital debe entregar la constancia emitida por la SBS. Al recibir el documento solo hay que pegar el texto aquí o enlazar el PDF.</div>"
+  }
+ ],
+ "entradas": [
+  {
+   "titulo": "Cómo mejorar la liquidez de tu empresa sin afectar su estructura financiera",
+   "categoria": "Factoring",
+   "foto": "blog-1.jpg",
+   "extracto": "",
+   "contenido": "<p>Cómo mejorar la liquidez de tu empresa sin afectar su estructura financiera. Este artículo está en preparación.</p><div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo.</div>",
+   "fijo": false,
+   "orden": 0,
+   "inicio": 0
+  },
+  {
+   "titulo": "5 señales de que tu empresa necesita mejorar su flujo de caja",
+   "categoria": "Factoring",
+   "foto": "blog-2.jpg",
+   "extracto": "",
+   "contenido": "<p>5 señales de que tu empresa necesita mejorar su flujo de caja. Este artículo está en preparación.</p><div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo.</div>",
+   "fijo": false,
+   "orden": 1,
+   "inicio": 1
+  },
+  {
+   "titulo": "Diferencias entre factoring y préstamo bancario: ¿cuál le conviene más a tu negocio?",
+   "categoria": "Factoring",
+   "foto": "blog-3.jpg",
+   "extracto": "",
+   "contenido": "<p>Diferencias entre factoring y préstamo bancario: ¿cuál le conviene más a tu negocio?. Este artículo está en preparación.</p><div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo.</div>",
+   "fijo": false,
+   "orden": 2
+  },
+  {
+   "titulo": "Ventajas del confirming para empresas con alta rotación de proveedores",
+   "categoria": "Confirming",
+   "foto": "blog-4.jpg",
+   "extracto": "Las empresas con alta rotación de proveedores necesitan herramientas financieras ágiles. Descubre cómo el confirming puede ayudarte.",
+   "contenido": "<p>El confirming es clave para empresas con alta rotación de proveedores, ya que tiene la capacidad de mejorar la liquidez, agilizar pagos, fidelizar socios de negocio y optimizar la gestión financiera.</p><p>En este artículo veremos cómo esta herramienta financiera disruptiva y efectiva puede brindarle a tu empresa múltiples ventajas.</p>\n<h2>¿Qué es el confirming y cómo funciona?</h2>\n<p>El <b>confirming</b> es un servicio financiero ofrecido por entidades financieras y empresas especializadas (como Falcon Capital) que gestiona los pagos de una empresa a sus proveedores.</p><p>El proceso es sencillo:</p><ol><li>La empresa envía a Falcon Capital la relación de facturas y fechas de pago.</li></ol>\n<div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo (minuta del 30/09).</div>",
+   "fijo": true,
+   "orden": 3
+  },
+  {
+   "titulo": "Confirming: la solución para optimizar el pago a tus proveedores",
+   "categoria": "Confirming",
+   "foto": "blog-5.jpg",
+   "extracto": "",
+   "contenido": "<p>Confirming: la solución para optimizar el pago a tus proveedores. Este artículo está en preparación.</p><div class=\"b-pending\"><b>Pendiente de contenido.</b> Falcon Capital enviará el texto completo del artículo.</div>",
+   "fijo": false,
+   "orden": 4,
+   "inicio": 2
+  }
+ ]
+}

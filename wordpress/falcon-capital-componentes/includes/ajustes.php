@@ -35,47 +35,19 @@ add_action( 'admin_menu', function () {
 				<?php submit_button(); ?>
 			</form>
 
-			<h2>Páginas</h2>
-			<?php if ( isset( $_GET['fcc_ok'] ) ) : ?>
-				<div class="notice notice-success"><p>Listo: la página <b>Inicio</b> quedó creada como portada. <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Verla</a></p></div>
+			<h2>Páginas del sitio</h2>
+			<?php if ( isset( $_GET['fcc_ok'] ) ) : $n = array_map( 'intval', explode( ',', sanitize_text_field( wp_unslash( $_GET['fcc_ok'] ) ) ) ); ?>
+				<div class="notice notice-success"><p>Listo: <?php echo (int) ( $n[0] ?? 0 ); ?> páginas creadas, <?php echo (int) ( $n[1] ?? 0 ); ?> restablecidas y <?php echo (int) ( $n[2] ?? 0 ); ?> entradas del blog. <a href="<?php echo esc_url( home_url( '/' ) ); ?>">Ver el sitio</a></p></div>
 			<?php endif; ?>
-			<p>Crea la página <b>Inicio</b> con las secciones del diseño aprobado (banner con simulador, soluciones, cifras, noticias…) y la deja como portada. Si ya existe, reemplaza su contenido de Elementor por el original.</p>
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-				<input type="hidden" name="action" value="fcc_crear_inicio">
-				<?php wp_nonce_field( 'fcc_crear_inicio' ); ?>
-				<?php submit_button( 'Crear la página Inicio', 'secondary', 'submit', false ); ?>
+			<p>Crea las páginas con el diseño aprobado: Inicio, Factoring, Confirming, Capital de Trabajo, Simulador, Conócenos, Blog, Contáctanos, Preguntas frecuentes, Iniciar sesión, Crea tu cuenta, Libro de Reclamaciones, Gracias y las páginas legales; además, las entradas de ejemplo del blog.</p>
+			<p>Las páginas se editan con Elementor (secciones en la categoría «Falcon Capital»); las legales, con el editor de WordPress.</p>
+			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+				<input type="hidden" name="action" value="fcc_instalar">
+				<?php wp_nonce_field( 'fcc_instalar' ); ?>
+				<?php submit_button( 'Crear lo que falta', 'primary', 'crear', false ); ?>
+				<?php submit_button( 'Restablecer las páginas al diseño original', 'secondary', 'restablecer', false, array( 'onclick' => "return confirm('Las páginas armadas con Elementor vuelven a la versión del diseño y se pierden los cambios hechos en ellas. ¿Continuar?')" ) ); ?>
 			</form>
 		</div>
 		<?php
 	} );
-} );
-
-/** Crea (o restablece) la página Inicio con la plantilla de Elementor incluida en el plugin. */
-add_action( 'admin_post_fcc_crear_inicio', function () {
-	if ( ! current_user_can( 'manage_options' ) ) {
-		wp_die( 'Sin permiso.' );
-	}
-	check_admin_referer( 'fcc_crear_inicio' );
-	$datos = file_get_contents( FCC_DIR . 'plantillas/inicio.json' );
-	$p     = get_page_by_path( 'inicio' );
-	$id    = $p ? $p->ID : wp_insert_post( array( 'post_type' => 'page', 'post_title' => 'Inicio', 'post_name' => 'inicio', 'post_status' => 'publish' ) );
-	if ( ! $id || is_wp_error( $id ) ) {
-		wp_die( 'No se pudo crear la página.' );
-	}
-	update_post_meta( $id, '_elementor_edit_mode', 'builder' );
-	update_post_meta( $id, '_elementor_template_type', 'wp-page' );
-	update_post_meta( $id, '_elementor_version', defined( 'ELEMENTOR_VERSION' ) ? ELEMENTOR_VERSION : '4.3.5' );
-	update_post_meta( $id, '_wp_page_template', 'elementor_header_footer' );
-	update_post_meta( $id, '_elementor_data', wp_slash( $datos ) );
-	update_option( 'show_on_front', 'page' );
-	update_option( 'page_on_front', $id );
-	/* sin las fuentes y colores por defecto de Elementor: el diseño usa Manrope y sus propios colores */
-	update_option( 'elementor_google_font', '0' );
-	update_option( 'elementor_disable_color_schemes', 'yes' );
-	update_option( 'elementor_disable_typography_schemes', 'yes' );
-	if ( class_exists( '\Elementor\Plugin' ) ) {
-		\Elementor\Plugin::$instance->files_manager->clear_cache();
-	}
-	wp_safe_redirect( admin_url( 'options-general.php?page=fcc-ajustes&fcc_ok=1' ) );
-	exit;
 } );
