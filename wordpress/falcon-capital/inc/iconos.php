@@ -26,7 +26,41 @@ function fc_icono( string $n, string $extra = '' ): string {
 		'libro' => '<svg viewBox="0 0 24 24"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8.5h6"/></svg>',
 		'correo' => '<svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3 7l9 6 9-6"/></svg>',
 		'reloj' => '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M12 6.5V12l3.6 2.4"/></svg>',
+		'tendencia' => '<svg viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></svg>',
+		'capas' => '<svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5M3 17l9 5 9-5"/></svg>',
+		'chat' => '<svg viewBox="0 0 24 24"><path d="M21 12a8.5 8.5 0 0 1-12.4 7.6L3 21l1.4-5.1A8.5 8.5 0 1 1 21 12z"/><path d="M8.5 12h.01M12 12h.01M15.5 12h.01"/></svg>',
+		'maletin' => '<svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M3 12.5h18"/></svg>',
+		'billete' => '<svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 9.5v5M18 9.5v5"/></svg>',
+		'caja' => '<svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+		'documento' => '<svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>',
+		'subir' => '<svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M12 17v-6M9.5 13.5 12 11l2.5 2.5"/></svg>',
+		'candado' => '<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>',
+		'calendario' => '<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg>',
+		'acuerdo' => '<svg viewBox="0 0 24 24"><path d="m11 17 2 2a1.4 1.4 0 0 0 2-2"/><path d="m14 14 2.5 2.5a1.4 1.4 0 0 0 2-2l-3-3.1"/><path d="m21 3-6.5 6.5L13 8 9.5 11.5a1.4 1.4 0 0 0 2 2L14 11"/><path d="M3 3l6.5 6.5M3 13l4 4"/></svg>',
+		'enlace' => '<svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1.2 1.2"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1.2-1.2"/></svg>',
+		'fabrica' => '<svg viewBox="0 0 24 24"><path d="M3 21V10l6 3.5V10l6 3.5V6l6 3v12z"/><path d="M7 17h2M12 17h2M17 17h2"/></svg>',
+		'tienda' => '<svg viewBox="0 0 24 24"><path d="M4 10v10h16V10"/><path d="M3 10l1.6-5h14.8L21 10"/><path d="M3 10a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0"/><path d="M10 20v-5h4v5"/></svg>',
+		'billetera' => '<svg viewBox="0 0 24 24"><path d="M19 9V6a1 1 0 0 0-1-1H5a2 2 0 0 0 0 4h15a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2V7"/><circle cx="16.5" cy="14.5" r="1.3"/></svg>',
+		'portapapeles' => '<svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="m9 13 2 2 4-4"/></svg>',
+		'etiqueta' => '<svg viewBox="0 0 24 24"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.4"/></svg>',
+		'candado-llave' => '<svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><path d="M12 15v2"/></svg>',
+		'cuadricula' => '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>',
+		'barras' => '<svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V5M19 20v-7"/></svg>',
 	);
 	$s = $i[ $n ] ?? '';
 	return $extra && $s ? preg_replace( '/^<svg/', '<svg ' . $extra, $s ) : $s;
+}
+
+/** Íconos que se pueden elegir en los widgets (nombre → etiqueta). */
+function fc_iconos_opciones(): array {
+	return array(
+		'check' => 'Check', 'escudo' => 'Escudo', 'rayo' => 'Rayo', 'asesor' => 'Asesor (audífonos)', 'balanza' => 'Balanza',
+		'factoring' => 'Factura', 'confirming' => 'Flechas', 'capital' => 'Gráfico de crecimiento', 'tendencia' => 'Tendencia',
+		'capas' => 'Capas', 'chat' => 'Conversación', 'maletin' => 'Maletín', 'billete' => 'Billete', 'caja' => 'Caja',
+		'documento' => 'Documento', 'subir' => 'Subir documento', 'candado' => 'Candado', 'candado-llave' => 'Candado con llave',
+		'calendario' => 'Calendario', 'acuerdo' => 'Acuerdo (apretón de manos)', 'enlace' => 'Enlace', 'fabrica' => 'Fábrica',
+		'tienda' => 'Tienda', 'billetera' => 'Billetera', 'portapapeles' => 'Portapapeles', 'etiqueta' => 'Etiqueta',
+		'cuadricula' => 'Cuadrícula', 'barras' => 'Barras', 'reloj' => 'Reloj', 'correo' => 'Correo', 'whatsapp' => 'WhatsApp',
+		'ubicacion' => 'Ubicación',
+	);
 }

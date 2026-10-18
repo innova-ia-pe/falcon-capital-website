@@ -40,11 +40,13 @@ function fcc_href( $url, string $porDefecto = '#' ): string {
 	$u = is_array( $url ) ? ( $url['url'] ?? '' ) : (string) $url;
 	$u = $u !== '' ? $u : $porDefecto;
 	$a = 'href="' . esc_url( fcc_resolver( $u ) ) . '"';
-	if ( is_array( $url ) && ! empty( $url['is_external'] ) ) {
+	/* WhatsApp y enlaces marcados como externos se abren en otra pestaña */
+	$externo = ( is_array( $url ) && ! empty( $url['is_external'] ) ) || str_starts_with( $u, 'whatsapp:' ) || str_contains( $u, 'wa.me/' );
+	if ( $externo ) {
 		$a .= ' target="_blank"';
 	}
-	if ( is_array( $url ) && ( ! empty( $url['nofollow'] ) || ! empty( $url['is_external'] ) ) ) {
-		$a .= ' rel="noopener' . ( ! empty( $url['nofollow'] ) ? ' nofollow' : '' ) . '"';
+	if ( $externo || ( is_array( $url ) && ! empty( $url['nofollow'] ) ) ) {
+		$a .= ' rel="noopener' . ( is_array( $url ) && ! empty( $url['nofollow'] ) ? ' nofollow' : '' ) . '"';
 	}
 	return $a;
 }
@@ -66,4 +68,35 @@ function fcc_resolver( string $u ): string {
 /** Valor por defecto de un control URL. */
 function fcc_url( string $u ): array {
 	return array( 'url' => $u, 'is_external' => '', 'nofollow' => '' );
+}
+
+/** Enlace a una página del sitio por su ruta. */
+function fcc_pag( string $ruta ): string {
+	return function_exists( 'fc_pagina' ) ? fc_pagina( $ruta ) : home_url( '/' . $ruta . '/' );
+}
+
+/** Opciones del selector de ícono en los widgets. */
+function fcc_iconos(): array {
+	return function_exists( 'fc_iconos_opciones' ) ? fc_iconos_opciones() : array( 'check' => 'Check' );
+}
+
+/** Líneas no vacías de un campo de texto (una por renglón). */
+function fcc_lineas( $s ): array {
+	return array_values( array_filter( array_map( 'trim', preg_split( '/\r\n|\r|\n/', (string) $s ) ), 'strlen' ) );
+}
+
+/** Párrafos separados por una línea en blanco, cada uno con la animación de entrada del diseño. */
+function fcc_parrafos( $s, string $clase_primero = '' ): string {
+	$out = '';
+	$i   = 0;
+	foreach ( preg_split( '/\n\s*\n/', trim( (string) $s ) ) as $p ) {
+		$p = trim( $p );
+		if ( $p === '' ) {
+			continue;
+		}
+		$c    = ( $i === 0 && $clase_primero ) ? ' class="' . esc_attr( $clase_primero ) . '"' : '';
+		$out .= '<p' . $c . ' data-r="up">' . fcc_txt( nl2br( $p, false ) ) . '</p>';
+		$i++;
+	}
+	return $out;
 }

@@ -10,11 +10,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'FC_TEMA_VER', '0.1.0' );
+define( 'FC_TEMA_VER', '0.2.0' );
 define( 'FC_TEMA_URI', get_stylesheet_directory_uri() );
 define( 'FC_TEMA_DIR', get_stylesheet_directory() );
 
 require_once FC_TEMA_DIR . '/inc/iconos.php';
+require_once FC_TEMA_DIR . '/inc/plantillas.php';
 
 /** URL de una imagen incluida en el tema. */
 function fc_img( string $archivo ): string {
@@ -40,6 +41,8 @@ function fc_dato( string $clave ): string {
 		'instagram' => 'https://www.instagram.com/falcon.capital_',
 		'login'     => '',
 		'registro'  => '',
+		'cookies_titulo' => 'Usamos cookies',
+		'cookies_texto'  => 'Usamos cookies propias y de terceros para que la web funcione y, si lo aceptas, para medir cómo se usa y mejorarla.',
 	);
 	$v = get_theme_mod( 'fc_' . $clave, $porDefecto[ $clave ] ?? '' );
 	return is_string( $v ) ? $v : '';
@@ -55,6 +58,8 @@ add_action( 'after_setup_theme', function () {
 	add_theme_support( 'post-thumbnails' );
 	add_theme_support( 'html5', array( 'search-form', 'gallery', 'caption', 'style', 'script' ) );
 	register_nav_menus( array( 'pie-legal' => 'Pie · enlaces legales' ) );
+	/* las páginas de texto usan el extracto como bajada de la cabecera */
+	add_post_type_support( 'page', 'excerpt' );
 }, 20 );
 
 /* Hello Elementor: sin sus estilos ni su cabecera y pie (los reemplaza el diseño de Falcon) */
@@ -84,7 +89,8 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'fc-base', FC_TEMA_URI . '/assets/css/base.css', array(), $v );
 	wp_enqueue_style( 'fc-impulso', FC_TEMA_URI . '/assets/css/impulso.css', array( 'fc-base' ), $v );
 	wp_enqueue_style( 'fc-banner', FC_TEMA_URI . '/assets/css/banner.css', array( 'fc-impulso' ), $v );
-	wp_enqueue_style( 'fc-wp', FC_TEMA_URI . '/assets/css/wp.css', array( 'fc-banner' ), $v );
+	wp_enqueue_style( 'fc-paginas', FC_TEMA_URI . '/assets/css/paginas.css', array( 'fc-banner' ), $v );
+	wp_enqueue_style( 'fc-wp', FC_TEMA_URI . '/assets/css/wp.css', array( 'fc-paginas' ), $v );
 	wp_enqueue_script( 'fc-falcon', FC_TEMA_URI . '/assets/js/falcon.js', array(), $v, array( 'in_footer' => true ) );
 	wp_localize_script( 'fc-falcon', 'FC_WP', array(
 		'img'   => trailingslashit( FC_TEMA_URI . '/assets/img' ),
@@ -92,6 +98,12 @@ add_action( 'wp_enqueue_scripts', function () {
 		'rest'  => esc_url_raw( rest_url( 'falcon/v1/' ) ),
 		'nonce' => wp_create_nonce( 'wp_rest' ),
 		'tasa'  => (float) get_option( 'fc_tasa_tem', 1.80 ),
+		/* aviso de cookies: vacío si se apagó en Personalizar */
+		'cookies' => get_theme_mod( 'fc_cookies_on', true ) ? array(
+			'titulo' => fc_dato( 'cookies_titulo' ),
+			'texto'  => fc_dato( 'cookies_texto' ),
+			'url'    => fc_pagina( 'politica-de-cookies' ),
+		) : '',
 	) );
 }, 100 ); /* después de los estilos de Elementor, para que el diseño gane en empates */
 
@@ -113,4 +125,14 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 		$c->add_setting( 'fc_' . $k, array( 'default' => fc_dato( $k ), 'sanitize_callback' => 'sanitize_text_field' ) );
 		$c->add_control( 'fc_' . $k, array( 'label' => $etq, 'section' => 'fc_datos', 'type' => 'text' ) );
 	}
+
+	/* aviso de cookies: aparece la primera vez; la elección queda en el navegador del visitante */
+	$c->add_section( 'fc_cookies', array( 'title' => 'Falcon Capital · aviso de cookies', 'priority' => 31,
+		'description' => 'Se muestra la primera vez que alguien entra. «Aceptar» o «Solo necesarias» queda guardado en su navegador; una herramienta de medición puede esperar el evento «fc:cookies» para activarse solo si se aceptan.' ) );
+	$c->add_setting( 'fc_cookies_on', array( 'default' => true, 'sanitize_callback' => 'rest_sanitize_boolean' ) );
+	$c->add_control( 'fc_cookies_on', array( 'label' => 'Mostrar el aviso de cookies', 'section' => 'fc_cookies', 'type' => 'checkbox' ) );
+	$c->add_setting( 'fc_cookies_titulo', array( 'default' => fc_dato( 'cookies_titulo' ), 'sanitize_callback' => 'sanitize_text_field' ) );
+	$c->add_control( 'fc_cookies_titulo', array( 'label' => 'Título', 'section' => 'fc_cookies', 'type' => 'text' ) );
+	$c->add_setting( 'fc_cookies_texto', array( 'default' => fc_dato( 'cookies_texto' ), 'sanitize_callback' => 'sanitize_textarea_field' ) );
+	$c->add_control( 'fc_cookies_texto', array( 'label' => 'Texto (al final se agrega el enlace a la Política de Cookies)', 'section' => 'fc_cookies', 'type' => 'textarea' ) );
 } );

@@ -1,7 +1,7 @@
 <?php
 /**
- * Blog: las últimas entradas publicadas (con su imagen destacada y categoría). Mientras no haya entradas,
- * muestra las tres tarjetas de ejemplo del diseño.
+ * Blog: entradas elegidas en el widget o, si no se eligió ninguna, las últimas publicadas (con su imagen destacada y
+ * categoría). Mientras no haya entradas, muestra las tres tarjetas de ejemplo del diseño.
  */
 defined( 'ABSPATH' ) || exit;
 
@@ -10,7 +10,7 @@ use Elementor\Controls_Manager;
 class FCC_Blog extends FCC_Widget {
 
 	public function get_name() { return 'fc-blog'; }
-	public function get_title() { return 'Blog (últimas entradas)'; }
+	public function get_title() { return 'Blog (entradas destacadas)'; }
 	public function get_icon() { return 'eicon-posts-grid'; }
 
 	protected function register_controls() {
@@ -19,9 +19,20 @@ class FCC_Blog extends FCC_Widget {
 		$this->texto( 'titulo', 'Título', 'Entiende tus finanzas. Impulsa tu negocio', 'textarea' );
 		$this->texto( 'boton', 'Botón', 'Ver el blog' );
 		$this->enlace( 'boton_url', 'Destino del botón', '/blog/' );
-		$this->add_control( 'cantidad', array( 'label' => 'Entradas', 'type' => Controls_Manager::NUMBER, 'min' => 1, 'max' => 6, 'default' => 3 ) );
-		$this->nota( 'nota', 'Muestra las últimas entradas publicadas en <b>Entradas</b>. Si aún no hay, se ven tarjetas de ejemplo.' );
+		$this->add_control( 'elegidas', array( 'label' => 'Entradas a mostrar', 'type' => Controls_Manager::SELECT2, 'multiple' => true, 'label_block' => true,
+			'options' => $this->entradas(), 'default' => array(), 'description' => 'En el orden en que las elijas. Vacío: las últimas publicadas.' ) );
+		$this->add_control( 'cantidad', array( 'label' => 'Cuántas (si no se eligen)', 'type' => Controls_Manager::NUMBER, 'min' => 1, 'max' => 6, 'default' => 3 ) );
+		$this->nota( 'nota', 'Las entradas salen de <b>Entradas</b>, con su imagen destacada y su categoría. Si aún no hay ninguna, se ven tarjetas de ejemplo.' );
 		$this->cerrar();
+	}
+
+	/** Entradas publicadas para elegir en el widget (id => título). */
+	private function entradas(): array {
+		$o = array();
+		foreach ( get_posts( array( 'numberposts' => 100, 'post_status' => 'publish', 'ignore_sticky_posts' => true ) ) as $p ) {
+			$o[ (string) $p->ID ] = get_the_title( $p );
+		}
+		return $o;
 	}
 
 	private function tarjeta( string $url, string $img, string $cat, string $tit ): void {
@@ -35,7 +46,9 @@ class FCC_Blog extends FCC_Widget {
 
 	protected function render() {
 		$s     = $this->get_settings_for_display();
-		$posts = get_posts( array( 'numberposts' => max( 1, (int) $s['cantidad'] ), 'post_status' => 'publish', 'ignore_sticky_posts' => true ) );
+		$ids   = array_filter( array_map( 'absint', (array) ( $s['elegidas'] ?? array() ) ) );
+		$posts = $ids ? get_posts( array( 'post__in' => $ids, 'orderby' => 'post__in', 'numberposts' => count( $ids ), 'post_status' => 'publish', 'ignore_sticky_posts' => true ) )
+			: get_posts( array( 'numberposts' => max( 1, (int) $s['cantidad'] ), 'post_status' => 'publish', 'ignore_sticky_posts' => true ) );
 		$posts = array_filter( $posts, fn( $p ) => $p->post_name !== 'hello-world' );
 		?>
 <section class="b-sec b-blog" id="b-blog" data-sec="blog">

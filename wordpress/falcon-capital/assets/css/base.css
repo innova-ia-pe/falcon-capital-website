@@ -50,7 +50,7 @@ ul,ol{margin:0}
 .lf-sel select option{color:#062A2F}
 .lf-sel svg{position:absolute;right:14px;width:16px;height:16px;pointer-events:none;color:var(--lf-l)}
 .lf-err{display:none;font-style:normal;font-size:12.5px;font-weight:600;color:var(--lf-bad)}
-.lf.bad input,.lf.bad .lf-ph,.lf.bad .lf-sel{border-color:var(--lf-bad)}
+.lf.bad input,.lf.bad textarea,.lf.bad .lf-ph,.lf.bad .lf-sel{border-color:var(--lf-bad)}
 .lf.bad .lf-ph input{border:0}
 .lf.bad .lf-err{display:block}
 .lf-ck{display:flex;gap:10px;align-items:flex-start;margin-top:16px;font-size:13.5px;line-height:1.5;color:var(--lf-l);cursor:pointer}

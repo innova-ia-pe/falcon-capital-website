@@ -4,8 +4,8 @@
  */
 defined( 'ABSPATH' ) || exit;
 
-$login    = fc_dato( 'login' ) ?: fc_pagina( 'contactanos' );
-$registro = fc_dato( 'registro' ) ?: fc_pagina( 'contactanos' );
+$login    = fc_dato( 'login' ) ?: fc_pagina( 'iniciar-sesion' );
+$registro = fc_dato( 'registro' ) ?: fc_pagina( 'registro' );
 $actual   = function ( string $ruta ): string {
 	return is_page( $ruta ) ? ' aria-current="page"' : '';
 };

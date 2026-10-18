@@ -1,6 +1,6 @@
 /* ==========================================================================
    Falcon Capital · ajustes para WordPress y Elementor
-   base.css, impulso.css y banner.css son las hojas del prototipo aprobado, sin cambios. Aquí solo va lo que
+   base.css, impulso.css, banner.css y paginas.css son las hojas del prototipo aprobado, sin cambios. Aquí solo va lo que
    cambia al estar dentro de WordPress: sin barra de presentación, barra de administración y contenedores de
    Elementor.
    ========================================================================== */
@@ -25,8 +25,48 @@ body.admin-bar{--pbar:32px}
   --content-width:100%;--container-max-width:100%;padding:0;gap:0;max-width:none}
 .fc-main .elementor-widget[class*="elementor-widget-fc-"]{width:100%;margin:0}
 .fc-main .elementor-widget[class*="elementor-widget-fc-"]>.elementor-widget-container{padding:0;margin:0}
-/* Elementor reinicia el alto de todas las imágenes (.elementor img{height:auto}); el diseño fija algunos */
-.pb .elementor .b-hero-bg img,.pb .elementor .bh2-photo,.pb .elementor .bh3-photo{height:100%}
-.pb .elementor .b-cta-bg{height:100%}
+/* Elementor reinicia imágenes y figuras (.elementor img{height:auto;border-radius:0}, figure{margin:0}) con más
+   peso que algunas reglas del diseño; aquí se devuelven los valores del prototipo */
+.pb .elementor .b-hero-bg img{height:100%}
+.pb .elementor .b-cta-bg{height:124%}
+@media (max-width:980px){.pb .elementor .b-why-mob{height:220px;border-radius:20px}}
 /* en el editor de Elementor las secciones se ven completas aunque el script de animaciones no haya corrido */
 .elementor-editor-active .pb [data-r]{opacity:1!important;transform:none!important}
+
+/* contenido del editor de WordPress dentro del documento claro (artículos y páginas de texto) */
+.b-wp>*+*{margin-top:18px}
+.b-wp h2{margin:44px 0 16px;font-size:clamp(24px,2.2vw,32px);line-height:1.15;letter-spacing:-.03em;color:var(--ink)}
+.b-wp h3{margin:32px 0 12px;font-size:clamp(19px,1.6vw,23px);line-height:1.25;letter-spacing:-.02em;color:var(--ink)}
+.b-wp h4{margin:26px 0 10px;font-size:18px;color:var(--ink)}
+.b-wp ul,.b-wp ol{margin-top:12px;padding-left:22px}
+.b-wp li+li{margin-top:6px}
+.b-wp a:not(.b-btn){color:#0A6E62;font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.b-wp strong,.b-wp b{color:var(--ink)}
+.b-wp blockquote{margin:28px 0;padding:18px 24px;border-left:3px solid #00C08B;border-radius:0 16px 16px 0;background:#fff;color:var(--ink);font-size:19px;line-height:1.6}
+.b-wp figure{margin:28px 0}
+.b-wp img{height:auto;border-radius:18px}
+.b-wp figcaption{margin-top:8px;font-size:13.5px;color:var(--ink2)}
+.b-wp table{width:100%;border-collapse:collapse;font-size:15px}
+.b-wp th,.b-wp td{padding:10px 12px;border-bottom:1px solid rgba(6,42,47,.12);text-align:left}
+.b-wp .b-pending{margin-top:28px}
+.b-wp .b-pending b{color:inherit}
+.b-wp>.b-art-cta{margin-top:40px}
+.b-wp>.b-doc-acts{margin-top:36px}
+
+/* paginación del archivo del blog */
+.b-pag{display:flex;justify-content:center;gap:8px;margin-top:40px}
+.b-pag .page-numbers{display:grid;place-items:center;min-width:44px;height:44px;padding:0 12px;border-radius:999px;border:1px solid rgba(6,42,47,.15);font-weight:700;color:var(--ink)}
+.b-pag .page-numbers.current{background:var(--ink);border-color:var(--ink);color:#fff}
+.b-pag svg{width:16px;height:16px}
+
+/* Libro de Reclamaciones: grupo de opciones sin elegir */
+.b-opts.bad .b-opt{border-color:var(--lf-bad)}
+/* formularios: aviso si el envío falla (red, límite de envíos o archivo no válido) */
+.b-form-err{margin-top:14px;padding:12px 14px;border-radius:12px;font-size:13.5px;font-weight:600;line-height:1.5;color:var(--lf-bad);
+  background:color-mix(in srgb,var(--lf-bad) 9%,transparent);border:1px solid color-mix(in srgb,var(--lf-bad) 35%,transparent)}
+
+/* El diseño ajusta la sección que sigue a la cabecera corta (.b-phero-s+.b-sec); en Elementor cada sección va en
+   su propio contenedor, así que la regla se aplica entre contenedores */
+.e-con:has(.b-phero-s)+.e-con .b-sec{padding-top:clamp(44px,6vw,80px)}
+.e-con:has(.b-phero-s)+.e-con .b-sec.b-art{padding-top:clamp(52px,6vw,88px)}
+.e-con:has(.b-blog)+.e-con .b-testis{padding-top:0}
