@@ -59,6 +59,6 @@ el brief, la maqueta y lo que el sitio hace de verdad; Falcon debe validarlos (l
 
 Validar los artículos y los textos legales (razón social, RUC e inscripción del banco de datos), el Reglamento de
 Factoring y la constancia de la SBS, testimonios reales (los tres actuales son formato de ejemplo), video
-institucional, cifras validadas («+150 mypes», «S/ 300 M», «48 horas» en Factoring y Conócenos), base de
+institucional, cifras validadas («+150 mypes», «S/ 300 M»; los plazos como «48 horas» se retiraron hasta validarlos, minuta 007), base de
 conocimiento y reglas del asistente, destino y plazos del Libro de Reclamaciones y la definición de Mi Portal Falcon
 (acceso y registro).
