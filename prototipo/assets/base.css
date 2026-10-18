@@ -110,6 +110,9 @@ ul,ol{margin:0}
 .vmodal-ph svg{width:46px;height:46px;color:#6FE6AD}
 .vmodal-ph b{font-size:22px;letter-spacing:-.02em}
 .vmodal-ph span{max-width:30em;font-size:15px;color:rgba(233,242,239,.68)}
+.vmodal-ph[hidden]{display:none}
+.vmodal-media{position:absolute;inset:0;background:#000}
+.vmodal-media iframe,.vmodal-media video{display:block;width:100%;height:100%;border:0}
 .vmodal-x{position:absolute;top:14px;right:14px;z-index:2;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;
   background:rgba(255,255,255,.1);color:#fff}
 .vmodal-x svg{width:18px;height:18px}

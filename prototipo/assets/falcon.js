@@ -1067,10 +1067,39 @@
 
   /* ================================================================ video, horario */
   var vm = $('[data-vmodal]'), vFoco = null;
-  function cerrarVideo() { vm.hidden = true; html.classList.remove('lock'); if (vFoco) vFoco.focus({ preventScroll: true }); }
+  /* enlace del video (campo del widget): YouTube, Vimeo o un archivo .mp4; sin enlace queda el aviso */
+  function videoEmbebido(u) {
+    var m = (u || '').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/)|youtu\.be\/)([\w-]{11})/);
+    if (m) return '<iframe src="https://www.youtube-nocookie.com/embed/' + m[1] + '?autoplay=1&rel=0" title="Video institucional" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+    m = (u || '').match(/vimeo\.com\/(?:video\/)?(\d+)/);
+    if (m) return '<iframe src="https://player.vimeo.com/video/' + m[1] + '?autoplay=1" title="Video institucional" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+    if (/^https?:\/\/[^\s"']+\.mp4(\?[^\s"']*)?$/i.test(u || '')) return '<video src="' + u + '" controls autoplay playsinline></video>';
+    return '';
+  }
+  function cerrarVideo() {
+    vm.hidden = true;
+    html.classList.remove('lock');
+    var r = $('.vmodal-media', vm);
+    if (r) r.remove();   /* detiene la reproducción */
+    $('.vmodal-ph', vm).hidden = false;
+    if (vFoco) vFoco.focus({ preventScroll: true });
+  }
   if (vm) {
     $$('[data-video]', root).forEach(function (b) {
-      b.addEventListener('click', function () { vFoco = b; vm.hidden = false; html.classList.add('lock'); $('.vmodal-x', vm).focus({ preventScroll: true }); });
+      b.addEventListener('click', function () {
+        vFoco = b;
+        var emb = videoEmbebido(b.getAttribute('data-video-url'));
+        if (emb) {
+          var cont = doc.createElement('div');
+          cont.className = 'vmodal-media';
+          cont.innerHTML = emb;
+          $('.vmodal-box', vm).appendChild(cont);
+          $('.vmodal-ph', vm).hidden = true;
+        }
+        vm.hidden = false;
+        html.classList.add('lock');
+        $('.vmodal-x', vm).focus({ preventScroll: true });
+      });
     });
     $$('[data-close]', vm).forEach(function (c) { c.addEventListener('click', cerrarVideo); });
     vm.addEventListener('keydown', function (e) { if (e.key === 'Escape') cerrarVideo(); });
