@@ -285,11 +285,34 @@ label.b-f:focus-within{background:rgba(234,243,240,.06)}
 .b-sign{display:flex;flex-direction:column;margin-top:30px;padding-left:18px;border-left:2px solid var(--mint)}
 .b-sign b{font-size:18px}
 .b-sign span{font-size:14.5px;color:var(--tx2)}
-.b-ceo-photo{position:relative;display:flex;justify-content:center;align-items:flex-end;margin:0}
-.b-ceo-arc{position:absolute;left:50%;bottom:0;width:72%;height:86%;transform:translateX(-50%);border-radius:240px 240px 0 0;
-  background:linear-gradient(180deg,rgba(111,230,173,.22),rgba(111,230,173,.04));border:1px solid rgba(111,230,173,.3);border-bottom:0;
-  -webkit-mask:linear-gradient(180deg,#000 60%,transparent);mask:linear-gradient(180deg,#000 60%,transparent)}
-.b-ceo-photo img{position:relative;height:clamp(460px,50vw,700px);width:auto;max-width:none;-webkit-mask:linear-gradient(180deg,#000 80%,transparent 99%);mask:linear-gradient(180deg,#000 80%,transparent 99%)}
+/* fondo de la foto: el isotipo a gran escala. La pieza de arriba va detrás de Julio; la de abajo, de vidrio, delante:
+   él queda entre las dos y el corte de la foto se pierde tras el vidrio. Las piezas encajan al entrar la sección. */
+.b-ceo-photo{--h:clamp(460px,50vw,700px);--s:calc(var(--h)*.92);position:relative;display:flex;justify-content:center;align-items:flex-end;margin:0}
+.b-ceo-photo::before,.b-ceo-arc,.b-ceo-photo::after{content:"";position:absolute;left:50%;bottom:calc(var(--s)*-.035);width:var(--s);height:var(--s);
+  margin-left:calc(var(--s)*-.47);pointer-events:none}
+.b-ceo-photo::before{bottom:0;width:calc(var(--s)*1.5);height:calc(var(--s)*1.25);margin-left:calc(var(--s)*-.75);
+  background:radial-gradient(closest-side at 50% 42%,rgba(111,230,173,.2),transparent),radial-gradient(rgba(180,249,218,.3) 1px,transparent 1.6px) 0 0/22px 22px;
+  -webkit-mask:radial-gradient(closest-side,#000 25%,transparent);mask:radial-gradient(closest-side,#000 25%,transparent)}
+.b-ceo-arc{background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193' preserveAspectRatio='none'><path d='M132 6H87L6 85v48h42V67a20 20 0 0 1 20-20h64z' fill='none' stroke='%23D8FFEE' stroke-opacity='.75' stroke-width='2' vector-effect='non-scaling-stroke'/></svg>") 0 0/100% 100%,
+    linear-gradient(45deg,#62D9A5 4%,#1F9A80 40%,#0A4D53 86%);
+  -webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193'><path d='M132 6H87L6 85v48h42V67a20 20 0 0 1 20-20h64z'/></svg>") 0 0/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193'><path d='M132 6H87L6 85v48h42V67a20 20 0 0 1 20-20h64z'/></svg>") 0 0/100% 100% no-repeat}
+.b-ceo-photo::after{z-index:1;
+  background:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193' preserveAspectRatio='none'><path d='M186 60H144v65a20 20 0 0 1-20 20H60v41h45l81-79z' fill='none' stroke='%23D8FFEE' stroke-opacity='.8' stroke-width='2' vector-effect='non-scaling-stroke'/></svg>") 0 0/100% 100%,
+    linear-gradient(110deg,transparent 42%,rgba(234,243,240,.22) 50%,transparent 58%) 100% 0/260% 100% no-repeat,
+    linear-gradient(225deg,rgba(180,249,218,.42),rgba(30,190,142,.16) 48%,rgba(0,75,84,.38));
+  -webkit-backdrop-filter:blur(14px) saturate(1.35);backdrop-filter:blur(14px) saturate(1.35);
+  -webkit-mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193'><path d='M186 60H144v65a20 20 0 0 1-20 20H60v41h45l81-79z'/></svg>") 0 0/100% 100% no-repeat;
+  mask:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 193 193'><path d='M186 60H144v65a20 20 0 0 1-20 20H60v41h45l81-79z'/></svg>") 0 0/100% 100% no-repeat}
+/* la pierna no asoma fuera del vidrio: la foto se corta en la diagonal de la pieza de abajo (misma geometría: --s, -.47) */
+.b-ceo-photo img{position:relative;height:var(--h);width:auto;max-width:none;filter:drop-shadow(0 26px 34px rgba(1,14,16,.45));-webkit-mask:linear-gradient(180deg,#000 84%,transparent 99%);mask:linear-gradient(180deg,#000 84%,transparent 99%);
+  clip-path:polygon(0 0,100% 0,100% 84.2%,64.6% 100%,0 100%)}
+.b-ceo-arc,.b-ceo-photo::after{transition:transform 1.5s var(--e-out),opacity 1.2s var(--e-out)}
+.js .b-ceo-photo:has(img:not(.in)) .b-ceo-arc{transform:translate3d(-10%,-10%,0);opacity:0}
+.js .b-ceo-photo:has(img:not(.in))::after{transform:translate3d(10%,10%,0);opacity:0}
+.b-ceo-photo:has(img.in)::after{animation:fc-brillo 9s 1.4s ease-in-out infinite}
+@keyframes fc-brillo{0%{background-position:0 0,100% 0,0 0}28%,100%{background-position:0 0,-10% 0,0 0}}
+@media (prefers-reduced-motion:reduce){.b-ceo-photo:has(img.in)::after{animation:none}}
 
 /* actualidad */
 .b-act{overflow:hidden;background:linear-gradient(180deg,var(--bg) 0%,#073130 22%,#073130 78%,var(--bg) 100%)}
@@ -766,7 +789,7 @@ a.b-ch:hover .b-ch-v svg{transform:translate(3px,-3px)}
   .b-stack-img{aspect-ratio:16/10}
   .b-ceo-grid{grid-template-columns:1fr}
   .b-ceo-txt{padding-bottom:0}
-  .b-ceo-photo img{height:min(580px,115vw)}
+  .b-ceo-photo{--h:min(580px,115vw)}
   .b-bubble::after{display:none}
   .b-ft-cols{grid-template-columns:repeat(2,minmax(0,1fr))}
   .b-ft-brand{grid-column:1/-1}
@@ -923,9 +946,15 @@ a.b-ch:hover .b-ch-v svg{transform:translate(3px,-3px)}
 .b-group-i b{font-size:17px;letter-spacing:-.015em;color:var(--tx)}
 .b-group-i span{font-size:14px;line-height:1.45;color:var(--tx2)}
 @media (max-width:760px){
-  .b-stats li{min-height:0}
-  .b-stats li:last-child{grid-column:1/-1}
-  .b-stats b{font-size:clamp(52px,15vw,72px)}
+  /* celular: la primera cifra a todo el ancho y las otras dos lado a lado */
+  .b-stats{grid-template-columns:1fr 1fr;gap:12px}
+  .b-stats li{min-height:0;padding:24px 20px 22px}
+  .b-stats li:first-child{grid-column:1/-1}
+  .b-stats li:last-child{grid-column:auto}
+  .b-stats li::before{left:20px;right:20px}
+  .b-stats b{font-size:clamp(46px,12.5vw,72px)}
+  .b-stats li:first-child b{font-size:clamp(56px,16vw,80px)}
+  .b-stats li>span:last-child{font-size:15px}
   .b-group{grid-template-columns:1fr}
   .b-group-i{gap:16px;padding:14px 18px 14px 14px}
   .b-group-i .b-plate{width:130px;height:62px}
