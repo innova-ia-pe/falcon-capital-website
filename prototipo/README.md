@@ -44,6 +44,15 @@ Tres pasos: tus datos → simulación → evaluación. Fórmula del instructivo 
 25/09/2026) con la TEM de pizarra de 1.80 % (minuta 006) y comisión de 1 % más IGV. Historial de decisiones en
 `PROPUESTAS.md`.
 
+## Versión premium
+
+Cada página tiene su versión premium con el mismo nombre terminado en `-v2.html` (por ejemplo `index-v2.html`):
+misma estructura y contenido, otro acabado. Íconos propios de la marca (trazo claro y acento con el degradado del
+isotipo), fichas con cortes a 45° como el isotipo, bordes con degradado y una luz suave que sigue al cursor, logos de
+aliados en blanco sobre vidrio, botones con volumen y titulares con el degradado. La capa vive en
+`assets/premium.css` y `assets/premium.js`; las páginas `-v2` se generan con
+`python wordpress/herramientas/prototipo_v2.py` (no se editan a mano).
+
 ## Asistente virtual
 
 El botón flotante («Pregúntale a Falcon») y el de la barra móvil abren el chat. Aquí funciona en **modo
