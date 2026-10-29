@@ -17,6 +17,7 @@ páginas legales con el editor de WordPress, y los datos generales en *Personali
 | Artículos del blog | *Entradas*: título, extracto (bajada), imagen destacada, categoría (filtros del blog) y contenido. Los títulos `h2` forman el índice del artículo y los `h3` van debajo. La entrada fijada es la destacada del blog |
 | Páginas legales (Privacidad, Términos, Cookies, Reglamento, Constancia) | *Páginas*, con el editor de WordPress. El extracto es la bajada de la cabecera y el campo `fc_rotulo` el rótulo (p. ej. «Legal») |
 | WhatsApp, teléfono, correo, dirección, redes, enlaces de «Iniciar sesión» y «Crea tu cuenta» | *Apariencia → Personalizar → Falcon Capital · datos de contacto* |
+| Acabado del sitio: «Actual» (diseño aprobado) o «Premium» | *Apariencia → Personalizar → Falcon Capital · acabado* |
 | Aviso de cookies (encendido, título y texto) | *Apariencia → Personalizar → Falcon Capital · aviso de cookies* |
 | Tasa del simulador y correo que recibe las solicitudes | *Ajustes → Falcon Capital* |
 | Asistente virtual: lo que sabe, lo que puede y no puede responder, modelos y claves | *Asistente → Conocimiento* y *Asistente → Ajustes* |
@@ -117,6 +118,7 @@ del aviso de cookies. Un cambio de diseño se hace en el prototipo y se pasa al 
 python wordpress/herramientas/tema_desde_prototipo.py        # estilos y script del tema
 python wordpress/herramientas/plantillas_desde_prototipo.py  # plantillas, artículos y legales (beautifulsoup4)
 python wordpress/herramientas/bot_demo_desde_kba.py          # base de ejemplo del asistente para el prototipo
+python wordpress/herramientas/prototipo_v2.py                # páginas -v2 del prototipo (versión premium)
 ```
 
 Las plantillas (`falcon-capital-componentes/plantillas/`) son las que usa el instalador; la del Inicio
@@ -132,3 +134,18 @@ docker compose up -d                      # http://localhost:8088  (admin / admi
 ```
 
 El contenedor no comparte carpetas con Windows: `sincronizar.sh` copia los archivos con `docker cp`.
+
+### El mismo sitio para todo el equipo
+
+`instantanea/` guarda el WordPress local completo: la base de datos (páginas de Elementor, entradas, medios,
+solicitudes, asistente y ajustes) y `wp-content` (fotos, Elementor, Elementor Pro y Hello Elementor). Con Docker
+corriendo, desde esta carpeta:
+
+```bash
+bash instantanea.sh restaurar                      # deja http://localhost:8088 igual que la instantánea (reemplaza tu base local)
+bash instantanea.sh guardar                        # actualiza la instantánea desde tu WordPress (luego commit y push)
+FALCON_PUERTO=8090 bash instantanea.sh restaurar   # si el 8088 está ocupado
+```
+
+Lo único que no viaja es la licencia de Elementor Pro (el repositorio es público): para recibir actualizaciones de
+Elementor Pro, actívala en *Elementor → Licencia*.
