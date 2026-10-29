@@ -17,9 +17,10 @@ define( 'FC_TEMA_DIR', get_stylesheet_directory() );
 require_once FC_TEMA_DIR . '/inc/iconos.php';
 require_once FC_TEMA_DIR . '/inc/plantillas.php';
 
-/** URL de una imagen incluida en el tema. */
+/** URL de una imagen incluida en el tema; lleva la fecha del archivo para que, si se reemplaza, el navegador no muestre la copia vieja. */
 function fc_img( string $archivo ): string {
-	return FC_TEMA_URI . '/assets/img/' . $archivo;
+	$t = (int) @filemtime( FC_TEMA_DIR . '/assets/img/' . $archivo );
+	return FC_TEMA_URI . '/assets/img/' . $archivo . ( $t ? '?v=' . $t : '' );
 }
 
 /** Enlace a una página del sitio por su ruta (slug); si aún no existe, al inicio con el ancla. */
@@ -77,9 +78,14 @@ add_filter( 'language_attributes', function ( $out ) {
 	return $out . ' data-p="b" data-hb="1" data-pag="' . esc_attr( $pag ) . '"';
 } );
 
+/** Acabado del sitio: «actual» (el diseño aprobado) o «premium» (misma estructura con la capa premium). */
+function fc_premium(): bool {
+	return get_theme_mod( 'fc_acabado', 'actual' ) === 'premium';
+}
+
 add_action( 'wp_head', function () {
-	/* sin esto el script del diseño no sabe que hay JS (animaciones de entrada) */
-	echo "<script>document.documentElement.className+=' js';</script>\n";
+	/* sin esto el script del diseño no sabe que hay JS (animaciones de entrada); «v2» activa la capa premium */
+	echo "<script>document.documentElement.className+=' js" . ( fc_premium() ? ' v2' : '' ) . "';</script>\n";
 	echo '<link rel="icon" href="' . esc_url( fc_img( 'isotipo-falcon.png' ) ) . '">' . "\n";
 }, 1 );
 
@@ -93,6 +99,10 @@ add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style( 'fc-paginas', FC_TEMA_URI . '/assets/css/paginas.css', array( 'fc-banner' ), $v( 'css/paginas.css' ) );
 	wp_enqueue_style( 'fc-wp', FC_TEMA_URI . '/assets/css/wp.css', array( 'fc-paginas' ), $v( 'css/wp.css' ) );
 	wp_enqueue_script( 'fc-falcon', FC_TEMA_URI . '/assets/js/falcon.js', array(), $v( 'js/falcon.js' ), array( 'in_footer' => true ) );
+	if ( fc_premium() ) {
+		wp_enqueue_style( 'fc-premium', FC_TEMA_URI . '/assets/css/premium.css', array( 'fc-wp' ), $v( 'css/premium.css' ) );
+		wp_enqueue_script( 'fc-premium', FC_TEMA_URI . '/assets/js/premium.js', array( 'fc-falcon' ), $v( 'js/premium.js' ), array( 'in_footer' => true ) );
+	}
 	/* el plugin agrega lo suyo (p. ej. FC_WP.bot, el asistente virtual) con el filtro fc_wp_datos */
 	wp_localize_script( 'fc-falcon', 'FC_WP', apply_filters( 'fc_wp_datos', array(
 		'img'   => trailingslashit( FC_TEMA_URI . '/assets/img' ),
@@ -127,6 +137,13 @@ add_action( 'customize_register', function ( WP_Customize_Manager $c ) {
 		$c->add_setting( 'fc_' . $k, array( 'default' => fc_dato( $k ), 'sanitize_callback' => 'sanitize_text_field' ) );
 		$c->add_control( 'fc_' . $k, array( 'label' => $etq, 'section' => 'fc_datos', 'type' => 'text' ) );
 	}
+
+	/* acabado: el diseño aprobado o la versión premium (misma estructura y contenido, otro acabado) */
+	$c->add_section( 'fc_acabado', array( 'title' => 'Falcon Capital · acabado', 'priority' => 29,
+		'description' => 'Premium mantiene la misma estructura y el mismo contenido y cambia el acabado: íconos propios de la marca, fichas con cortes a 45° como el isotipo, bordes con degradado, luz suave al pasar el cursor y logos de aliados en blanco.' ) );
+	$c->add_setting( 'fc_acabado', array( 'default' => 'actual', 'sanitize_callback' => fn( $v ) => $v === 'premium' ? 'premium' : 'actual' ) );
+	$c->add_control( 'fc_acabado', array( 'label' => 'Acabado del sitio', 'section' => 'fc_acabado', 'type' => 'radio',
+		'choices' => array( 'actual' => 'Actual (diseño aprobado)', 'premium' => 'Premium' ) ) );
 
 	/* aviso de cookies: aparece la primera vez; la elección queda en el navegador del visitante */
 	$c->add_section( 'fc_cookies', array( 'title' => 'Falcon Capital · aviso de cookies', 'priority' => 31,

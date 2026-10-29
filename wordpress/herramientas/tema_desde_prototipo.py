@@ -13,7 +13,8 @@ R = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..
 P = os.path.join(R, 'prototipo', 'assets')
 T = os.path.join(R, 'wordpress', 'falcon-capital', 'assets')
 
-for a, b in (('base.css', 'css/base.css'), ('impulso.css', 'css/impulso.css'), ('banner.css', 'css/banner.css'), ('paginas.css', 'css/paginas.css')):
+for a, b in (('base.css', 'css/base.css'), ('impulso.css', 'css/impulso.css'), ('banner.css', 'css/banner.css'), ('paginas.css', 'css/paginas.css'),
+             ('premium.css', 'css/premium.css'), ('premium.js', 'js/premium.js')):
     shutil.copyfile(os.path.join(P, a), os.path.join(T, b))
 
 s = io.open(os.path.join(P, 'falcon.js'), encoding='utf-8').read()

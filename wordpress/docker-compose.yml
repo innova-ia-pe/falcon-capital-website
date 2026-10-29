@@ -15,7 +15,7 @@ services:
     image: wordpress:php8.4-apache
     depends_on: [db]
     ports:
-      - "127.0.0.1:8088:80"
+      - "127.0.0.1:${FALCON_PUERTO:-8088}:80"
     environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: falcon
